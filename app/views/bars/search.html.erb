@@ -1,4 +1,29 @@
-<div>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Google Maps JavaScript API v3 Example: Street View Layer</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+      function initialize() {
+        var barlocation = new google.maps.LatLng(<%= @bars.first.latitude%>,<%=@bars.first.longitude%>);
+        var mapOptions = {
+          center: barlocation,
+          zoom: 15,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+        };
+        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+		var marker = new google.maps.Marker({
+		            position: barlocation,
+		            map: map,
+					title: '<%= @bars.first.name %>'
+		        });
+		}
+    </script>
+</head>
+<body onload="initialize()">
+  <div id="map_canvas" class="map_bg"></div>
+</body>
+<div id="map_overlay">
   <div id="search-query" class="shadow">
 	<% if @search.empty? %>
 	  Listing all bars
