@@ -68,8 +68,8 @@ body.bars.search footer {
   z-index: 2;
 }
 
-/* Landscape phones and down */
-@media (max-width: 480px) {
+/* Portrait tablet, landscape phones and down */
+@media (max-width: 767px){
   body.bars.search {
     padding-top: 0%;
   }
