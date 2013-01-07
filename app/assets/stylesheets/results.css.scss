@@ -67,3 +67,26 @@ body.bars.search footer {
   width: 800px;
   z-index: 2;
 }
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+  body.bars.search {
+    padding-top: 0%;
+  }
+
+  body.bars.search footer {
+    z-index: 0;
+  }
+  .map_bg {
+	height: 0%;
+	z-index: 0;
+  }
+
+  #map_overlay{
+  	margin: 0 auto;
+  	overflow: none;
+  	position: relative;
+  	width: 100%;
+  	z-index: 0;
+  }
+}
