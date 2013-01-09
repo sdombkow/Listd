@@ -14,6 +14,7 @@ ListdApp::Application.routes.draw do
   get "pages/contact_us"
   get "pages/privacy_policy"
   get "pages/about_us"
+  get "pages/download"
 	resources :bars do
   	resources :pass_sets
     collection do
