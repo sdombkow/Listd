@@ -1,0 +1,17 @@
+<h2>My Passes</h2>
+
+<table cellpadding="10">
+	  <tr>
+	    <th>Date</th>
+	    <th>Bar</th>
+	  </tr>
+
+	<% @passes.each do |pass| %>
+  		<% if (!pass.redeemed) %>
+	  		<tr>
+				<td><%= pass.pass_set.date.strftime("%m/%d/%Y") %></td>
+	    		<td><%= pass.pass_set.bar.name %></td>
+	  		</tr>
+  		<% end %>
+	<% end %>
+</table>
