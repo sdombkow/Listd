@@ -205,7 +205,7 @@ Devise.setup do |config|
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
   require "omniauth-facebook"
-config.omniauth :facebook, "567808586566843", "7bca0ef0f56631e299d2559c6ff8206a"
+config.omniauth :facebook, "567808586566843", "7bca0ef0f56631e299d2559c6ff8206a", {:scope => 'email,offline_access,publish_actions'} 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.

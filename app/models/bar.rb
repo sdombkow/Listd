@@ -18,7 +18,7 @@ class Bar < ActiveRecord::Base
 
 	def self.search(search)
 	  search_condition = "%" + search + "%"
-	  find(:all, :conditions => ['name LIKE ?', search_condition])
+	  find(:all, :conditions => ['upper(name) LIKE ?', search_condition.upcase])
 	end
 	
 	

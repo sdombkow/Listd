@@ -11,6 +11,10 @@ ListdApp::Application.routes.draw do
   get "admin/partners"
   get "pages/terms_of_service"
   get "pages/customers"
+  get "pages/contact_us"
+  get "pages/privacy_policy"
+  get "pages/about_us"
+  get "pages/download"
 	resources :bars do
   	resources :pass_sets
     collection do
