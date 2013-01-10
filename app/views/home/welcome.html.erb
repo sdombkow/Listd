@@ -5,25 +5,49 @@
   </div>
   <br />
   <% if(@localvenues.empty?) %>
-	<h5> There are no bars located near <%=@user_information[0].city%> </h5>
-  <% else %>
-	<h3>Bars Near <%=@user_information[0].city%>, <%=@user_information[0].state%> </h3>
-    <% for location in @localvenues %>
+	<h5> Available Locations</h5>
+    <% for location in @venues %>
 	  <div class="row">
-	    <div class="bar-preview span4 shadow">
-	      <h5> <%= link_to location.name, location %> </h5>
-	      <address>
-		    <small> <%= location.address %> <br>
-	          <abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-			  Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
-		    </small>
-		  </address>
-	    </div> <!-- end of .bar-preview -->
+	    	<div class="bar-preview span4 shadow">
+	      	<h5> 
+		  		<%= link_to location.name, location %> 
+			</h5>
+	      	<address>
+		  		<small> 
+					<%= location.address %> <br>
+	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
+			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
+		    	</small>
+		  	</address>
+	  		</div> <!-- end of .bar-preview -->
  	  </div>
 	<% end %>
+
+  <% else %>
+	<h5>Bars Near <%=@user_information[0].city%>, <%=@user_information[0].state%> </h5>
+    <% for location in @localvenues %>
+		<div class="row">
+	    		<div class="bar-preview span4 shadow">
+	      		<h5> 
+					<%= link_to location.name, location %> 
+				</h5>
+	      		<address>
+		    	<small> 
+					<%= location.address %> <br>
+	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
+			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
+		    	</small>
+		  </address>
+	      </div> <!-- end of .bar-preview -->
+ 	  </div>
+	<% end %>
+  
   <%end%>
+  
   <p><%=@user_info1%></p>
-<p><%=@user_info2%></p>
-<p><%=@user_info3%></p>
+  <p><%=@user_info2%></p>
+  <p><%=@user_info3%></p>
 </div>
 
+<%= render "/pages/fbactivity" %>
+<%= render "/passes/pass_widget"%>
