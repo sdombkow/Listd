@@ -27,7 +27,7 @@
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
 				  pass.entries=num_passes
-				    pass.confirmation=SecureRandom.hex(16)
+				  pass.confirmation=SecureRandom.hex(4)
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
@@ -47,7 +47,7 @@
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
 				  pass.entries=num_passes
-				  pass.confirmation=SecureRandom.hex(16)
+				  pass.confirmation=SecureRandom.hex(4)
 			      pass.save
 		      #end
 		UserMailer.purchase_confirmation(@user,pass).deliver
@@ -66,8 +66,8 @@
 			      pass.purchase_id = @purchase.id
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
-				    pass.entries=num_passes
-					  pass.confirmation=SecureRandom.hex(16)
+				  pass.entries=num_passes
+				  pass.confirmation=SecureRandom.hex(4)
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
