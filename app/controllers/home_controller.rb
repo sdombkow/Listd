@@ -16,9 +16,9 @@ class HomeController < ApplicationController
     @user_info = "98.122.189.233"
     #acquires all the needed information based on the users ip address
     @user_information = Geocoder.search(@user_info)
-    #while @user_information.empty?
-    #@user_information = Geocoder.search(@user_info)
-    #end
+    while @user_information.empty?
+    @user_information = Geocoder.search(@user_info)
+    end
     #THIS WHILE LOOP FIXES THE NIL:CLASS CASE BUT IS PROBABLY NOT THE BEST WAY TO GO ABOUT IT
   
     #finds all local venues within 10 miles of that users location, orders them based
