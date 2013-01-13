@@ -1,20 +1,39 @@
 <% content_for :head do %>
 <script type="text/javascript">
-	function getlistd()
-	{
-	  FB.getLoginStatus() 
-	  FB.api(
-	    '/me/listdnow:get_listd_for',
-	    'post',
-	    { bar: "<%= @full_bar_path %>" },
-	    function(response) {
-	    });
-	}
+    $(document).ready(function(){
+        function attachPurchaseListeners(){
+            $("#purchaseInformation").hide();
+            $("#nextPurchase").click(function(){
+                $("#makePurchase").fadeOut(500,function(){
+                    $("#purchaseInformation").fadeIn();
+                });
+                $("#availableSummary").fadeOut(500,function(){
+                    var price = $("#ticketPrice").html();
+                    var numPasses = $("#purchase_num_passes").val();
+                    var purchaseTotal = numPasses * Number(price.replace(/[^0-9\.]+/g,""));
+                    $("#totalAmount").html("$"+purchaseTotal);
+                    $("#ticketsPurchased").html(numPasses);
+                    $("#purchaseSummary").fadeIn();
+                });
+            });
+        }
+        attachPurchaseListeners();
+    });
+    function getlistd()
+        {
+          FB.getLoginStatus() 
+          FB.api(
+            '/me/listdnow:get_listd_for',
+            'post',
+            { bar: "<%= @full_bar_path %>" },
+            function(response) {
+            });
+        }
 </script>
 <% end %>
 
 <!-- Version 2 -->
-<div>
+<div id = "availableSummary">
   <legend>Summary of Available Passes</legend>
   <dl class="dl-horizontal">
     <dt>Bar</dt>
@@ -24,7 +43,21 @@
 	<dt>Passes Left</dt>
 	<dd><%= @pass_set.unsold_passes %></dd>
 	<dt>Price</dt>
-	<dd>$<%= @pass_set.price.round %></dd>
+	<dd id = "ticketPrice">$<%= @pass_set.price.round %></dd>
+  </dl>
+</div>
+
+<div id = "purchaseSummary" style = "display:none;">
+<legend>Summary of Your Purchase</legend>
+  <dl class="dl-horizontal">
+    <dt>Bar</dt>
+    <dd><%= @pass_set.bar.name %></dd>
+	<dt>Date</dt>
+	<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
+	<dt>Tickets Purchased</dt>
+	<dd id = "ticketsPurchased"></dd>
+	<dt>Total Amount</dt>
+	<dd id = "totalAmount"></dd>
   </dl>
 </div>
 
@@ -88,24 +121,28 @@
 <% else %>
 <%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
 <fieldset>
-  <legend>Make a Purchase</legend>
-  <%= f.hidden_field :stripe_card_token %>
-  <%= f.hidden_field :date,:value => @pass_set.date %>
-  <%= f.hidden_field :bar,:value =>  @bar.id %>
-  <div class="control-group">
-	<%= f.label "Number of Tickets", class: "control-label" %>
-  	<div class="controls">
-	  <%= f.select :num_passes, (1..5) %>
-  	  <%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
-	</div>
-  </div>
-  <div class="control-group">
-	<%= f.label :name, class: "control-label" %>
-  	<div class="controls">
-      <%= f.text_field :name %> <small>(Must match Valid ID)</small>
-    </div>
+  <div id = "makePurchase">
+      <legend>Make a Purchase</legend>
+      <%= f.hidden_field :stripe_card_token %>
+      <%= f.hidden_field :date,:value => @pass_set.date %>
+      <%= f.hidden_field :bar,:value =>  @bar.id %>
+      <div class="control-group">
+        <%= f.label "Number of Tickets", class: "control-label" %>
+        <div class="controls">
+          <%= f.select :num_passes, (1..5) %>
+          <%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+        </div>
+      </div>
+      <div class="control-group">
+        <%= f.label :name, class: "control-label" %>
+        <div class="controls">
+          <%= f.text_field :name %> <small>(Must match Valid ID)</small>
+        </div>
+      </div>
+      <input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
   </div>
 
+  <div id = "purchaseInformation">
   <legend>Purchase Information</legend>
   <% if current_user.stripe_customer_token == nil %>
 	<div class="field control-group">
@@ -149,6 +186,8 @@
 	<div class="form-actions">
       <%= f.submit "Submit", :class => "btn btn-primary", :onclick => "return getlistd();" %>
 	  <%= link_to 'Cancel', :back, :class => "btn" %>
+    </div>
+    <!-- End Purchase Div-->
     </div>
 </fieldset>
 <% end %>
