@@ -3,13 +3,7 @@ class PassSetsController < ApplicationController
   # GET /pass_sets.json
   before_filter :authenticate_user!
   def index
-    @bar = Bar.find(params[:bar_id])
-    @pass_sets = @bar.pass_sets
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @pass_sets }
-    end
+  @passes = Pass.where("pass_set_id = ? and created_at > ?", params[:pass_set_id], Time.at(params[:after].to_i + 1))
   end
 
   # GET /pass_sets/1
@@ -17,7 +11,7 @@ class PassSetsController < ApplicationController
   def show
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	  @passes = @pass_set.passes
+	@passes = @pass_set.passes
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)

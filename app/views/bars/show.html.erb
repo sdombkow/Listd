@@ -27,6 +27,7 @@
   <meta property="og:title"  content="<%=@bar.name %>" /> 
   <meta property="og:image"  content="http://cdn1.iconfinder.com/data/icons/Symbolicons_Drink/502/Drink_BeerPint.png"  /> 
 <% end %>
+<div>
 <div class="row">
   <div class="pull-left span7 shadow" id="bar-main">
     <h3> <%= @bar.name %> </h3>
@@ -86,12 +87,14 @@
 </div>
 
 <% end %>
-
+</div>
 
 <%if(user_signed_in? && current_user.admin?) %>
-<h5>
-Active Pass Sets
-</h5>
+<div>
+<%if @pass_sets.empty? %>
+<h5>No Active Pass Sets</h5>
+<% else %>
+<h5>Active Pass Sets</h5>
 <table cellpadding="10">
   <tr>
     <th>Date</th>
@@ -126,13 +129,13 @@ Active Pass Sets
 			   <%end%>
   </tr>
 <% end %>
-
-
 </table>
+<% end %>
 </br>
-<h5>
-Expired Pass Sets
-</h5>
+<% if @expired_sets.empty? %>
+<h5> No Expired Pass Sets </h5>
+<% else %>
+<h5>Expired Pass Sets</h5>
 <table cellpadding="10">
   <tr>
     <th>Date</th>
@@ -167,14 +170,9 @@ Expired Pass Sets
   </tr>
 <% end %>
 </table>
-
 <% end %>
-
+</div>
 </br>
-</br>
-</br>
-
-<%if user_signed_in? && (current_user.admin?) %>
 <%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |
 <%= link_to 'Edit Bar Information', edit_user_bar_path(@user,@bar) %> |
   <%= link_to 'Delete Bar Location', [@user,@bar],
@@ -184,4 +182,5 @@ Expired Pass Sets
 <%elsif(user_signed_in? && current_user.partner?) %>
 <%= link_to 'Edit Bar Information', edit_bar_path(@bar) %> |
 <%= link_to 'Back', root_path %>
-<%end%>
+<% end %>
+
