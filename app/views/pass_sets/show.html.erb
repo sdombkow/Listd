@@ -91,33 +91,11 @@
 
 </br>
 <% if current_user.partner? || current_user.admin? %>
-<% if @passes.empty? %>
-<h5>No one has bought passes yet! </h5>
-<%else%>
-<table cellpadding="5" >
-  <tr>
-    <th>Name on Valid ID</th>
-    <th>Entry Date</th>
-    <th>Bar</th>
-    <th># of Passes</th>
-    <th>Purchase Date</th>
-    <th>Redeemed?</th>
-	<th></th>
-  </tr>
+ <div id="passPoller" data-id="<%= @pass_set.id %>">
+	<%= render @passes %>
+    </div>
 
-<% @passes.each do |pass| %>
-  <tr>
-    <td><%= pass.name %></td>
-    <td><%= pass.pass_set.date.strftime("%m/%d/%Y") %></td>
-    <td><%= pass.pass_set.bar.name %></td>
-    <td><%= pass.entries %></td>
-    <td><%= pass.created_at.strftime("%m/%d/%Y %I:%M %p")%></td>
-    <td><%= pass.redeemed %></td>
-	<td> <%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %></td>
-  </tr>
-<% end %>
-</table>
-<%end%>
+
 <% else %>
 <%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
 <fieldset>

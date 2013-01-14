@@ -1,6 +1,6 @@
 <h2>Pass #<%=@pass.confirmation%></h2>
   <% if (!@pass.redeemed) %>
-  <div class="span4 shadow" id="purchased-pass">
+<div class="span4 shadow" id="purchased-pass">
 	<div id="pass-info">
       <p class="lead">
 	    <%= @pass.pass_set.bar.name %><br>
@@ -8,7 +8,7 @@
 		<%= @pass.pass_set.date.strftime("%m/%d/%Y") %>
 		<br>
 	  </p>
-	  	<h5>Number of Entrants: <%= @pass.entries %> </h5> 
+	  <small class="offset1"><%= @pass.entries %></small>
 	</div>	
 	<div id="pass-name" class="center-text">
 	  <p class="lead"><%= @pass.name %></p>

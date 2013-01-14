@@ -11,8 +11,10 @@ class PassesController < ApplicationController
 		@user=current_user
 		@pass = Pass.find(params[:id])
 		if(@user != @pass.purchase.user)
+		 if(!@user.partner?)
 		redirect_to:root
 		flash[:notice] = "Opps! You went somewhere you're not supposed to."
+		end
 		end
   end
   

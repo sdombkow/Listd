@@ -1,38 +1,10 @@
-<p>
-  <b>Name</b>
-  <%= pass.name %>
-</p>
- 
-<p>
-  <b>Date</b>
-  <%= pass.pass_set.date%>
-</p>
-<p>
-  <b>Bar</b>
-  <%= pass.pass_set.bar.name%>
-</p>
-<p>
-  <b>Redeemed?</b>
-  <%= pass.redeemed%>
-</p>
-<table cellpadding="10">
-  <tr>
-    <th>Name on Valid ID</th>
-    <th>Entry Date</th>
-    <th>Bar</th>
-	<th>Number of Entries</th>
-    <th>Purchase Date</th>
-    <th>Redeemed?</th>
-  </tr>
-
-<% @passes.each do |pass| %>
-  <tr>
-    <td><%=  pass.name %></td>
-    <td><%=  pass.pass_set.date %></td>
-    <td><%= pass.pass_set.bar.name %></td>
-    <td></td>
-    <td><%= pass.redeemed %></td>
-  </tr>
-<% end %>
-</table>
-
+      <div class="passPoller" data-time="<%= pass.created_at.to_i %>">
+        <strong>Name: <%= pass.name %>	|	<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %></strong> </br>
+	    <em>Entry Date: <%= pass.pass_set.date.strftime('%b %d, %Y at %I:%M %p') %></em> </br>
+		<em>Bar: <%= pass.pass_set.bar.name%></em> </br>
+		<em># of Passes: <%= pass.entries %></em> </br>
+        <em>Purchased on: <%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></em> </br>
+		<em>Passes Redeemed?: <%= pass.redeemed %> </em> </br>
+		<em>Confirmation Number: <%= link_to pass.confirmation, pass %> </em> </br>
+      </div>
+	  </br>

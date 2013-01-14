@@ -31,7 +31,7 @@
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
-          redirect_to [@bar,@pass_set], notice: 'Purchase created'
+          redirect_to [pass], notice: 'Purchase created'
 		  else
 		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
 		  end
@@ -51,7 +51,7 @@
 			      pass.save
 		      #end
 		UserMailer.purchase_confirmation(@user,pass).deliver
-          redirect_to [@bar,@pass_set], notice: 'Purchase created'
+          redirect_to [pass], notice: 'Purchase created'
 		  else
 		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
 		  end
@@ -71,7 +71,7 @@
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
-          redirect_to [@bar,@pass_set], notice: 'Purchase created'
+          redirect_to [pass], notice: 'Purchase created'
 		  else
 		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
 		  end
