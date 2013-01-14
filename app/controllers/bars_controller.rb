@@ -70,6 +70,10 @@ class BarsController < ApplicationController
 def search
   @search = params[:search]
   @bars = Bar.search(@search)
+  if @bars.empty?
+      redirect_to :controller=>'home', :action=>'welcome'
+       flash[:notice] = "No bars found matching your search."
+   end
 end
 
   # PUT /bars/1
