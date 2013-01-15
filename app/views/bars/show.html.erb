@@ -36,14 +36,30 @@
     </address>
 	<div class="row">
       <body onload="initialize()">
-	    <div id="map_canvas" class="map span6" style="height: 130px;"></div>
+	    <div id="map_canvas" class="map span6" style="width: 670px; height: 150px";></div>
       </body>
 	</div>
   </div>
 
   <div class="pull-left span3 shadow" id="bar-info">
     <h5>Contact</h5>
-    <small><abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %></small><br><br>
+    <small>
+		<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
+	</small>
+    </br>
+	<% if @bar.website_url != nil %>
+		<small>
+			<%= link_to 'Website', @bar.website_url %>
+		</small>
+	<% end %>
+	</br>
+    <% if @bar.facebook_url != nil%>
+		<%= link_to image_tag("fb_icon(bar).png"), @bar.facebook_url %>
+	<% end %>
+	<% if @bar.twitter_url != nil%>
+		<%= link_to image_tag("twitter_icon(bar).png"), @bar.twitter_url %>
+	<% end %>
+    </br>
     <h5>Hours</h5>
 	<% if @bar.open_monday %>
 	  <small>Mon: <%= @bar.houropen_monday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_monday.strftime('%l:%M %p') %></small><br>
