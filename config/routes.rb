@@ -15,6 +15,9 @@ ListdApp::Application.routes.draw do
   get "pages/privacy_policy"
   get "pages/about_us"
   get "pages/download"
+
+  match 'contact' => 'contact#new', :as => 'contact', :via => :get
+match 'contact' => 'contact#create', :as => 'contact', :via => :post
 	resources :bars do
   	resources :pass_sets
     collection do
