@@ -27,6 +27,7 @@
   </li>
   <li> <%= f.submit "Sign in", :class => "btn btn-block btn-primary" %> </li>
   <li class="divider"></li>
-  <li> <%= link_to "Sign in with Facebook", user_omniauth_authorize_path(:facebook), :class => "btn btn-block" %>  </li>
+  <li>
+   <a class="blueButton" href="<%=user_omniauth_authorize_path(:facebook)%>"><span class="blueButtonText">Sign in with Facebook</span></a> </li>
   <% end %>
 </ul>
