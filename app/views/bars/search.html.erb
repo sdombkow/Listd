@@ -5,18 +5,23 @@
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
     <script>
       function initialize() {
-        var barlocation = new google.maps.LatLng(<%= @bars.first.latitude%>,<%=@bars.first.longitude%>);
+		var markerBounds = new google.maps.LatLngBounds();
         var mapOptions = {
-          center: barlocation,
-          zoom: 15,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          center: new google.maps.LatLng(<%= @user_information[0].latitude%>, <%= @user_information[0].longitude%>),
+          zoom: 5,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
-		var marker = new google.maps.Marker({
-		            position: barlocation,
-		            map: map,
-					title: '<%= @bars.first.name %>'
-		        });
+		<% for bar in @bars %>
+			var barlocation = new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>);	
+			var marker = new google.maps.Marker({
+		        position: barlocation,
+		        map: map,
+				title: '<%= @bars.first.name %>'
+			});
+			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
+		<% end %>
+		map.fitBounds(markerBounds); 
 		}
     </script>
 </head>

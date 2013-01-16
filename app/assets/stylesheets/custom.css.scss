@@ -144,6 +144,32 @@ footer ul li {
   margin-right: 10px;
 }
 
+.pass-preview {
+  padding: 1% 3%;
+  border: 1px solid #000;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  width: 400px;
+  text-align: center;
+}
+
+.pass-preview h5 {
+  margin-bottom: 5px;
+}
+
+.pass-preview small a {
+  color: #333;
+}
+
+.pass-preview address {
+  line-height: 14px;
+}
+
+.pass-preview small {
+  font-size: 12px;
+}
+
 /* Landscape phones and down */
 @media (max-width: 480px) {
   footer {

@@ -1,5 +1,6 @@
 <h2>My Passes</h2>
 
+<!--
 <div class="row">
 <% @passes.each do |pass| %>
   <% if (!pass.redeemed) %>
@@ -20,3 +21,24 @@
   <% end %>
 <% end %>
 </div>
+-->
+
+<% for pass in @passes %>
+  <div class="row">
+    	<div class="pass-preview span4 shadow">
+      	<address>
+	  		<small>
+		        Bar Name: <%= pass.pass_set.bar.name %>
+				</br>
+				Date of Pass: <%= pass.pass_set.date.strftime("%m/%d/%Y") %> 
+				</br>
+				# of Passes: <%= pass.entries%>
+				</br>
+				Name on Purchase: <%= pass.name %>
+				</br>
+				Confirmation Number: <%= pass.confirmation %>
+	    	</small>
+	  	</address>
+  		</div> <!-- end of .bar-preview -->
+  </div>
+<% end %>

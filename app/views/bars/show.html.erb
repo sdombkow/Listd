@@ -47,16 +47,16 @@
 		<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
 	</small>
     </br>
-	<% if @bar.website_url != nil %>
+	<% if @bar.website_url != "" %>
 		<small>
 			<%= link_to 'Website', @bar.website_url %>
 		</small>
 	<% end %>
 	</br>
-    <% if @bar.facebook_url != nil%>
+    <% if @bar.facebook_url != "" %>
 		<%= link_to image_tag("fb_icon(bar).png"), @bar.facebook_url %>
 	<% end %>
-	<% if @bar.twitter_url != nil%>
+	<% if @bar.twitter_url != "" %>
 		<%= link_to image_tag("twitter_icon(bar).png"), @bar.twitter_url %>
 	<% end %>
     </br>

@@ -1,3 +1,16 @@
+<style type="text/css">
+body {
+	text-align: center;
+}
+</style>
+
+<h1>
+	Want to get in contact with us?
+</h1>
+<h2>
+	Send us your comments/feedback by filling out this form.
+</h2>
+
 <%= form_for @message, :url => contact_path do |form| %>
   <fieldset class="fields">
     <div class="field">
@@ -16,7 +29,7 @@
     
     <div class="field">
       <%= form.label :body %>
-      <%= form.text_area :body %>
+      <%= form.text_area :body, :cols => "30", :rows => "10" %>
     </div>
   </fieldset>
   

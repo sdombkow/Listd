@@ -66,6 +66,27 @@ background-repeat: no-repeat;
   font-size: 14px;
 }
 
+#stepstwo {
+  padding: 0%;
+}
+
+#stepstwo #one {
+  padding: 0% 7% 10% 0%;
+}
+
+#stepstwo #two {
+  padding: 0% 7% 10% 0%;
+}
+
+#stepstwo #three {
+  padding: 0% 7% 10% 0%;
+}
+
+#stepstwo p {
+  color: #111111;
+  font-size: 14px;
+}
+
 /* Landscape phones and down */
 @media (max-width: 480px) {
   body.home.index {

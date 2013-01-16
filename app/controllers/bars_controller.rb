@@ -73,7 +73,11 @@ def search
   if @bars.empty?
       redirect_to :controller=>'home', :action=>'welcome'
        flash[:notice] = "No bars found matching your search."
-   end
+  end
+  @user_location = request.location.city
+  @user_location = "98.122.189.233"
+  @user_information = Geocoder.search(@user_location)
+  logger.error "Location Coordinates: #{@user_information[0].coordinates}"
 end
 
   # PUT /bars/1
