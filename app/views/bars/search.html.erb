@@ -6,8 +6,9 @@
     <script>
       function initialize() {
 		var markerBounds = new google.maps.LatLngBounds();
+		var barlocation = new google.maps.LatLng(<%= @bars.first.latitude%>,<%=@bars.first.longitude%>);
         var mapOptions = {
-          center: new google.maps.LatLng(<%= @user_information[0].latitude%>, <%= @user_information[0].longitude%>),
+          center: barlocation,
           zoom: 5,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -21,7 +22,9 @@
 			});
 			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
 		<% end %>
-		map.fitBounds(markerBounds); 
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude + 0.01 %>,<%= bar.longitude + 0.01 %>));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude - 0.01 %>,<%= bar.longitude - 0.01 %>));
+		map.fitBounds(markerBounds);
 		}
     </script>
 </head>
