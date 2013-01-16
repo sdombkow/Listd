@@ -2,6 +2,19 @@ class PassSetsController < ApplicationController
   # GET /pass_sets
   # GET /pass_sets.json
   before_filter :authenticate_user!
+  before_filter :ownsPassSet, :only => [:edit,:update,:new,:delete,:create]
+
+  # Ensure that the user owns the bar for this pass set
+  def ownsPassSet
+    @bar = Bar.find(params[:bar_id])
+    if current_user.partner? == false and current_user.admin? == false
+        redirect_to @bar
+    elsif current_user.partner? == true and @bar.user_id != current_user.id
+        redirect_to @bar
+    end
+    return
+  end
+
   def index
   @passes = Pass.where("pass_set_id = ? and created_at > ?", params[:pass_set_id], Time.at(params[:after].to_i + 1))
   end
