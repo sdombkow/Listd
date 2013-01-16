@@ -8,8 +8,18 @@
     <h5> <%= link_to bar.name, bar %> </h5>
     <address>
 	  <small> <%= bar.address %> <br>
-        <abbr title="Phone">P:</abbr> <%= number_to_phone(bar.phone_number, :area_code => true) %><br>
-		<%= link_to bar.website_url, "http://#{bar.website_url}"%>
+        <abbr title="Phone">P:</abbr> <%= number_to_phone(bar.phone_number, :area_code => true) %>
+		</br>
+		<% if bar.website_url != ""%>
+			<%= link_to bar.website_url, "http://#{bar.website_url}"%>
+			</br>
+		<% end %>
+		<% if bar.facebook_url != "" %>
+			<%= link_to image_tag("fb_icon(bar).png"), bar.facebook_url %>
+		<% end %>
+		<% if bar.twitter_url != "" %>
+			<%= link_to image_tag("twitter_icon(bar).png"), bar.twitter_url %>
+		<% end %>
 	  </small>
 	</address>
 	<small></small>
