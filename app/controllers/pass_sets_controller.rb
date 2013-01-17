@@ -29,6 +29,8 @@ class PassSetsController < ApplicationController
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
       @last_four = @customer_card.active_card.last4
+      @end_month = @customer_card.active_card.exp_month
+      @end_year = @customer_card.active_card.exp_year
     end
     @full_bar_path = "http://#{request.host}" + (bar_path @pass_set.bar).to_s
     @open_graph = false

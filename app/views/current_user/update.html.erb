@@ -1,17 +1,18 @@
+<h1>Payment Management</h1></br>
+
 <% if current_user.stripe_customer_token != nil %>
-	<h1>Edit Credit Card Information</h1></br>
-	<h3>We have your credit card information, to change it please enter your new credit card information</h3></br>
+	<h3>You currently have a credit card stored.</h3>
+	<h3>Card Information:</h3>
+	<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
+	<p>Card expires in the year: <%= @end_year %></p>
+	<hr>
+	<h4>To update your payment information for future purchases, submit the following form.</h4>
+	<%= render "credit_form" %>
+	<hr>
+	<h4>To delete your payment information, press the "Delete Card" button.</h4>
+	<%= button_to "Delete Card", "/current_user/delete_stripe_token"%>
 <% else %>
-	<h1>Enter Credit Card Information</h1>
-<% end %>
-
-<%= render "credit_form" %>
-
-<h3>Current User Information</h3>
-<p>We already have your credit card information.</p></br>
-<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
-<p>Name on Credit Card: <%= current_user.name %></p>
-
-<% if current_user.stripe_customer_token != nil %>
-	<%= link_to "Delete Token", "/current_user/delete_stripe_token"%>
+	<h4>You currently do not have a credit card stored.</h4>
+	<h4>To add a card for future purchases, submit the following form.</h4>
+	<%= render "credit_form" %>
 <% end %>

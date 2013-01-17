@@ -48,10 +48,11 @@ class UsersController < ApplicationController
     logger.error "Stripe error while creating customer: #{current_user.stripe_customer_token} and #{current_user.stripe_card_token}"
     if current_user.stripe_customer_token != nil
       current_user.save_token
+      redirect_to :root, notice: 'Card Updated'
     else
       current_user.create_token
+      redirect_to :root, notice: 'Card Added'
     end
-    redirect_to "/users"
   end
   
 end
