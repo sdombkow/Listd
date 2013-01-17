@@ -8,13 +8,13 @@ jQuery ->
 
 purchase =
   setupForm: ->
-    $('#new_purchase').submit ->
-      $('input[type=submit]').attr('disabled', true)
-      if $('#card_number').length
-       	purchase.processCard()
-        false
-      else
-        true
+    	$('#new_purchase').submit ->
+      		$('input[type=submit]').attr('disabled', true)
+      		if $('#card_number').length
+       			purchase.processCard()
+        		false
+      		else
+        		true
     
   
   processCard: ->
