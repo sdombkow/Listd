@@ -3,6 +3,7 @@
     $(document).ready(function(){
         function attachPurchaseListeners(){
             $("#purchaseInformation").hide();
+			$("#newInformation").hide();
             $("#nextPurchase").click(function(){
                 $("#makePurchase").fadeOut(500,function(){
                     $("#purchaseInformation").fadeIn();
@@ -16,6 +17,11 @@
                     $("#purchaseSummary").fadeIn();
                 });
             });
+			$("#nextAddInformation").click(function(){
+				$("#purchaseInformation").fadeOut(500,function(){
+                    $("#newInformation").fadeIn();
+                });
+			});
         }
         attachPurchaseListeners();
     });
@@ -199,18 +205,23 @@
 	  					<!--<%= f.submit "Purchase with Saved Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>-->
       					<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>
 						<hr>
+						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn" />
+						<hr>
+						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
+					</div>
+					<div id = "newInformation">
 						<legend>Use a New Card</legend>
 						<p>To use a different card, fill in the follow fields and click "Purchase with New Card" button.</p>
 						<div class="field control-group">
-							<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
+							<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>								
 							<div class="controls">
-							    <%= text_field_tag :card_number, nil, name: nil %>
+						    	<%= text_field_tag :card_number, nil, name: nil %>
 							</div>
 						</div>
 						<div class="field control-group">
 							<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
 							<div class="controls">
-								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>								
 							</div> 
 						</div> 
 						<div class="field control-group">
@@ -222,9 +233,8 @@
 						</div>
 						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>
-						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
+						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
 					</div>
-					
 				</fieldset>
 			<% end %>
 			<!--
