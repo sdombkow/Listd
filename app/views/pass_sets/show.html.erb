@@ -90,117 +90,197 @@
 </p> -->
 
 </br>
+
 <% if current_user.partner? || current_user.admin? %>
- <div id="passPoller" data-id="<%= @pass_set.id %>">
-	<%= render @passes %>
+	<div id="passPoller" data-id="<%= @pass_set.id %>">
+		<%= render @passes %>
     </div>
-
-
 <% else %>
-<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
-<fieldset>
-  <div id = "makePurchase">
-      <legend>Make a Purchase</legend>
-      <%= f.hidden_field :stripe_card_token %>
-      <%= f.hidden_field :date,:value => @pass_set.date %>
-      <%= f.hidden_field :bar,:value =>  @bar.id %>
-      <div class="control-group">
-        <%= f.label "Number of Passes", class: "control-label" %>
-        <div class="controls">
-          <%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
-		  <small>(You can purchase passes for your friends)</small>
-          <%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
-        </div>
-      </div>
-      <div class="control-group">
-        <%= f.label :name, class: "control-label" %>
-        <div class="controls">
-          <%= f.text_field :name %> <small>(Must match Valid ID)</small>
-        </div>
-      </div>
-      <input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
-  </div>
+	<% if current_user.stripe_customer_token == nil %>
+		<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+			<fieldset>
+				
+  				<div id = "makePurchase">
+      				<legend>Make a Purchase</legend>
+      				<%= f.hidden_field :stripe_card_token %>
+      				<%= f.hidden_field :date,:value => @pass_set.date %>
+      				<%= f.hidden_field :bar,:value =>  @bar.id %>
+      				<div class="control-group">
+        				<%= f.label "Number of Passes", class: "control-label" %>
+        				<div class="controls">
+          					<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+		  					<small>(You can purchase passes for your friends)</small>
+          					<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+        				</div>
+      				</div>
+      				<div class="control-group">
+        				<%= f.label :name, class: "control-label" %>
+        				<div class="controls">
+          					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
+        				</div>
+      				</div>
+      				<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+  				</div>
 
-  <div id = "purchaseInformation">
-  <legend>Purchase Information</legend>
-  <% if current_user.stripe_customer_token == nil %>
-	<div class="field control-group">
-	  <%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
-	  <div class="controls">
-	    <%= text_field_tag :card_number, nil, name: nil %>
-	  </div>
-	</div>
-	<div class="field control-group">
-	  <%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
-	  <div class="controls">
-		<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
-	  </div> 
-	</div> 
-	<div class="field control-group">
-	  <%= label_tag :card_month, "Card Expiration", class: "control-label" %>
-	  <div class="controls">
-	    <%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
-	    <%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
-	  </div>
-	</div>
-	<div class="control-group">
-	  <div class="controls">
-	    <label class="checkbox">
-		  <%= check_box_tag "credit_card_save"%> Save my credit/debit card information
-		</label>
-	  </div>
-	</div>
+  				<div id = "purchaseInformation">
+  					<legend>Purchase Information</legend>
+						<div class="field control-group">
+	  						<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
+	  						<div class="controls">
+	    						<%= text_field_tag :card_number, nil, name: nil %>
+	  						</div>
+						</div>
+						<div class="field control-group">
+	  						<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
+	  						<div class="controls">
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
+	  						</div> 
+						</div> 
+						<div class="field control-group">
+	  						<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
+	  						<div class="controls">
+	    						<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+	    						<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+	  						</div>
+						</div>
+						<div class="control-group">
+	  						<div class="controls">
+	    						<label class="checkbox">
+		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information
+								</label>
+	  						</div>
+						</div>
 	
-	<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
-	<hr>
-	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
-	
-			
-			<div id="stripe_error">
-			<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-			</div>
+						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
+						<hr>
+						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>		
+						<div id="stripe_error">
+							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+						</div>
+					</div>
+					
+				<fieldset>
+			<% end %>
 		<% else %>
-			<br>
-			<h4>We currently have your credit/debit card information saved.</h4>
-			<h4>To purchase the passes with the card below, select the "Purchase with Saved Card" button</h4>
-			<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
-			<p>Card expires in the year: <%= @end_year %></p>
-			<br>
-			<br>
+			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+				<fieldset>
+					
+					<div id = "makePurchase">
+		      			<legend>Make a Purchase</legend>
+		      			<%= f.hidden_field :stripe_card_token %>
+		      			<%= f.hidden_field :date,:value => @pass_set.date %>
+		      			<%= f.hidden_field :bar,:value =>  @bar.id %>
+		      			<div class="control-group">
+		        			<%= f.label "Number of Passes", class: "control-label" %>
+		        			<div class="controls">
+		          				<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+				  				<small>(You can purchase passes for your friends)</small>
+		          				<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+		        			</div>
+		      			</div>
+		      			<div class="control-group">
+		        			<%= f.label :name, class: "control-label" %>
+		        			<div class="controls">
+		          				<%= f.text_field :name %> <small>(Must match Valid ID)</small>
+		        			</div>
+		      			</div>
+		      			<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+		  			</div>
+		
+					<div id = "purchaseInformation">
+						</br>
+						<h4>We currently have your credit/debit card information saved.</h4>
+						<h4>To purchase the passes with the card below, select the "Purchase with Saved Card" button</h4>
+						<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
+						<p>Card expires in the year: <%= @end_year %></p>
+						</br>
+						</br>
+		
+	  					<!--<%= f.submit "Purchase with Saved Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>-->
+      					<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>
+						<hr>
+						<legend>Use a New Card</legend>
+						<p>To use a different card, fill in the follow fields and click "Purchase with New Card" button.</p>
+						<div class="field control-group">
+							<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
+							<div class="controls">
+							    <%= text_field_tag :card_number, nil, name: nil %>
+							</div>
+						</div>
+						<div class="field control-group">
+							<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
+							<div class="controls">
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
+							</div> 
+						</div> 
+						<div class="field control-group">
+							<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
+							<div class="controls">
+								<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+								<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+							</div>
+						</div>
+						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
+						<hr>
+						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
+					</div>
+					
+				</fieldset>
+			<% end %>
+			<!--
+			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+				<fieldset>
+					
+					<div id = "makePurchase">
+		      			<legend>Make a Purchase</legend>
+		      			<%= f.hidden_field :stripe_card_token %>
+		      			<%= f.hidden_field :date,:value => @pass_set.date %>
+		      			<%= f.hidden_field :bar,:value =>  @bar.id %>
+		      			<div class="control-group">
+		        			<%= f.label "Number of Passes", class: "control-label" %>
+		        			<div class="controls">
+		          				<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+				  				<small>(You can purchase passes for your friends)</small>
+		          				<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+		        			</div>
+		      			</div>
+		      			<div class="control-group">
+		        			<%= f.label :name, class: "control-label" %>
+		        			<div class="controls">
+		          				<%= f.text_field :name %> <small>(Must match Valid ID)</small>
+		        			</div>
+		      			</div>
+		      			<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+		  			</div>
+		
+					<div id = "purchaseInformation">
+						<legend>Use a New Card</legend>
+						<p>To use a different card, fill in the follow fields and click "Purchase with New Card" button.</p>
+						<div class="field control-group">
+							<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
+							<div class="controls">
+							    <%= text_field_tag :card_number, nil, name: nil %>
+							</div>
+						</div>
+						<div class="field control-group">
+							<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
+							<div class="controls">
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
+							</div> 
+						</div> 
+						<div class="field control-group">
+							<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
+							<div class="controls">
+								<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+								<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+							</div>
+						</div>
+						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
+						<hr>
+						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
+					</div>		
+				</fieldset>
+			<% end %>
+			-->
 		<% end %>
-	  <%= f.submit "Purchase with Saved Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
-      <!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
-	  
-	<hr>
-	<!--  
-	<legend>Use a New Card</legend>
-	<p>To use a different card, fill in the follow fields and click "Purchase with New Card" button.</p>
-      <div class="field control-group">
-	  <%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
-	  <div class="controls">
-	    <%= text_field_tag :card_number, nil, name: nil %>
-	  </div>
-	</div>
-	<div class="field control-group">
-	  <%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
-	  <div class="controls">
-		<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
-	  </div> 
-	</div> 
-	<div class="field control-group">
-	  <%= label_tag :card_month, "Card Expiration", class: "control-label" %>
-	  <div class="controls">
-	    <%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
-	    <%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
-	  </div>
-	</div>
-	 <%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
-	<hr>
-	-->
-	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
-    </div>
-</fieldset>
 <% end %>
-<% end %>
-</br>
-</br>
