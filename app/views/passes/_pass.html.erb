@@ -1,3 +1,5 @@
+   	  <div class="row">
+	    	<div class="bar-preview span4 shadow">
       <div class="passPoller" data-time="<%= pass.created_at.to_i %>">
         <strong>Name: <%= pass.name %>	|	<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %></strong> </br>
 	    <em>Entry Date: <%= pass.pass_set.date.strftime('%b %d, %Y at %I:%M %p') %></em> </br>
@@ -8,3 +10,5 @@
 		<em>Confirmation Number: <%= link_to pass.confirmation, pass %> </em> </br>
       </div>
 	  </br>
+	  		</div> <!-- end of .bar-preview -->
+ 	  </div>
