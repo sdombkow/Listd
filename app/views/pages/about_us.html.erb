@@ -1,7 +1,16 @@
 <style type="text/css">
-body {
+h3 {
 	text-align: center
 }
+p.margin{
+margin-left:17%;
+margin-right:17%
+}
+
+#shift {
+  margin-left: 5%;
+}
+
 </style>
 
 <body>
@@ -11,32 +20,35 @@ body {
 
 <h3> An Easy-To-Follow Process </h3>
 
-<p>
-LISTD allows you to buy online passes to skip lines at your favorite bars and nightclubs from your computer and mobile devices. Passes are <br> available for purchase a week in advance. Remember that our passes are limited for each night so get yours before they run out. 
+<p class="margin">
+LISTD allows you to buy online passes to skip lines at your favorite bars and nightclubs from your computer and mobile devices. Passes are available for purchase a week in advance. Remember that our passes are limited for each night so get yours before they run out. 
 <br>
 <br>
 <br>
 </p>
 
 <ol>
-
-	<div id="stepstwo" class="row-fluid">
-	  <div class="span4" id="one">
-		<p>1. Select a bar or nightclub and find available passes for a specific day. </p>
-	  </div>
-	  <div class="span4" id="two">
-		<p>2. Purchase passes through our online payment system. </p>
-	  </div>
-	  <div class="span4" id="three">
-		<p>3. Bring your ID to the bar or nightclub and enjoy your night. </p>
-	  </div>
+	<div id="shift">
+		<div id="stepstwo" class="row-fluid" align="center">
+		<div class="span4" id="one">
+			<p>1. Select a bar or nightclub and find passes for a specific day. </p>
+		</div>
+		<div class="span4" id="two">
+			<p align="center">2. Purchase passes through our online payment system. </p>
+		</div>
+		<div class="span4" id="three">
+			<p>3. Bring your ID to the bar or nightclub and enjoy your night. </p>
+		</div>
+		</div>
 	</div>
+
+	
 
 <hr>
 <br>
 
 <h3> LISTD Passes </h3>
-<p>
+<p align="center">
 Passes are available a week in advance. You can even purchase them while waiting in line, if available.
 </p>
 
@@ -44,7 +56,7 @@ Passes are available a week in advance. You can even purchase them while waiting
 <br>
 
 <h3>LISTD On Other Devices </h3>
-<p>
+<p align="center">
 Experience LISTD on your mobile phone or tablet by visiting <%= link_to "www.listdnow.com", root_path %>. Be on the look out for our mobile apps.
 </p>
 
@@ -52,7 +64,7 @@ Experience LISTD on your mobile phone or tablet by visiting <%= link_to "www.lis
 <br>
 
 <h3>LISTD For Businesses</h3>
-<p> 
+<p class="margin"> 
 Do you want to supplement your revenue, while increasing both your brand recognition and customer satisfaction? <br> Partner with LISTD, for more information check out our Businesses page or contact us at <%= mail_to("questions@listdnow.com")%>. .
 </p>
 
@@ -60,7 +72,7 @@ Do you want to supplement your revenue, while increasing both your brand recogni
 <br>
 
 <h3>LISTD's Dedicated Team</h3>
-<p>
+<p align="center">
 We strive to make your nightlife experience more enjoyable, accessible, and less stressful. Our top priority is your satisfaction.
 </p>
 
@@ -68,7 +80,7 @@ We strive to make your nightlife experience more enjoyable, accessible, and less
 <br>
 
 <h3>Any questions? </h3>
-<p>
+<p align="center">
 Contact us at <%= mail_to("questions@listdnow.com")%>. 
 </p>
 </br>
