@@ -24,7 +24,7 @@ class PassSetsController < ApplicationController
   def show
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	@passes = @pass_set.passes
+	@passes = @pass_set.passes.order("created_at ASC")
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
