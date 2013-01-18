@@ -175,12 +175,21 @@
 	
 						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>
-						<div id="stripe_error">
-							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-						</div>
-					</div>
-					
-				<fieldset>
+						<div id = "cancelOpts">
+	                    	<div id = "purchaseLoading" style = "display:none;">
+								<small>
+									Purchase in process...
+								<small>
+								</br>
+								<%= image_tag("loader.gif") %>
+							</div>
+							</br>
+					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
+	             			<div id="stripe_error">
+								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+							</div>
+	                    </div>			
+				</fieldset>
 			<% end %>
 		<% else %>
 			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
@@ -250,11 +259,18 @@
 						<hr>
 					</div>		
                     <div id = "cancelOpts">
-                    <div id = "purchaseLoading" style = "display:none;"><%= image_tag("loader.gif") %><br />Loading...</div>
-				    <%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
-             		<div id="stripe_error">
-						<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-					</div>
+                    	<div id = "purchaseLoading" style = "display:none;">
+							<small>
+								Purchase in process...
+							<small>
+							</br>
+							<%= image_tag("loader.gif") %>
+						</div>
+						</br>
+				    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
+             			<div id="stripe_error">
+							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+						</div>
                     </div>
 				</fieldset>
 			<% end %>
