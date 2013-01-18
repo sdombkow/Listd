@@ -22,8 +22,8 @@
 			});
 			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
 		<% end %>
-		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude + 0.01 %>,<%= bar.longitude + 0.01 %>));
-		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude - 0.01 %>,<%= bar.longitude - 0.01 %>));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude + 0.005 %>,<%= bar.longitude + 0.005 %>));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude - 0.005 %>,<%= bar.longitude - 0.005 %>));
 		map.fitBounds(markerBounds);
 		}
     </script>

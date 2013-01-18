@@ -18,8 +18,18 @@
 	      	<address>
 		  		<small> 
 					<%= location.address %> <br>
-	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
+			  		<abbr title="Phone">P:</abbr> <%= number_to_phone(location.phone_number, :area_code => true) %>
+					</br>
+					<% if location.website_url != ""%>
+						<%= link_to location.website_url, "http://#{bar.website_url}"%>
+						</br>
+					<% end %>
+					<% if location.facebook_url != "" %>
+						<%= link_to image_tag("fb_icon(bar).png"), location.facebook_url %>
+					<% end %>
+					<% if location.twitter_url != "" %>
+						<%= link_to image_tag("twitter_icon(bar).png"), location.twitter_url %>
+					<% end %>
 		    	</small>
 		  	</address>
 	  		</div> <!-- end of .bar-preview -->
