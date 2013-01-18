@@ -37,7 +37,7 @@
 	<% end %>
 
   <% else %>
-	<h5>Bars Near <%=@user_information[0].city%>, <%=@user_information[0].state%> </h5>
+	<h5>Bars Near You</h3>
     <% for location in @localvenues %>
 		<div class="row">
 	    		<div class="bar-preview span4 shadow">
@@ -48,7 +48,6 @@
 		    	<small> 
 					<%= location.address %> <br>
 	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
 		    	</small>
 		  </address>
 	      </div> <!-- end of .bar-preview -->
