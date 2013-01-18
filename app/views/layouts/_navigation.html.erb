@@ -14,9 +14,9 @@
 
 	  <ul class="dropdown-menu pull-right">
 		<li> <%= link_to 'Account Management', edit_user_registration_path %> </li>
-		<li> <%= link_to 'Payment Management', '/payment_management' %> </li>
 		<% if !current_user.admin? && !current_user.partner? %>
-      	  <li> <%= link_to 'My Passes', '/mypasses' %> </li>
+			<li> <%= link_to 'Payment Management', '/payment_management' %> </li>
+      		<li> <%= link_to 'My Passes', '/mypasses' %> </li>
 		<% end %>
 		<li class="divider"></li>
 		<li> <%= link_to 'Logout', destroy_user_session_path, :method=>'delete' %> </li>

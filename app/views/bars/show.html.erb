@@ -130,7 +130,7 @@
     <td><%= pass_set.total_released_passes %></td>
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
-    <td><%= pass_set.price %></td>
+    <td><%= number_to_currency(pass_set.price) %></td>
 
 	<%if(user_signed_in? && current_user.admin?) %>
     <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>

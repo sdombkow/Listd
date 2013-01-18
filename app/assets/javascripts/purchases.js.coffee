@@ -15,8 +15,6 @@ purchase =
         		false
       		else
         		true
-    
-  
   processCard: ->
     card =
       number: $('#card_number').val()

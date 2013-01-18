@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130105195743) do
+ActiveRecord::Schema.define(:version => 20130117233739) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -62,9 +62,9 @@ ActiveRecord::Schema.define(:version => 20130105195743) do
     t.integer  "total_released_passes"
     t.integer  "sold_passes"
     t.integer  "unsold_passes"
-    t.decimal  "price"
-    t.datetime "created_at",            :null => false
-    t.datetime "updated_at",            :null => false
+    t.decimal  "price",                 :precision => 10, :scale => 2
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"

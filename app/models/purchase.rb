@@ -1,4 +1,5 @@
 class Purchase < ActiveRecord::Base
+  
   belongs_to :user
   has_many :passes
   attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price
@@ -60,10 +61,10 @@ class Purchase < ActiveRecord::Base
       end
       
       def integer_convert(amount)
-       total = Integer(amount)
-       total = total*100
-       total = total*Integer(num_passes)
-       return total
+             total = Integer(amount)
+             total = total*100
+             total = total*Integer(num_passes)
+             return total
       end
 
 end

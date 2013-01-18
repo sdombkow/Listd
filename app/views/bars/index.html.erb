@@ -42,7 +42,7 @@
     <td><%= pass_set.total_released_passes %></td>
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
-    <td>$<%= pass_set.price %>0</td>
+    <td><%= number_to_currency(pass_set.price) %></td>
 	<td><%= link_to 'Show Purchased Tickets', [bar, pass_set] %></td>
   </tr>
 <% end %>

@@ -14,7 +14,7 @@
                     var price = $("#ticketPrice").html();
                     var numPasses = $("#purchase_num_passes").val();
                     var purchaseTotal = numPasses * Number(price.replace(/[^0-9\.]+/g,""));
-                    $("#totalAmount").html("$"+purchaseTotal);
+                 	$("#totalAmount").html("$"+purchaseTotal);
                     $("#ticketsPurchased").html(numPasses);
                     $("#purchaseSummary").fadeIn();
                 });
@@ -60,7 +60,7 @@
 	<dt>Passes Left</dt>
 	<dd><%= @pass_set.unsold_passes %></dd>
 	<dt>Price</dt>
-	<dd id = "ticketPrice">$<%= @pass_set.price.round %></dd>
+	<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
   </dl>
 </div>
 
@@ -213,7 +213,7 @@
 						</br>
 						</br>
 		
-	  					<%= f.submit "Purchase with Saved Card", :class => "btn btn-primary", :onclick => "return removeStripeListener();" %>
+	  					<%= f.submit "Purchase with Saved Card", :class => "btn btn-primary", :onclick => "return removeStripeListener();return getlistd();" %>
       					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
 						<hr>
 						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn" />
