@@ -3,6 +3,7 @@
     $(document).ready(function(){
         function attachPurchaseListeners(){
             var enterPress = false;
+            $("input[type='submit']").attr("disabled",false);
             $("#purchaseInformation").hide();
 			$("#newInformation").hide();
             $("#nextPurchase").click(function(){
@@ -13,8 +14,10 @@
                 $("#availableSummary").fadeOut(500,function(){
                     var price = $("#ticketPrice").html();
                     var numPasses = $("#purchase_num_passes").val();
-                    var purchaseTotal = numPasses * Number(price.replace(/[^0-9\.]+/g,""));
-                 	$("#totalAmount").html("$"+purchaseTotal);
+                    var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
+                    var rounded = Math.round( purchaseTotal * 100 ) / 100;
+                    var fixed = rounded.toFixed(2);
+                 	$("#totalAmount").html("$"+fixed);
                     $("#ticketsPurchased").html(numPasses);
                     $("#purchaseSummary").fadeIn();
                 });
@@ -45,6 +48,7 @@
         }
     function removeStripeListener(){
         $("#new_purchase").unbind("submit");
+        $("input[type='submit']").attr("disabled",true);
     }
 </script>
 <% end %>
