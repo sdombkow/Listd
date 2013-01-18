@@ -219,6 +219,9 @@
 						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn" />
 						<hr>
 						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>
+						<div id="stripe_error">
+							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+						</div>
 					</div>
 					
 					<div id = "newInformation">
@@ -247,7 +250,9 @@
 						<hr>
 						<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
 					</div>		
-					
+					<div id="stripe_error">
+						<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+					</div>
 				</fieldset>
 			<% end %>
 		<% end %>
