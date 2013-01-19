@@ -27,6 +27,11 @@
                     $("#newInformation").fadeIn();
                 });
 			});
+			$("#nextBackToExisting").click(function(){
+				$("#newInformation").fadeOut(500,function(){
+                    $("#purchaseInformation").fadeIn();
+                });
+			});
             // Do not submit form on enter
             $(document).bind("keydown",function(e){
                 if(e.which == 13 && enterPress == false){
@@ -256,6 +261,8 @@
 							</div>
 						</div>
 						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
+						<hr>
+						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn" />
 						<hr>
 					</div>		
                     <div id = "cancelOpts">
