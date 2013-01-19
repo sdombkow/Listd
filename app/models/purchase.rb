@@ -5,6 +5,8 @@ class Purchase < ActiveRecord::Base
   attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price
   attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price
   
+  validates :name, :presence => true
+  
   def payment
     if valid?
       logger.error "Stripe Card Token: #{name} and #{stripe_card_token} and #{price}"
