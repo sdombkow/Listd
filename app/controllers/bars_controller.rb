@@ -17,7 +17,7 @@ class BarsController < ApplicationController
   # GET /bars.json
   def index
     @user=current_user
-	  @bars = @user.bars
+	@bars = @user.bars
 	
     respond_to do |format|
       format.html # index.html.erb

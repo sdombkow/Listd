@@ -47,7 +47,8 @@ class HomeController < ApplicationController
     
     if user_signed_in?
        @user = current_user
-   	   @passes = @user.passes.order('updated_at DESC')
+       # Eager loading pass sets
+   	   @passes = @user.passes.includes(:pass_set).order('updated_at DESC')
    	end
   end
 
