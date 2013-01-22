@@ -173,7 +173,7 @@
 						<div class="control-group">
 	  						<div class="controls">
 	    						<label class="checkbox">
-		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information
+		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information for future use
 								</label>
 	  						</div>
 						</div>
@@ -259,6 +259,13 @@
 								<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
 								<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
 							</div>
+						</div>
+						<div class="control-group">
+	  						<div class="controls">
+	    						<label class="checkbox">
+		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information for future use
+								</label>
+	  						</div>
 						</div>
 						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>

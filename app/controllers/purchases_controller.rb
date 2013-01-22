@@ -22,7 +22,7 @@ class PurchasesController < ApplicationController
 	  else 
 	      @decimals = String(@pass_set.price).split(".").last 
 	  end
-		@purchase.price = String(@pass_set.price).split("").first+@decimals
+		@purchase.price = String(@pass_set.price).split(".").first+@decimals
 		
 		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
 		if @user.stripe_customer_token != nil
@@ -47,6 +47,27 @@ class PurchasesController < ApplicationController
         		else
         		    redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
 			      end
+		    elsif
+		      logger.error "Here in 1"
+    		  if @purchase.save_with_payment(current_user)
+    		      @pass_set.sold_passes+=num_passes
+    		      @pass_set.unsold_passes-=num_passes
+    		      @pass_set.save
+    		      # for i in 0..num_passes-1
+    			      pass = Pass.new
+    			      pass.name = params[:purchase][:name]
+    			      pass.purchase_id = @purchase.id
+    			      pass.pass_set_id = @pass_set.id
+    			      pass.redeemed = false
+    				  pass.entries=num_passes
+    				  pass.confirmation=SecureRandom.hex(4)
+    			      pass.save
+    		      #end
+    		UserMailer.purchase_confirmation(@user,pass).deliver
+              redirect_to [pass], notice: 'Purchase created'
+    		  else
+    		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+    		  end
 		    else
 		        if @purchase.payment
 		            @pass_set.sold_passes+=num_passes
