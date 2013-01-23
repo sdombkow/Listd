@@ -36,3 +36,4 @@ gem 'omniauth-facebook'
 gem 'simple_form'
 gem 'will_paginate'
 gem 'friendly_id'
+gem 'whenever', :require => false
