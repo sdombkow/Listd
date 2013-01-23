@@ -7,8 +7,8 @@ class UserMailer < ActionMailer::Base
     mail(:to => user.email, :subject => "Purchased Confirmed!")
   end
   
-    def feedback(user)
+  def send_feedback(user)
    @user=user
-    mail(:to => user.email, :subject => "Purchased Confirmed!")
+   mail(:to => user.email, :subject => "Send Feedback!")
   end
 end
