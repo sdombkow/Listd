@@ -1,14 +1,15 @@
 <div class="title-bar">
   <h5>My Passes</h5>
 </div>
-<div class="content-box">
+
 <% if current_user != nil %>
+<div class="content-box">
   <% @passes.each do |pass| %>
 	<% if (!pass.redeemed) %>
       <div class="pass-item">
 		<span><%= pass.pass_set.bar.name %></span>
 		<span class="offset2"><%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
-  	  </div> <!-- end of .pass-preview -->
+  	  </div> <!-- end of .pass-item -->
 	<% end %>
   <% end %>
 </div>
