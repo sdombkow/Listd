@@ -6,7 +6,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-	@bars = @user.bars
+		@passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
+	  @bars = @user.bars
   end
   
   def setPartner 

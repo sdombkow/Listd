@@ -118,6 +118,7 @@
     <th>Sold passes</th>
     <th>Unsold passes</th>
     <th>Price</th>
+	<th>Earnings</th>
     <th>Purchase?</th>
 	<th></th>
 	<th></th>
@@ -131,6 +132,7 @@
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
     <td><%= number_to_currency(pass_set.price) %></td>
+	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
 
 	<%if(user_signed_in? && current_user.admin?) %>
     <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -159,6 +161,7 @@
     <th>Sold passes</th>
     <th>Unsold passes</th>
     <th>Price</th>
+	<th>Earnings</th>
     <th>Purchase?</th>
 	<th></th>
 	<th></th>
@@ -172,6 +175,7 @@
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
     <td><%= pass_set.price %></td>
+	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
 
 	<%if(user_signed_in? && current_user.admin?) %>
     <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -196,7 +200,9 @@
                :method => :delete %> |
 <%= link_to 'Back', @user %>
 <%elsif(user_signed_in? && current_user.partner?) %>
+<% if current_user.admin? %>
 <%= link_to 'Edit Bar Information', edit_bar_path(@bar) %> |
+<% end %>
 <%= link_to 'Back', root_path %>
 <% end %>
 
