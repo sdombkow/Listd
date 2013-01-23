@@ -43,9 +43,9 @@ class PurchasesController < ApplicationController
 				        pass.confirmation=SecureRandom.hex(4)
 			          pass.save
 			          UserMailer.purchase_confirmation(@user,pass).deliver
-                redirect_to [pass], notice: 'Purchase created'
+                redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
-        		    redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+        		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 			      end
 		    elsif
 		      logger.error "Here in 1"
@@ -64,9 +64,9 @@ class PurchasesController < ApplicationController
     			      pass.save
     		      #end
     		UserMailer.purchase_confirmation(@user,pass).deliver
-              redirect_to [pass], notice: 'Purchase created'
+              redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     		  else
-    		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+    		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
     		  end
 		    else
 		        if @purchase.payment
@@ -83,9 +83,9 @@ class PurchasesController < ApplicationController
 		            pass.confirmation=SecureRandom.hex(4)
 			          pass.save
 			          UserMailer.purchase_confirmation(@user,pass).deliver
-                redirect_to [pass], notice: 'Purchase created'
+                redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
-        		    redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+        		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 		        end
 		    end
 		elsif params[:credit_card_save] == "1"
@@ -105,9 +105,9 @@ class PurchasesController < ApplicationController
 			      pass.save
 		      #end
 		UserMailer.purchase_confirmation(@user,pass).deliver
-          redirect_to [pass], notice: 'Purchase created'
+          redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
-		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 		  end
 		else
 		  logger.error "Here in nothing"
@@ -126,9 +126,9 @@ class PurchasesController < ApplicationController
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
-          redirect_to [pass], notice: 'Purchase created'
+          redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
-		      redirect_to [@bar,@pass_set], notice: 'Purchase NOT Created'
+		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 		  end
  		end   
 	end

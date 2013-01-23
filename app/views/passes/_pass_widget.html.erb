@@ -6,11 +6,12 @@
   <% @passes.each do |pass| %>
 	<% if (!pass.redeemed) %>
       <div class="pass-item">
-		<span><%= pass.pass_set.bar.name %></span>
+		<span><%= link_to pass.pass_set.bar.name, pass.pass_set.bar %></span>
 		<span class="offset2"><%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
   	  </div> <!-- end of .pass-preview -->
 	<% end %>
   <% end %>
+  <%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 </div>
 <% else %>
   <div class="content-box">

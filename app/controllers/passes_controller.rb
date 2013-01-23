@@ -5,7 +5,7 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@passes = @user.passes.includes(:pass_set).order('updated_at DESC')
+  	@passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
   end
   
   def show
