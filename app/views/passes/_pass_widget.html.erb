@@ -1,25 +1,21 @@
 <div class="title-bar">
   <h5>My Passes</h5>
 </div>
+<div class="content-box">
 <% if current_user != nil %>
-	<table cellpadding="10">
-		<tr>
-	    	<th>Date</th>
-	    	<th>Bar</th>
-	  	</tr>
-
-		<% @passes.each do |pass| %>
-  			<% if (!pass.redeemed) %>
-	  			<tr>
-					<td><%= pass.pass_set.date.strftime("%m/%d/%Y") %></td>
-	    			<td><%= pass.pass_set.bar.name %></td>
-	  			</tr>
-  			<% end %>
-		<% end %>
-	</table>
+  <% @passes.each do |pass| %>
+	<% if (!pass.redeemed) %>
+      <div class="pass-preview">
+		<span><%= pass.pass_set.bar.name %></span>
+		<span class="offset2"><%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
+  	  </div> <!-- end of .pass-preview -->
+	<% end %>
+  <% end %>
+</div>
 <% else %>
   <div class="content-box">
-	<div>
-    <%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.</div>
+	<div class="vertical-line">
+    <%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.
+    </div> <!-- end of .vertical-line -->
   </div>
 <% end %>

@@ -7,7 +7,7 @@
 	</div> <!-- end of .title-bar -->
 	  <% for location in @venues %>
 	    <div class="content-box">
-		  <div>
+		  <div class="vertical-line">
 		    <h6><%= link_to location.name, location %></h6>
 		    <address>
 			  <small> 
@@ -16,7 +16,7 @@
 				    Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
 			  </small>
 		    </address>
-		  </div>
+		  </div> <!-- end of .vertical-line -->
 	 	</div> <!-- end of .content-box -->
 	  <% end %>
 
@@ -26,7 +26,7 @@
 	</div>
 	<% for location in @localvenues %>
 	  <div class="content-box">
-		<div>
+		<div class="vertical-line">
 		  <h6><%= link_to location.name, location %></h6>
 		  <address>
 		  <small> 
@@ -35,19 +35,19 @@
 				Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
 		  </small>
 		  </address>
-		</div>
+		</div> <!-- end of .vertical-line -->
 	  </div> <!-- end of .content-box -->
 	<% end %>
   <%end%> 
-</div> <!-- end of #personalized-bars -->
+</div> <!-- end of .section-container -->
 
 <div class="section-container">
   <%= render "/passes/pass_widget"%>
-</div>
-</div>
+</div> <!-- end of .section-container -->
+</div> <!-- end of .span8 -->
 
 <div class="span4 fb-box">
   <%= render "/pages/fbactivity" %>
 </div>
 
-</div>
+</div> <!-- end of .row -->
