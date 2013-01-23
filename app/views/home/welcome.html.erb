@@ -51,6 +51,22 @@
 <div class="section-container">
   <%= render "/passes/pass_widget"%>
 </div> <!-- end of .section-container -->
+
+<% if user_signed_in? %>
+	<div class="section-container">
+		<div class="title-bar">
+			<h5>Helpful Links</h5>
+		</div>
+		<div class="content-box">
+			<div class="vertical-line">
+	    		<%= link_to 'Payment Management', '/payment_management' %>
+				</br>
+				<%= link_to 'Account Management', edit_user_registration_path %>
+	    	</div> <!-- end of .vertical-line -->
+		</div>
+	</div>
+<% end %>
+
 </div> <!-- end of .span8 -->
 
 <div class="span4 fb-box">

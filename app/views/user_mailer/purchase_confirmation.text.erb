@@ -1,9 +1,13 @@
-Thank you for purchasing a pass!
+Thank you for using LISTD and purchasing a pass to <%= @pass.pass_set.bar.name %>!
 
-Link to ticket: <%= pass_url(@pass)%>
-
-Ticket Info
+Pass Information
 Bar Name: <%= @pass.pass_set.bar.name %>
 Date: <%= @pass.pass_set.date.strftime("%m/%d/%Y") %>
 Number of Entrants: <%= @pass.entries %>
 Name on ID: <%= @pass.name %>
+Confirmation Number: <%= @pass.confirmation %>
+
+Link to Pass: <%= pass_url(@pass)%>
+
+Thanks Again,
+LISTD Staff

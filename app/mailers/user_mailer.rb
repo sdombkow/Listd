@@ -6,4 +6,9 @@ class UserMailer < ActionMailer::Base
    @pass=pass
     mail(:to => user.email, :subject => "Purchased Confirmed!")
   end
+  
+  def send_feedback(user)
+   @user=user
+   mail(:to => user.email, :subject => "Send Feedback!")
+  end
 end

@@ -122,6 +122,7 @@
 	<div id="passPoller" data-id="<%= @pass_set.id %>">
 		<%= render @passes %>
     </div>
+	<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 <% else %>
 	<% if current_user.stripe_customer_token == nil %>
 		<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
