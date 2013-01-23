@@ -1,5 +1,6 @@
-<h2>My Passes</h2>
-
+<div class="title-bar">
+  <h5>My Passes</h5>
+</div>
 <% if current_user != nil %>
 	<table cellpadding="10">
 		<tr>
@@ -17,5 +18,8 @@
 		<% end %>
 	</table>
 <% else %>
-	<p><%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.</p>
+  <div class="content-box">
+	<div>
+    <%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.</div>
+  </div>
 <% end %>

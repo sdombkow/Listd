@@ -1,53 +1,53 @@
-<div class="hero-unit">
-  <h3>Search for a bar</h3>
-  <div id="search">
-    <%= render 'bars/search' %>
-  </div>
-  <br />
+<div class="row">
+<div class="span8">
+<div class="section-container">
   <% if(@localvenues.empty?) %>
-	<h5> Available Locations</h5>
-    <% for location in @venues %>
-	  <div class="row">
-	    	<div class="bar-preview span4 shadow">
-	      	<h5> 
-		  		<%= link_to location.name, location %> 
-			</h5>
-	      	<address>
-		  		<small> 
-					<%= location.address %> <br>
-	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
-		    	</small>
-		  	</address>
-	  		</div> <!-- end of .bar-preview -->
- 	  </div>
-	<% end %>
+	<div class="title-bar">
+	  <h5> Available Locations</h5>
+	</div> <!-- end of .title-bar -->
+	  <% for location in @venues %>
+	    <div class="content-box">
+		  <div>
+		    <h6><%= link_to location.name, location %></h6>
+		    <address>
+			  <small> 
+			    <%= location.address %> <br>
+		          <abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
+				    Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
+			  </small>
+		    </address>
+		  </div>
+	 	</div> <!-- end of .content-box -->
+	  <% end %>
 
   <% else %>
-	<h5>Bars Near <%=@user_information[0].city%>, <%=@user_information[0].state%> </h5>
-    <% for location in @localvenues %>
-		<div class="row">
-	    		<div class="bar-preview span4 shadow">
-	      		<h5> 
-					<%= link_to location.name, location %> 
-				</h5>
-	      		<address>
-		    	<small> 
-					<%= location.address %> <br>
-	          		<abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-			  		Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
-		    	</small>
+    <div class="title-bar">
+	  <h5>Bars Near <%=@user_information[0].city%>, <%=@user_information[0].state%> </h5>
+	</div>
+	<% for location in @localvenues %>
+	  <div class="content-box">
+		<div>
+		  <h6><%= link_to location.name, location %></h6>
+		  <address>
+		  <small> 
+		    <%= location.address %> <br>
+		      <abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
+				Distance: <%= location.distance_to(@user_information[0].coordinates).round%> miles
+		  </small>
 		  </address>
-	      </div> <!-- end of .bar-preview -->
- 	  </div>
+		</div>
+	  </div> <!-- end of .content-box -->
 	<% end %>
-  
-  <%end%>
-  
-  <p><%=@user_info1%></p>
-  <p><%=@user_info2%></p>
-  <p><%=@user_info3%></p>
+  <%end%> 
+</div> <!-- end of #personalized-bars -->
+
+<div class="section-container">
+  <%= render "/passes/pass_widget"%>
+</div>
 </div>
 
-<%= render "/pages/fbactivity" %>
-<%= render "/passes/pass_widget"%>
+<div class="span4 fb-box">
+  <%= render "/pages/fbactivity" %>
+</div>
+
+</div>
