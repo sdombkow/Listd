@@ -12,21 +12,29 @@ class HomeController < ApplicationController
     end
     
     #acquires users ip address for geolocating
-    @user_info = request.location.city
-    @user_info = "98.122.189.233"
+    
+    #@user_info = request.location.city
+    #@user_info = "98.122.189.233"
+    
     #acquires all the needed information based on the users ip address
-    @user_information = Geocoder.search(@user_info)
-    while @user_information.empty?
-    @user_information = Geocoder.search(@user_info)
-    end
+    
+    #@user_information = Geocoder.search(@user_info)
+    #while @user_information.empty?
+    #@user_information = Geocoder.search(@user_info)
+    #end
+    
     #THIS WHILE LOOP FIXES THE NIL:CLASS CASE BUT IS PROBABLY NOT THE BEST WAY TO GO ABOUT IT
   
     #finds all local venues within 10 miles of that users location, orders them based
     #on distance from the user
-    @localvenues = Bar.near(@user_information[0].coordinates, 30, :order => :distance)
-    if @localvenues.size < 5
-      @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance)
-    end
+    
+    #@localvenues = Bar.near(@user_information[0].coordinates, 30, :order => :distance).take(5)
+    #if @localvenues.size < 5
+    #  @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(5)
+    #end
+
+    @venues = Bar.all
+    @localvenues = Bar.all
     
     #if someone has searched for venues and there are locatons within 20 miles of that
     #location displays them, if their are no local then it displays all bars, if their are
@@ -39,7 +47,8 @@ class HomeController < ApplicationController
     
     if user_signed_in?
        @user = current_user
-   	   @passes = @user.passes.order('updated_at DESC')
+       # Eager loading pass sets
+   	   @passes = @user.passes.includes(:pass_set).order('updated_at DESC')
    	end
   end
 

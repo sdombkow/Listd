@@ -32,18 +32,34 @@
   <div class="pull-left span7 shadow" id="bar-main">
     <h3> <%= @bar.name %> </h3>
     <address>
-	  <small> <%= @bar.address %> </small>
+	  <small style = "line-height:.7em">	<%= @bar.street_address %> </br><%= @bar.city%>, <%=@bar.state%> <%=@bar.zip_code%> </small>
     </address>
 	<div class="row">
       <body onload="initialize()">
-	    <div id="map_canvas" class="map span6" style="height: 130px;"></div>
+	    <div id="map_canvas" class="map span6"></div>
       </body>
 	</div>
   </div>
 
   <div class="pull-left span3 shadow" id="bar-info">
     <h5>Contact</h5>
-    <small><abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %></small><br><br>
+    <small>
+		<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
+	</small>
+    </br>
+	<% if @bar.website_url != "" %>
+		<small>
+			<%= link_to 'Website', @bar.website_url %>
+		</small>
+	<% end %>
+	</br>
+    <% if @bar.facebook_url != "" %>
+		<%= link_to image_tag("fb_icon(bar).png"), @bar.facebook_url %>
+	<% end %>
+	<% if @bar.twitter_url != "" %>
+		<%= link_to image_tag("twitter_icon(bar).png"), @bar.twitter_url %>
+	<% end %>
+    </br>
     <h5>Hours</h5>
 	<% if @bar.open_monday %>
 	  <small>Mon: <%= @bar.houropen_monday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_monday.strftime('%l:%M %p') %></small><br>
@@ -102,6 +118,7 @@
     <th>Sold passes</th>
     <th>Unsold passes</th>
     <th>Price</th>
+	<th>Earnings</th>
     <th>Purchase?</th>
 	<th></th>
 	<th></th>
@@ -114,7 +131,8 @@
     <td><%= pass_set.total_released_passes %></td>
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
-    <td><%= pass_set.price %></td>
+    <td><%= number_to_currency(pass_set.price) %></td>
+	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
 
 	<%if(user_signed_in? && current_user.admin?) %>
     <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -143,6 +161,7 @@
     <th>Sold passes</th>
     <th>Unsold passes</th>
     <th>Price</th>
+	<th>Earnings</th>
     <th>Purchase?</th>
 	<th></th>
 	<th></th>
@@ -156,6 +175,7 @@
     <td><%= pass_set.sold_passes %></td>
     <td><%= pass_set.unsold_passes %></td>
     <td><%= pass_set.price %></td>
+	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
 
 	<%if(user_signed_in? && current_user.admin?) %>
     <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -180,7 +200,9 @@
                :method => :delete %> |
 <%= link_to 'Back', @user %>
 <%elsif(user_signed_in? && current_user.partner?) %>
+<% if current_user.admin? %>
 <%= link_to 'Edit Bar Information', edit_bar_path(@bar) %> |
+<% end %>
 <%= link_to 'Back', root_path %>
 <% end %>
 

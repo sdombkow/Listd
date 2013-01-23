@@ -1,11 +1,23 @@
 class BarsController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :search]
   before_filter :isPartner? , :except => [:index,:search,:show]
+  before_filter :ownsBar?, :only => [:edit,:update, :destroy]
+
+  # Check if current user owns the bar
+  def ownsBar?
+    @bar = Bar.find(params[:id])
+    if current_user.partner?
+        if @bar.user_id != current_user.id
+            redirect_to @bar
+        end
+    end
+  end
+
   # GET /bars
   # GET /bars.json
   def index
     @user=current_user
-	  @bars = @user.bars
+	@bars = @user.bars
 	
     respond_to do |format|
       format.html # index.html.erb
@@ -73,7 +85,7 @@ def search
   if @bars.empty?
       redirect_to :controller=>'home', :action=>'welcome'
        flash[:notice] = "No bars found matching your search."
-   end
+  end
 end
 
   # PUT /bars/1

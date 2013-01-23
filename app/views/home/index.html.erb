@@ -5,9 +5,9 @@
   <div class="span8" id="banner-content">
 	<%= image_tag("get_listed_text.png", alt: "Get Listed") %>
 	<p class="lead"> LISTD allows you to buy online passes to skip lines at bars and nightclubs.</p>
+	<%= link_to "Explore LISTD", '/welcome', :class => "btn btn-inverse btn-large" %>
+	<%= link_to "Sign Up", new_user_registration_path, :class => "btn btn-success btn-large" %>
 	<p class="lead"> Also available on your mobile phone and tablet.</p>
-	<%= link_to "Sign Up", new_user_registration_path, :class => "btn btn-success" %>
-  	<%= link_to "Explore", '/welcome', :class => "btn btn-inverse" %>
   </div>
 </div> <!-- end of #banner -->
 <div id="steps" class="row-fluid">

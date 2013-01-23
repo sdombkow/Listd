@@ -6,7 +6,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-	@bars = @user.bars
+		@passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
+	  @bars = @user.bars
   end
   
   def setPartner 
@@ -48,10 +49,11 @@ class UsersController < ApplicationController
     logger.error "Stripe error while creating customer: #{current_user.stripe_customer_token} and #{current_user.stripe_card_token}"
     if current_user.stripe_customer_token != nil
       current_user.save_token
+      redirect_to :root, notice: 'Card Updated'
     else
       current_user.create_token
+      redirect_to :root, notice: 'Card Added'
     end
-    redirect_to "/users"
   end
   
 end

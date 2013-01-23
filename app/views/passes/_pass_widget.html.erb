@@ -5,7 +5,7 @@
 <% if current_user != nil %>
   <% @passes.each do |pass| %>
 	<% if (!pass.redeemed) %>
-      <div class="pass-preview">
+      <div class="pass-item">
 		<span><%= pass.pass_set.bar.name %></span>
 		<span class="offset2"><%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
   	  </div> <!-- end of .pass-preview -->

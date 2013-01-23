@@ -2,6 +2,19 @@ class PassSetsController < ApplicationController
   # GET /pass_sets
   # GET /pass_sets.json
   before_filter :authenticate_user!
+  before_filter :ownsPassSet, :only => [:edit,:update,:new,:delete,:create]
+
+  # Ensure that the user owns the bar for this pass set
+  def ownsPassSet
+    @bar = Bar.find(params[:bar_id])
+    if current_user.partner? == false and current_user.admin? == false
+        redirect_to @bar
+    elsif current_user.partner? == true and @bar.user_id != current_user.id
+        redirect_to @bar
+    end
+    return
+  end
+
   def index
   @passes = Pass.where("pass_set_id = ? and created_at > ?", params[:pass_set_id], Time.at(params[:after].to_i + 1))
   end
@@ -11,11 +24,13 @@ class PassSetsController < ApplicationController
   def show
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	@passes = @pass_set.passes
+	@passes = @pass_set.passes.order("created_at ASC")
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
       @last_four = @customer_card.active_card.last4
+      @end_month = @customer_card.active_card.exp_month
+      @end_year = @customer_card.active_card.exp_year
     end
     @full_bar_path = "http://#{request.host}" + (bar_path @pass_set.bar).to_s
     @open_graph = false

@@ -4,23 +4,36 @@
 
 	 <div class="field">
 		<%= label_tag :card_number, "Credit Card Number" %>
-		<%= text_field_tag :card_number, nil, name: nil %>
+		<% if current_user.stripe_customer_token != nil %>
+			<%= text_field_tag :card_number, nil, name: nil, value: "XXXXXXXXXXXX"+@last_four %>
+		<% else %>
+			<%= text_field_tag :card_number, nil, name: nil %>
+		<% end %>
 	 </div>
 	
 	 <div class="field">
 		<%= label_tag :card_code, "Security Code on Card (CVV)" %>
-		<%= text_field_tag :card_code, nil, name: nil %>
+		<% if current_user.stripe_customer_token != nil %>
+			<%= text_field_tag :card_code, nil, name: nil, value: "XXX" %>
+		<% else %>
+			<%= text_field_tag :card_code, nil, name: nil %>
+		<% end %>
 	 </div> 
 	
 	 <div class="field">
 	  	<%= label_tag :card_month, "Card Expiration" %>
-	   	<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
-	    <%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+		<% if current_user.stripe_customer_token != nil %>
+	   		<%= select_month @end_month, {add_month_numbers: true}, {name: nil, id:"card_month"} %>
+	    	<%= select_year @end_year, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+		<% else %>
+			<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+	    	<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+		<% end %>
 	 </div> 
 			
 	 <div id="stripe_error">
 			<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 	 </div>
 
-	<%= f.submit "Submit" %>
+	<%= f.submit "Update" %>
 <% end %>

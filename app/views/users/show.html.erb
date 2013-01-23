@@ -3,6 +3,23 @@
 <p>Email: <%= @user.email if @user.email %></p>
 <p>Registered on: <%= @user.created_at %> </p>
 <p>Last Logged in at: <%=@user.last_sign_in_at %></p>
+<h4>Purchased Tickets</h4>
+<table cellpadding="10">
+	<tr>
+    	<th>Date</th>
+    	<th>Bar</th>
+  	</tr>
+
+	<% @passes.each do |pass| %>
+		<% if (!pass.redeemed) %>
+  			<tr>
+				<td><%= pass.pass_set.date.strftime("%m/%d/%Y") %></td>
+    			<td><%= pass.pass_set.bar.name %></td>
+  			</tr>
+		<% end %>
+	<% end %>
+</table>
+<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 <% if @user.partner? %>
 <% if @bars.empty? %>
 </br>
