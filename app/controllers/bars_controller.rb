@@ -1,6 +1,6 @@
 class BarsController < ApplicationController
   before_filter :authenticate_user!, :except => [:show, :search]
-  before_filter :isPartner? , :except => [:index,:search,:show]
+  before_filter :elevated_privilege_P? , :except => [:search,:show]
   before_filter :ownsBar?, :only => [:edit,:update, :destroy]
 
   # Check if current user owns the bar
