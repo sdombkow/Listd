@@ -6,6 +6,7 @@ class Purchase < ActiveRecord::Base
   attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price
   
   validates :name, :presence => true
+  validates_format_of :name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
   
   def payment
     if valid?
