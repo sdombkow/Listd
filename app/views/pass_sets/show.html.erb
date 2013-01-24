@@ -6,9 +6,11 @@
             $("input[type='submit']").attr("disabled",false);
             $("#purchaseInformation").hide();
 			$("#newInformation").hide();
+			$('#BackToFirst').hide();
             $("#nextPurchase").click(function(){
                 $("#makePurchase").fadeOut(500,function(){
                     $("#purchaseInformation").fadeIn();
+					$('#BackToFirst').fadeIn();
                     enterPress = true;
                 });
                 $("#availableSummary").fadeOut(500,function(){
@@ -30,6 +32,15 @@
 			$("#nextBackToExisting").click(function(){
 				$("#newInformation").fadeOut(500,function(){
                     $("#purchaseInformation").fadeIn();
+                });
+			});
+			$("#BackToFirst").click(function(){
+				$("#purchaseSummary").fadeOut();
+				$("#newInformation").fadeOut();
+				$('#BackToFirst').fadeOut();
+				$("#purchaseInformation").fadeOut(500,function(){
+					$("#availableSummary").fadeIn();
+					$("#makePurchase").fadeIn();
                 });
 			});
             // Do not submit form on enter
@@ -181,6 +192,7 @@
 	
 						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>
+						</div>
 						<div id = "cancelOpts">
 	                    	<div id = "purchaseLoading" style = "display:none;">
 								<small>
@@ -188,8 +200,10 @@
 								<small>
 								</br>
 								<%= image_tag("loader.gif") %>
+								<hr>
 							</div>
-							</br>
+							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
+							<hr>
 					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
 	             			<div id="stripe_error">
 								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
@@ -280,13 +294,15 @@
 							<small>
 							</br>
 							<%= image_tag("loader.gif") %>
+							<hr>
 						</div>
-						</br>
+						<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
+						<hr>
 				    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
              			<div id="stripe_error">
 							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 						</div>
-                    </div>
+                    </div>			
 				</fieldset>
 			<% end %>
 		<% end %>
