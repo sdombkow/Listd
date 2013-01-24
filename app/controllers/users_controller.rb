@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!
-  before_filter :isAdmin? , :except => [:index, :update]
+  before_filter :elevated_privilege_A? , :except => [:index, :update]
   def index
   end
 

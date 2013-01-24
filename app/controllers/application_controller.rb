@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   
 
-def isPartner?
+def elevated_privilege_P?
 	if current_user.admin?
 	else
 	unless current_user.partner?
@@ -11,7 +11,7 @@ def isPartner?
 	end
 end
 	
-def isAdmin?
+def elevated_privilege_A?
 	unless current_user.admin?
 	redirect_to :controller=>'home'
 	end
