@@ -1,6 +1,7 @@
 class PassSet < ActiveRecord::Base
   validates_presence_of :date, :total_released_passes, :price
-  validates_format_of :price, :with => /\d{0,10}\.\d{2}/
+  belongs_to :bar
   has_many :passes , :dependent => :delete_all
-
+  validates_numericality_of :price, :only_integer =>true, :greater_than_or_equal_to =>0, :message => " Invalid"
+ 
 end

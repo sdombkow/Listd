@@ -8,6 +8,7 @@ class Purchase < ActiveRecord::Base
   validates :name, :presence => true
   validates_format_of :name, :with => /^[^0-9`!@#\$%\^&*+_=]+$/
   
+  
   def payment
     if valid?
       logger.error "Stripe Card Token: #{name} and #{stripe_card_token} and #{price}"
