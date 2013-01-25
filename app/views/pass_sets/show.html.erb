@@ -8,21 +8,27 @@
 			$("#newInformation").hide();
 			$('#BackToFirst').hide();
             $("#nextPurchase").click(function(){
-                $("#makePurchase").fadeOut(500,function(){
-                    $("#purchaseInformation").fadeIn();
-					$('#BackToFirst').fadeIn();
-                    enterPress = true;
-                });
-                $("#availableSummary").fadeOut(500,function(){
-                    var price = $("#ticketPrice").html();
-                    var numPasses = $("#purchase_num_passes").val();
-                    var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
-                    var rounded = Math.round( purchaseTotal * 100 ) / 100;
-                    var fixed = rounded.toFixed(2);
-                 	$("#totalAmount").html("$"+fixed);
-                    $("#ticketsPurchased").html(numPasses);
-                    $("#purchaseSummary").fadeIn();
-                });
+				if ($("#name").value == "") {
+					alert("Name must be filled in.");
+				}
+				else {
+					alert($("#name").value);
+                	$("#makePurchase").fadeOut(500,function(){
+                    	$("#purchaseInformation").fadeIn();
+						$('#BackToFirst').fadeIn();
+                    	enterPress = true;
+                	});
+                	$("#availableSummary").fadeOut(500,function(){
+                    	var price = $("#ticketPrice").html();
+                    	var numPasses = $("#purchase_num_passes").val();
+                    	var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
+                    	var rounded = Math.round( purchaseTotal * 100 ) / 100;
+                    	var fixed = rounded.toFixed(2);
+                 		$("#totalAmount").html("$"+fixed);
+                    	$("#ticketsPurchased").html(numPasses);
+                    	$("#purchaseSummary").fadeIn();
+                	});
+				};
             });
 			$("#nextAddInformation").click(function(){
 				$("#purchaseInformation").fadeOut(500,function(){
@@ -155,7 +161,7 @@
       				<div class="control-group">
         				<%= f.label :name, class: "control-label" %>
         				<div class="controls">
-          					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
+          					<%= f.text_field :name, :name => "name-field" %> <small>(Must match Valid ID)</small>
         				</div>
       				</div>
       				<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
@@ -194,6 +200,7 @@
 						<hr>
 						</div>
 						<div id = "cancelOpts">
+							<hr>
 	                    	<div id = "purchaseLoading" style = "display:none;">
 								<small>
 									Purchase in process...
@@ -203,7 +210,6 @@
 								<hr>
 							</div>
 							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-							<hr>
 					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
 	             			<div id="stripe_error">
 								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
@@ -231,7 +237,7 @@
 		      			<div class="control-group">
 		        			<%= f.label :name, class: "control-label" %>
 		        			<div class="controls">
-		          				<%= f.text_field :name %> <small>(Must match Valid ID)</small>
+		          				<%= f.text_field :name, :id => "name-field" %> <small>(Must match Valid ID)</small>
 		        			</div>
 		      			</div>
 		      			<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
