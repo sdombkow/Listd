@@ -2,8 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+body.bars.show {
+  background: #e7e7e7;
+}
+
 #bar-main {
-  border: 1px solid #000;
+  background: #fff;
+  border: 1px solid #d0d0d0;
   padding: 1% 2% 2% 2%;
   margin-bottom: 2%;
   height: 240px;
@@ -15,10 +20,10 @@
 }
 
 #bar-info {
-  border: 1px solid #000;
+  border: 1px solid #bbb;
   padding: 1% 2% 2% 2%;
   margin-bottom: 2%;
-  background-color: #ededed;
+  background-color: #ccc;
   height: 240px;
   line-height: 15px;
 }
@@ -29,13 +34,15 @@
 }
 
 #passes-none {
-  border: 1px solid #000;
+  background: #fff;
+  border: 1px solid #d0d0d0;
   padding: 1% 0%;
   margin-bottom: 2%;
 }
 
 #passes-avail {
-  border: 1px solid #000;
+  background: #fff;
+  border: 1px solid #d0d0d0;
   padding: 1% 0% 0% 0%;
   margin-bottom: 2%;
 }
@@ -45,13 +52,13 @@
 }
 
 .div-header {
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #d0d0d0;
   padding: 0% 2% 1% 2%;
 }
 
 .date-box {
   display: inline;
-  border-right: 1px solid #000;
+  border-right: 1px solid #d0d0d0;
   padding: 3% 1% 1% 1%;
 }
 

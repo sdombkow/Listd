@@ -29,7 +29,7 @@
 <% end %>
 <div>
 <div class="row">
-  <div class="pull-left span7 shadow" id="bar-main">
+  <div class="pull-left span7" id="bar-main">
     <h3> <%= @bar.name %> </h3>
     <address>
 	  <small style = "line-height:.7em">	<%= @bar.street_address %>, <%= @bar.city%>,  <%=@bar.state%> <%=@bar.zip_code%> </small>
@@ -41,7 +41,7 @@
 	</div>
   </div>
 
-  <div class="pull-left span3 shadow" id="bar-info">
+  <div class="pull-left span3" id="bar-info">
     <h5>Contact</h5>
     <small>
 		<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
@@ -89,7 +89,7 @@
       <h2>Sorry, there are no available passes at this time</h2>
     </div>
   <% else %>
-	<div class="shadow span11" id="passes-avail">
+	<div class="span11" id="passes-avail">
 	  <div class="div-header">
         <h5>Available Passes</h5>
 	  </div>
