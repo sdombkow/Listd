@@ -32,9 +32,9 @@ background-repeat: no-repeat;
 
 #banner-content p {
   margin: 25px 0 0 10%;
-  line-height: 20px;
-  color: #111111;
-  font-size: 20px;
+  line-height: 18px;
+  color: #606060;
+  font-size: 18px;
   font-style: italic;
 }
 
@@ -108,5 +108,9 @@ background-repeat: no-repeat;
 	
 	#steps {
 	  margin-top: 50px;
+	}
+	
+	#steps p {
+	  margin-top: 80px;
 	}
 }
