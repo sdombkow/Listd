@@ -84,7 +84,7 @@ def search
   @bars = Bar.search(@search)
   if @bars.empty?
       redirect_to :controller=>'home', :action=>'welcome'
-       flash[:notice] = "No bars found matching your search."
+       flash[:notice] = "Your query did not match any of our partner bars or nightclubs."
   end
 end
 

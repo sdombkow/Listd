@@ -1,18 +1,19 @@
 <h1>Payment Management</h1></br>
-
+</br>
+<h3>View and Update your account payment information on this page.
+</br>
+</br>
 <% if current_user.stripe_customer_token != nil %>
-	<h3>You currently have a credit card stored.</h3>
-	<h3>Card Information:</h3>
-	<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
-	<p>Card expires in the year: <%= @end_year %></p>
+	<h4>Card Information:</h4>
+	<p>Last 4 digits of Stored Credit Card: <%= @last_four %></p>
+	<p>Card expires in: <%= @end_month_name %> <%= @end_year %></p>
 	<hr>
-	<h4>To update your payment information for future purchases, submit the following form.</h4>
+	<h4>To update or change your credit/debit card information for future purchases, submit the following form.</h4>
 	<%= render "credit_form" %>
 	<hr>
-	<h4>To delete your payment information, press the "Delete Card" button.</h4>
+	<h4>To delete your credit/debit card, press the "Delete Card" button.</h4>
 	<%= button_to "Delete Card", "/current_user/delete_stripe_token"%>
 <% else %>
-	<h4>You currently do not have a credit card stored.</h4>
-	<h4>To add a card for future purchases, submit the following form.</h4>
+	<h4>To add a credit/debit card for future purchases, submit the following form.</h4>
 	<%= render "credit_form" %>
 <% end %>
