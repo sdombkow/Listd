@@ -14,6 +14,7 @@ class CurrentUserController < ApplicationController
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
       @last_four = @customer_card.active_card.last4
       @end_month = @customer_card.active_card.exp_month
+      @end_month_name = Date::MONTHNAMES[@customer_card.active_card.exp_month]
       @end_year = @customer_card.active_card.exp_year
       logger.error "Last Four: #{@customer_card}"
       current_user.save!

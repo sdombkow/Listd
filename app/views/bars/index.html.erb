@@ -31,7 +31,8 @@
     <th>Sold passes</th>
     <th>Unsold passes</th>
     <th>Price</th>
-	<th>Earnings</th>
+	<th>Revenue</th>
+	<th>Profit</th>
     <th></th>
     <th></th>
     <th></th>
@@ -45,6 +46,7 @@
     <td><%= pass_set.unsold_passes %></td>
     <td><%= number_to_currency(pass_set.price) %></td>
 	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price*0.5) %></td>
 	<td><%= link_to 'Show Purchased Tickets', [bar, pass_set] %></td>
   </tr>
 <% end %>

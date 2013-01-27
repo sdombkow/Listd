@@ -8,7 +8,8 @@
 	<% if (!pass.redeemed) %>
       <div class="pass-item">
 		<span><%= link_to pass.pass_set.bar.name, pass.pass_set.bar %></span>
-		<span class="offset2"><%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
+		<span class="offset1">Date: <%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
+		<span class="offset1">Passes Purchased: <%= pass.entries %></span>
   	  </div> <!-- end of .pass-item -->
 	<% end %>
   <% end %>
