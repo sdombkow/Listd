@@ -6,21 +6,23 @@
             $("input[type='submit']").attr("disabled",false);
             $("#purchaseInformation").hide();
 			$("#newInformation").hide();
+			$('#BackToFirst').hide();
             $("#nextPurchase").click(function(){
-                $("#makePurchase").fadeOut(500,function(){
-                    $("#purchaseInformation").fadeIn();
-                    enterPress = true;
-                });
-                $("#availableSummary").fadeOut(500,function(){
-                    var price = $("#ticketPrice").html();
-                    var numPasses = $("#purchase_num_passes").val();
-                    var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
-                    var rounded = Math.round( purchaseTotal * 100 ) / 100;
-                    var fixed = rounded.toFixed(2);
-                 	$("#totalAmount").html("$"+fixed);
-                    $("#ticketsPurchased").html(numPasses);
-                    $("#purchaseSummary").fadeIn();
-                });
+                	$("#makePurchase").fadeOut(500,function(){
+                    	$("#purchaseInformation").fadeIn();
+						$('#BackToFirst').fadeIn();
+                    	enterPress = true;
+                	});
+                	$("#availableSummary").fadeOut(500,function(){
+                    	var price = $("#ticketPrice").html();
+                    	var numPasses = $("#purchase_num_passes").val();
+                    	var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
+                    	var rounded = Math.round( purchaseTotal * 100 ) / 100;
+                    	var fixed = rounded.toFixed(2);
+                 		$("#totalAmount").html("$"+fixed);
+                    	$("#ticketsPurchased").html(numPasses);
+                    	$("#purchaseSummary").fadeIn();
+                	});
             });
 			$("#nextAddInformation").click(function(){
 				$("#purchaseInformation").fadeOut(500,function(){
@@ -30,6 +32,15 @@
 			$("#nextBackToExisting").click(function(){
 				$("#newInformation").fadeOut(500,function(){
                     $("#purchaseInformation").fadeIn();
+                });
+			});
+			$("#BackToFirst").click(function(){
+				$("#purchaseSummary").fadeOut();
+				$("#newInformation").fadeOut();
+				$('#BackToFirst').fadeOut();
+				$("#purchaseInformation").fadeOut(500,function(){
+					$("#availableSummary").fadeIn();
+					$("#makePurchase").fadeIn();
                 });
 			});
             // Do not submit form on enter
@@ -148,6 +159,7 @@
         				</div>
       				</div>
       				<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+				<hr>
   				</div>
 
   				<div id = "purchaseInformation">
@@ -181,6 +193,7 @@
 	
 						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>
+						</div>
 						<div id = "cancelOpts">
 	                    	<div id = "purchaseLoading" style = "display:none;">
 								<small>
@@ -188,8 +201,9 @@
 								<small>
 								</br>
 								<%= image_tag("loader.gif") %>
+								<hr>
 							</div>
-							</br>
+							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
 					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
 	             			<div id="stripe_error">
 								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
@@ -221,6 +235,7 @@
 		        			</div>
 		      			</div>
 		      			<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+						<hr>
 		  			</div>
 		
 					<div id = "purchaseInformation">
@@ -280,14 +295,25 @@
 							<small>
 							</br>
 							<%= image_tag("loader.gif") %>
+							<hr>
 						</div>
-						</br>
+						<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
 				    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
              			<div id="stripe_error">
 							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 						</div>
-                    </div>
+                    </div>			
 				</fieldset>
 			<% end %>
 		<% end %>
 <% end %>
+</br>
+</br>
+</br>
+<legend>Our Commitment to You</legend>
+<guarantee>
+When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
+<br>
+<br>
+Stop Waiting and Get LISTD
+</guarantee>

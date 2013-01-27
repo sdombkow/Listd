@@ -2,6 +2,7 @@ class PassSetsController < ApplicationController
   # GET /pass_sets
   # GET /pass_sets.json
   before_filter :authenticate_user!
+  before_filter :elevated_privilege_P? , :except => [:show]
   before_filter :ownsPassSet, :only => [:edit,:update,:new,:delete,:create]
 
   # Ensure that the user owns the bar for this pass set

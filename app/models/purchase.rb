@@ -5,7 +5,9 @@ class Purchase < ActiveRecord::Base
   attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price
   attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price
   
-  validates :name, :presence => true
+  validates :name, :bar, :pass_set, :price, :num_passes, :date, :presence => true
+  validates :name, :format => {:with => /^([A-Z]+[a-zA-Z]* [A-Z]+[a-zA-Z]*)$/, :message => "Name is not valid"}
+  
   
   def payment
     if valid?

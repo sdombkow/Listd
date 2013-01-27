@@ -11,10 +11,12 @@
 		    <h6><%= link_to location.name, location %></h6>
 		    <address>
 			  <small> 
-			    <%= location.address %> <br>
-		        <abbr title="Phone">P:</abbr> <%= number_to_phone(location.phone_number, :area_code => true) %></br>
+			    <%= location.address %>
+				<br>
+		        <abbr title="Phone">P: </abbr><%= number_to_phone(location.phone_number, :area_code => true) %>
+				</br>
 				<% if location.website_url != ""%>
-			 	  <%= link_to location.website_url, "http://#{bar.website_url}"%></br>
+			 	  <%= link_to location.website_url, "http://#{location.website_url}"%></br>
 				<% end %>
 				<% if location.facebook_url != "" %>
 				  <%= link_to image_tag("fb_icon(bar).png"), location.facebook_url %>
@@ -37,10 +39,21 @@
 		<div class="vertical-line">
 		  <h6><%= link_to location.name, location %></h6>
 		  <address>
-		  <small> 
-		    <%= location.address %> <br>
-		    <abbr title="Phone">P:</abbr> <%= location.phone_number %> <br>
-		  </small>
+		  	<small> 
+			    <%= location.address %>
+				<br>
+		        <abbr title="Phone">P: </abbr><%= number_to_phone(location.phone_number, :area_code => true) %>
+				</br>
+				<% if location.website_url != ""%>
+			 	  <%= link_to location.website_url, "http://#{location.website_url}"%></br>
+				<% end %>
+				<% if location.facebook_url != "" %>
+				  <%= link_to image_tag("fb_icon(bar).png"), location.facebook_url %>
+			  	<% end %>
+				<% if location.twitter_url != "" %>
+				  <%= link_to image_tag("twitter_icon(bar).png"), location.twitter_url %>
+				<% end %>
+			  </small>
 		  </address>
 		</div> <!-- end of .vertical-line -->
 	  </div> <!-- end of .content-box -->
@@ -59,9 +72,11 @@
 		</div>
 		<div class="content-box">
 			<div class="vertical-line">
-	    		<%= link_to 'Payment Management', '/payment_management' %>
-				</br>
 				<%= link_to 'Account Management', edit_user_registration_path %>
+				</br>
+				<%= link_to 'Payment Management', '/payment_management' %>
+				</br>
+				<%= link_to 'My Passes', '/mypasses' %>
 	    	</div> <!-- end of .vertical-line -->
 		</div>
 	</div>

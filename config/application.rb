@@ -71,5 +71,8 @@ module ListdApp
     config.assets.version = '1.0'
     # Heroku requires this to be false
     config.assets.initialize_on_precompile=false
+
+    # Force SSL
+    config.force_ssl = false
   end
 end
