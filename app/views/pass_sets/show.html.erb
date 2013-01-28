@@ -203,8 +203,9 @@
 								<%= image_tag("loader.gif") %>
 								<hr>
 							</div>
+							<div id = "cancelView">
 							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
+					    	<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>							</div>
 	             			<div id="stripe_error">
 								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 							</div>
@@ -249,8 +250,7 @@
 		
 					<div id = "purchaseInformation">
 						</br>
-						<h4>We currently have your credit/debit card information saved.</h4>
-						<h4>To purchase the passes with the card below, select the "Purchase with Saved Card" button</h4>
+						<h4>To purchase these passes with the saved card below, select the "Purchase with Saved Card" button</h4>
 						<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
 						<p>Card expires in the year: <%= @end_year %></p>
 						</br>
@@ -306,8 +306,10 @@
 							<%= image_tag("loader.gif") %>
 							<hr>
 						</div>
+						<div id = "cancelView">
 						<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-				    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
+				    	<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>
+						</div>
              			<div id="stripe_error">
 							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 						</div>
