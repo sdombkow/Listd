@@ -153,7 +153,7 @@
         				</div>
       				</div>
       				<div class="control-group">
-        				<%= f.label :name, class: "control-label" %>
+        				<%= f.label :name, "Full Name", class: "control-label" %>
         				<div class="controls">
           					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
         				</div>
@@ -204,8 +204,9 @@
 								<hr>
 							</div>
 							<div id = "cancelView">
-							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-					    	<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>							</div>
+								<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
+					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>							
+							</div>
 	             			<div id="stripe_error">
 								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 							</div>
@@ -307,8 +308,8 @@
 							<hr>
 						</div>
 						<div id = "cancelView">
-						<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-				    	<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>
+							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
+				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>
 						</div>
              			<div id="stripe_error">
 							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
