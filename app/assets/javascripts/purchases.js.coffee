@@ -8,14 +8,16 @@ jQuery ->
 
 purchase =
   setupForm: ->
-    	$('#new_purchase').submit ->
-        	$('input[type=submit]').hide()
-        	$('#purchaseLoading').show()
-        	if $('#card_number').length
-          		purchase.processCard()
-          		false
-        	else
-          		true
+    $('#new_purchase').submit ->
+        $('input[type=button]').attr('disabled','disabled')
+        $('a').addClass('inactiveLink')
+        $('input[type=submit]').hide()
+        $('#purchaseLoading').show()
+        if $('#card_number').length
+            purchase.processCard()
+            false
+        else
+            true
 
   processCard: ->
     card =
@@ -34,3 +36,6 @@ purchase =
       $('#stripe_error').text(response.error.message)
       $('#purchaseLoading').hide()
       $('input[type=submit]').show()
+    $('input[type=button]').attr('disabled',false)
+    $('a').removeClass('inactiveLink')
+

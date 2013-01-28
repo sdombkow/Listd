@@ -8,6 +8,14 @@
 			$("#newInformation").hide();
 			$('#BackToFirst').hide();
             $("#nextPurchase").click(function(){
+                    // Check if there is a name provided
+                    var cardName = $("#purchase_name").val();
+                    if (cardName.length <= 0 ){
+                        $("#purchase_name").parents("div.control-group").addClass("error");
+                        return false;
+                    }else{
+                        $("#purchase_name").parents("div.control-group").removeClass("error");
+                    }
                 	$("#makePurchase").fadeOut(500,function(){
                     	$("#purchaseInformation").fadeIn();
 						$('#BackToFirst').fadeIn();
@@ -48,6 +56,11 @@
                 if(e.which == 13 && enterPress == false){
                     e.preventDefault();
                 }
+            });
+            // Inactive links don't do anything
+            $("a.inactiveLink").live('click',function(e){
+                e.preventDefault();
+                return false;
             });
         }
         attachPurchaseListeners();
