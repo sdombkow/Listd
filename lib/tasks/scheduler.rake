@@ -14,3 +14,7 @@ task :send_feedback => :environment do
 	end
   end
 end
+
+task :update_bar_slug => :environment do
+ Bar.find_each(&:save)
+end
