@@ -9,8 +9,7 @@ jQuery ->
 purchase =
   setupForm: ->
     $('#new_purchase').submit ->
-        $('input[type=button]').attr('disabled','disabled')
-        $('a').addClass('inactiveLink')
+        $('.cancelBtn').hide()
         $('input[type=submit]').hide()
         $('#purchaseLoading').show()
         if $('#card_number').length
@@ -34,8 +33,7 @@ purchase =
       $('#new_purchase')[0].submit()
     else
       $('#stripe_error').text(response.error.message)
+      $('#stripe_error').addClass('alert alert-success')
       $('#purchaseLoading').hide()
       $('input[type=submit]').show()
-    $('input[type=button]').attr('disabled',false)
-    $('a').removeClass('inactiveLink')
-
+      $('.cancelBtn').show()

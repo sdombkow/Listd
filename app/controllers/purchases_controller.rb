@@ -110,6 +110,7 @@ class PurchasesController < ApplicationController
 		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 		  end
 		else
+          logger.error "Purchase: #{@purchase.inspect}"
 		  logger.error "Here in nothing"
 		  if @purchase.payment
 		      @pass_set.sold_passes+=num_passes

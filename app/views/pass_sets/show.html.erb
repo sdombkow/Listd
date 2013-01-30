@@ -10,7 +10,8 @@
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
-                    if (cardName.length <= 0 ){
+                    var nameRegex = /^([A-Z]+[a-zA-Z]* [A-Z]+[a-zA-Z]*)$/;
+                    if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
                     }else{
@@ -84,6 +85,10 @@
 <% end %>
 
 <!-- Version 2 -->
+<div id="stripe_error">
+	<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+</div>
+
 <div id = "availableSummary">
   <legend>Summary of Available Passes</legend>
   <dl class="dl-horizontal">
@@ -217,11 +222,8 @@
 								<hr>
 							</div>
 							<div id = "cancelView">
-								<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>							
-							</div>
-	             			<div id="stripe_error">
-								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+								<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn cancelBtn"/>
+					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
 							</div>
 							</br>
 							</br>
@@ -324,10 +326,7 @@
 							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
 				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger" %>
 						</div>
-             			<div id="stripe_error">
-							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-						</div>
-						</br>
+             									</br>
 						</br>
 						</br>
 						<legend>Our Commitment to You</legend>
