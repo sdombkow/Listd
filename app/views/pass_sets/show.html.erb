@@ -228,7 +228,6 @@
 							</div>
 							</br>
 							</br>
-							</br>
 							<legend>Our Commitment to You</legend>
 							<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
 							<br>
@@ -275,7 +274,7 @@
 		
 	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary cancelBtn", :onclick => "return removeStripeListener();return getlistd();" %>
       					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
-						<hr>
+						<hr class = "cancelBtn">
 						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn cancelBtn" />
 						<hr>
 					</div>
@@ -310,7 +309,7 @@
 	  						</div>
 						</div>
 						<%= f.submit "Purchase with New Card", :class => "btn btn-primary cancelBtn", :onclick => "return getlistd();" %>
-						<hr>
+						<hr class = "cancelBtn">
 						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn cancelBtn" />
 						<hr>
 					</div>		
@@ -327,7 +326,6 @@
 							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn cancelBtn"/>
 				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
 						</div>
-             									</br>
 						</br>
 						</br>
 						<legend>Our Commitment to You</legend>
