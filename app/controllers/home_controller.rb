@@ -48,7 +48,7 @@ class HomeController < ApplicationController
     if user_signed_in?
        @user = current_user
        # Eager loading pass sets
-   	   @passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
+   	   @passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
    	end
   end
 

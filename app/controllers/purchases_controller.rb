@@ -47,7 +47,7 @@ class PurchasesController < ApplicationController
         		else
         		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 			      end
-		    elsif
+		    elsif params[:credit_card_save] == "1"
 		      logger.error "Here in 1"
     		  if @purchase.save_with_payment(current_user)
     		      @pass_set.sold_passes+=num_passes
@@ -110,6 +110,7 @@ class PurchasesController < ApplicationController
 		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
 		  end
 		else
+          logger.error "Purchase: #{@purchase.inspect}"
 		  logger.error "Here in nothing"
 		  if @purchase.payment
 		      @pass_set.sold_passes+=num_passes

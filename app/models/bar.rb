@@ -1,6 +1,9 @@
 class Bar < ActiveRecord::Base
   extend FriendlyId
-  friendly_id :name
+  friendly_id :name_city, :use => :slugged
+  def name_city
+    "#{name} #{city}"
+  end
   
   validates_uniqueness_of :name, :scope => :city
   validates :phone_number,  :uniqueness => true, :presence => true
@@ -30,7 +33,7 @@ class Bar < ActiveRecord::Base
 	  @list2 = find(:all, :conditions => ['upper(city) LIKE ?', search_condition.upcase])
 	  @list1|@list2
 	end
-	
+
 	
 
 	belongs_to :user

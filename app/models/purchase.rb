@@ -21,7 +21,8 @@ class Purchase < ActiveRecord::Base
       save!
     end
     rescue Stripe::InvalidRequestError => e
-        flash[:error] = "Stripe error while creating customer: #{e.message}"
+        logger.error "Stripe error while creating customer: #{e.message}"
+        logger.error "========"
         errors.add :base, "There was a problem with your credit card."
         false
     end
@@ -37,7 +38,7 @@ class Purchase < ActiveRecord::Base
         save!
       end
       rescue Stripe::InvalidRequestError => e
-          flash[:error] = "Stripe error while creating customer: #{e.message}"
+          logger.error "Stripe error while creating customer: #{e.message}"
           errors.add :base, "There was a problem with your credit card."
           false
       end
@@ -59,7 +60,7 @@ class Purchase < ActiveRecord::Base
         save!
       end
       rescue Stripe::InvalidRequestError => e
-          flash[:error] = "Stripe error while creating customer: #{e.message}"
+          logger.error "Stripe error while creating customer: #{e.message}"
           errors.add :base, "There was a problem with your credit card."
           false
       end

@@ -12,7 +12,7 @@
 	<%= render "credit_form" %>
 	<hr>
 	<h4>To delete your credit/debit card, press the "Delete Card" button.</h4>
-	<%= button_to "Delete Card", "/current_user/delete_stripe_token"%>
+	<%= button_to "Delete Card", "/current_user/delete_stripe_token", :class => "btn btn-danger"%>
 <% else %>
 	<h4>To add a credit/debit card for future purchases, submit the following form.</h4>
 	<%= render "credit_form" %>

@@ -8,14 +8,15 @@ jQuery ->
 
 purchase =
   setupForm: ->
-    	$('#new_purchase').submit ->
+    $('#new_purchase').submit ->
+        $('.cancelBtn').hide()
         $('input[type=submit]').hide()
         $('#purchaseLoading').show()
         if $('#card_number').length
-          purchase.processCard()
-          false
+            purchase.processCard()
+            false
         else
-          true
+            true
 
   processCard: ->
     card =
@@ -32,5 +33,7 @@ purchase =
       $('#new_purchase')[0].submit()
     else
       $('#stripe_error').text(response.error.message)
+      $('#stripe_error').addClass('alert alert-success')
       $('#purchaseLoading').hide()
       $('input[type=submit]').show()
+      $('.cancelBtn').show()

@@ -8,6 +8,15 @@
 			$("#newInformation").hide();
 			$('#BackToFirst').hide();
             $("#nextPurchase").click(function(){
+                    // Check if there is a name provided
+                    var cardName = $("#purchase_name").val();
+                    var nameRegex = /^([A-Z]+[a-zA-Z]* [A-Z]+[a-zA-Z]*)$/;
+                    if (cardName.length <= 0 || cardName.match(nameRegex) == null){
+                        $("#purchase_name").parents("div.control-group").addClass("error");
+                        return false;
+                    }else{
+                        $("#purchase_name").parents("div.control-group").removeClass("error");
+                    }
                 	$("#makePurchase").fadeOut(500,function(){
                     	$("#purchaseInformation").fadeIn();
 						$('#BackToFirst').fadeIn();
@@ -49,6 +58,11 @@
                     e.preventDefault();
                 }
             });
+            // Inactive links don't do anything
+            $("a.inactiveLink").live('click',function(e){
+                e.preventDefault();
+                return false;
+            });
         }
         attachPurchaseListeners();
     });
@@ -65,12 +79,17 @@
     function removeStripeListener(){
         $("#new_purchase").unbind("submit");
         $("#submitSaved").hide();
+		$('.cancelBtn').hide();
         $("#purchaseLoading").show();
     }
 </script>
 <% end %>
 
 <!-- Version 2 -->
+<div id="stripe_error">
+	<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+</div>
+
 <div id = "availableSummary">
   <legend>Summary of Available Passes</legend>
   <dl class="dl-horizontal">
@@ -153,7 +172,7 @@
         				</div>
       				</div>
       				<div class="control-group">
-        				<%= f.label :name, class: "control-label" %>
+        				<%= f.label :name, "Full Name", class: "control-label" %>
         				<div class="controls">
           					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
         				</div>
@@ -203,12 +222,10 @@
 								<%= image_tag("loader.gif") %>
 								<hr>
 							</div>
-							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-					    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
-	             			<div id="stripe_error">
-								<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+							<div id = "cancelView">
+								<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn cancelBtn"/>
+					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
 							</div>
-							</br>
 							</br>
 							</br>
 							<legend>Our Commitment to You</legend>
@@ -249,17 +266,16 @@
 		
 					<div id = "purchaseInformation">
 						</br>
-						<h4>We currently have your credit/debit card information saved.</h4>
-						<h4>To purchase the passes with the card below, select the "Purchase with Saved Card" button</h4>
+						<h4>To purchase these passes with the saved card below, select the "Purchase with Saved Card" button</h4>
 						<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
 						<p>Card expires in the year: <%= @end_year %></p>
 						</br>
 						</br>
 		
-	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary", :onclick => "return removeStripeListener();return getlistd();" %>
+	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary cancelBtn", :onclick => "return removeStripeListener();return getlistd();" %>
       					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
-						<hr>
-						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn" />
+						<hr class = "cancelBtn">
+						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn cancelBtn" />
 						<hr>
 					</div>
 					
@@ -292,9 +308,9 @@
 								</label>
 	  						</div>
 						</div>
-						<%= f.submit "Purchase with New Card", :class => "btn btn-primary", :onclick => "return getlistd();" %>
-						<hr>
-						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn" />
+						<%= f.submit "Purchase with New Card", :class => "btn btn-primary cancelBtn", :onclick => "return getlistd();" %>
+						<hr class = "cancelBtn">
+						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn cancelBtn" />
 						<hr>
 					</div>		
                     <div id = "cancelOpts">
@@ -306,12 +322,10 @@
 							<%= image_tag("loader.gif") %>
 							<hr>
 						</div>
-						<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn"/>
-				    	<%= link_to 'Cancel Purchase', :back, :class => "btn" %>					
-             			<div id="stripe_error">
-							<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+						<div id = "cancelView">
+							<input type = "button" id = "BackToFirst" value = "Back to Available Passes Page" class = "btn cancelBtn"/>
+				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
 						</div>
-						</br>
 						</br>
 						</br>
 						<legend>Our Commitment to You</legend>

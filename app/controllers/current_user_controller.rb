@@ -1,14 +1,14 @@
 class CurrentUserController < ApplicationController
   
   def delete_stripe_token
-    logger.error "Stripe error while creating customer: #{current_user.stripe_customer_token}"
+    logger.error "Current User Stripe Customer Token: #{current_user.stripe_customer_token}"
     current_user.update_attribute(:stripe_customer_token,nil)
     current_user.save!
     redirect_to :root, notice: 'Card Deleted'
   end
   
   def update
-    logger.error "Stripe error while creating customer: #{current_user}"
+    logger.error "Current User: #{current_user}"
     if current_user.stripe_customer_token != nil
       @user = current_user
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
