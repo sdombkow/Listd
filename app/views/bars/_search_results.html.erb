@@ -3,8 +3,8 @@
 <% else %>
 
 <% @bars.each do |bar| %>
-<div class="row">
-  <div class="bar-preview span4 shadow">
+<div>
+  <div class="bar-preview shadow">
     <h5> <%= link_to bar.name, bar %> </h5>
     <address>
 	  <small> <%= bar.address %> <br>

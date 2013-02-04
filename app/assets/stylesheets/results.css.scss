@@ -9,7 +9,7 @@ body.bars.search footer {
 }
 
 #search-query {
-  padding: 2% 3%;
+  padding: 3% 7%;
   border: 1px solid #d0d0d0;
   background-color: #fff;
   margin-bottom: 1%;
@@ -26,9 +26,9 @@ body.bars.search footer {
 }
 
 .bar-preview {
-  padding: 1% 3%;
+  padding: 3% 7% 1%;
   border: 1px solid #d0d0d0;
-  margin-bottom: 1%;
+  margin-bottom: 2%;
   line-spacing: 14px;
   /* Fallback for web browsers that doesn't support RGBa */
   background: rgb(255, 255, 255) transparent;
@@ -79,11 +79,13 @@ body.bars.search footer {
 }
 
 #map_overlay{
+  background-color: rgba(0,0,0,0.2);
   margin: 0 auto;
+  padding: 1%;
   overflow: visible;
   position: relative;
-  width: 800px;
   z-index: 2;
+  top: -5px;
 }
 
 /* Portrait tablet, landscape phones and down */
