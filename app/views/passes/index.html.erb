@@ -24,8 +24,9 @@
 -->
 
 <% for pass in @passes %>
-  <div class="row">
-    	<div class="pass-preview span4 shadow">
+  <div class="span3">
+	<div class="shadow">
+    	<div>
       	<address>
 	  		<small>
 		        Bar Name: <%= pass.pass_set.bar.name %>
@@ -39,7 +40,8 @@
 				Confirmation Number: <%= pass.confirmation %>
 	    	</small>
 	  	</address>
-  		</div> <!-- end of .bar-preview -->
+  		</div> <!-- end of .content-box -->
+	</div> <!-- end of .section-container -->
   </div>
 <% end %>
 <%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
