@@ -10,7 +10,23 @@
         var mapOptions = {
           center: barlocation,
           zoom: 5,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+		  mapTypeControl: true,
+		  mapTypeControlOptions: {
+		        position: google.maps.ControlPosition.TOP_RIGHT
+		  },
+		  panControl: true,
+		  panControlOptions: {
+		        position: google.maps.ControlPosition.RIGHT_TOP
+		  },
+		  streetViewControl: true,
+		  streetViewControlOptions: {
+		        position: google.maps.ControlPosition.RIGHT_TOP
+		  },
+		  zoomControl: true,
+		  zoomControlOptions: {
+		        position: google.maps.ControlPosition.RIGHT_TOP
+		  }
         };
         var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
 		<% for bar in @bars %>

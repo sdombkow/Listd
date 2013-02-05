@@ -1,29 +1,7 @@
 <h2>My Passes</h2>
 
-<!--
-<div class="row">
-<% @passes.each do |pass| %>
-  <% if (!pass.redeemed) %>
-  <div class="span4 shadow" id="purchased-pass">
-	<div id="pass-info">
-      <p class="lead">
-	    <%= pass.pass_set.bar.name %><br>
-	    <br>
-		<%= pass.pass_set.date.strftime("%m/%d/%Y") %>
-		<br>
-	  </p>
-	  <small class="offset1"><%= pass.entries %></small>
-	</div>	
-	<div id="pass-name" class="center-text">
-	  <p class="lead"><%= pass.name %></p>
-	</div>
-  </div>
-  <% end %>
-<% end %>
-</div>
--->
-
-<% for pass in @passes %>
+<h4>Current Passes</h4>
+<% for pass in @valid_passes %>
   <div class="span3">
 	<div class="shadow">
     	<div>
@@ -44,4 +22,30 @@
 	</div> <!-- end of .section-container -->
   </div>
 <% end %>
-<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
+<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next" %>
+</br>
+</br>
+
+<h4>Past Passes</h4>
+<% for pass in @past_passes %>
+  <div class="span3">
+	<div class="shadow">
+    	<div>
+      	<address>
+	  		<small>
+		        Bar Name: <%= pass.pass_set.bar.name %>
+				</br>
+				Date of Pass: <%= pass.pass_set.date.strftime("%m/%d/%Y") %> 
+				</br>
+				# of Passes: <%= pass.entries%>
+				</br>
+				Name on Purchase: <%= pass.name %>
+				</br>
+				Confirmation Number: <%= link_to pass.confirmation, pass %>
+	    	</small>
+	  	</address>
+  		</div> <!-- end of .content-box -->
+	</div> <!-- end of .section-container -->
+  </div>
+<% end %>
+<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next" %>
