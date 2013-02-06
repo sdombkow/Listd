@@ -88,6 +88,13 @@ body.bars.search footer {
   top: -5px;
 }
 
+/* After collapse */
+@media (max-width: 979px){
+  .navbar-fixed-top, .navbar-fixed-bottom {
+    position: fixed;
+  }
+}
+
 /* Portrait tablet, landscape phones and down */
 @media (max-width: 767px){
   body.bars.search {
@@ -97,6 +104,11 @@ body.bars.search footer {
   body.bars.search footer {
     z-index: 0;
   }
+  
+  .navbar-fixed-top, .navbar-fixed-bottom {
+    position: static;
+  }
+
   .map_bg {
 	height: 0%;
 	z-index: 0;
