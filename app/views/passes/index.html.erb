@@ -1,35 +1,44 @@
 <h2>My Passes</h2>
 
-<h4>Current Passes</h4>
-<% for pass in @valid_passes %>
-  <div class="span3">
-	<div class="shadow">
-    	<div>
-      	<address>
-	  		<small>
-		        Bar Name: <%= pass.pass_set.bar.name %>
+<div class="row">
+  <div class="span7">
+	<h4 class="index-type">Current</h4>
+	<% for pass in @valid_passes %>
+	<div class="pass-preview">
+	<small>
+      <p class="title"><%= pass.pass_set.bar.name %> Pass</p>
+			  <div class="pull-left dt">
+				Date of Pass:
 				</br>
-				Date of Pass: <%= pass.pass_set.date.strftime("%m/%d/%Y") %> 
+				# of Passes:
 				</br>
-				# of Passes: <%= pass.entries%>
+				Name on Purchase:
 				</br>
-				Name on Purchase: <%= pass.name %>
+				Confirmation Number:
+			  </div>
+			  <div class="pull-left dd">
+				<%= pass.pass_set.date.strftime("%m/%d/%Y") %> 
 				</br>
-				Confirmation Number: <%= link_to pass.confirmation, pass %>
-	    	</small>
-	  	</address>
-  		</div> <!-- end of .content-box -->
+				<%= pass.entries%>
+				</br>
+				<%= pass.name %>
+				</br>
+				<%= pass.confirmation %>
+			  </div>
+			  <br>
+			  <div class="pull-right dd">
+				<%= link_to raw("View Pass <i class=\"icon-circle-arrow-right\"></i>"), pass, :class => "btn title" %>
+			  </div>
+	</small>
 	</div> <!-- end of .section-container -->
+	<% end %>
+	<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next" %>
   </div>
-<% end %>
-<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next" %>
-</br>
-</br>
 
-<h4>Past Passes</h4>
-<% for pass in @past_passes %>
   <div class="span3">
-	<div class="shadow">
+	<h4>Past</h4>
+	<% for pass in @past_passes %>
+	<div class="pass-preview shadow">
     	<div>
       	<address>
 	  		<small>
@@ -46,6 +55,7 @@
 	  	</address>
   		</div> <!-- end of .content-box -->
 	</div> <!-- end of .section-container -->
+	<% end %>
+	<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next" %>
   </div>
-<% end %>
-<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next" %>
+</div>

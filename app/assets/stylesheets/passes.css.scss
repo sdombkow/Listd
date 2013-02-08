@@ -4,6 +4,40 @@
 
 /* my passes page */
 
+body.passes.index {
+  background: #e7e7e7;
+}
+
+.index-type {
+  margin-left: 1%;
+  margin-bottom: 2%;
+}
+
+.pass-preview {
+  padding: 3% 4%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.dt {
+  color: #888;
+}
+
+.dd {
+  margin-left: 20px;
+}
+
+/* pass show */
+
 #purchased-pass {
   background: url('pass_bg.png') no-repeat;
   width: 290px;
