@@ -93,3 +93,12 @@ body.passes.index {
   line-height: 1.75;
   text-transform: uppercase;
 }
+
+/* Landscape phones and down */
+@media (max-width: 767px) {
+  body.passes.index .vertical-rule {
+	border-left: none;
+	margin-left: 0%;
+	padding-left: 0%;
+  }
+}

@@ -90,7 +90,7 @@ body.bars.search footer {
 
 /* After collapse */
 @media (max-width: 979px){
-  .navbar-fixed-top, .navbar-fixed-bottom {
+  body.bars.search .navbar-fixed-top, .navbar-fixed-bottom {
     position: fixed;
   }
 }
