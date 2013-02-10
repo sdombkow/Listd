@@ -5,8 +5,8 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 9)
-  	@past_passes = @user.passes.includes(:pass_set).where('date < ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 6)
+  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
+  	@past_passes = @user.passes.includes(:pass_set).where('date < ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
   end
   
   def show
