@@ -91,15 +91,17 @@
 </div>
 
 <div id = "availableSummary">
-  <legend>Summary of Available Passes</legend>
+  <legend>Summary of Passes (<%= @pass_set.date.strftime("%m/%d/%y") %>)</legend>
   <dl class="dl-horizontal">
     <dt>Bar</dt>
     <dd><%= @pass_set.bar.name %></dd>
-	<dt>Date</dt>
+	<dt>Pass Date</dt>
 	<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
-	<dt>Passes Left</dt>
+	<dt>Sold Passes</dt>
+	<dd><%= @pass_set.sold_passes %></dd>
+	<dt>Unsold Passes</dt>
 	<dd><%= @pass_set.unsold_passes %></dd>
-	<dt>Price</dt>
+	<dt>Pass Price</dt>
 	<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
   </dl>
 </div>
@@ -149,9 +151,25 @@
 </br>
 
 <% if current_user.partner? || current_user.admin? %>
-	<div id="passPoller" data-id="<%= @pass_set.id %>">
-		<%= render @passes %>
-    </div>
+	<% for pass in @passes %>
+		<div class="pass-preview">
+			<p class="title">
+				Name: <%= pass.name %> |  <%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %>
+			</p>
+			<div class="pull-left dt">
+				# of Passes:</br>
+		        Purchased on:</br>
+				Passes Redeemed?:</br>
+				Confirmation Number:
+			</div>
+			<div class="pull-left dd">
+		 		<%= pass.entries %></br>
+				<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+				<%= pass.redeemed %></br>
+				<%= link_to pass.confirmation, pass %>
+			</div>
+		</div>
+	<% end %>
 	<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 <% else %>
 	<% if current_user.stripe_customer_token == nil %>
@@ -198,8 +216,8 @@
 						<div class="field control-group">
 	  						<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
 	  						<div class="controls">
-	    						<%= select_month nil, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
-	    						<%= select_year nil, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+	    						<%= select_month Date.today, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+	    						<%= select_year Date.today, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
 	  						</div>
 						</div>
 						<div class="control-group">
