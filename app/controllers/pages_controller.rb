@@ -4,7 +4,7 @@ class PagesController < ApplicationController
 	end
 	
 	def download
-      send_file('/data/listd_product_summary.pdf')
+      send_file 'public/data/listd_product_summary.pdf'
   end
   
   def customers
