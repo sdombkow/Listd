@@ -156,6 +156,7 @@
 			<p class="title">
 				Name: <%= pass.name %> |  <%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %>
 			</p>
+			<small>
 			<div class="pull-left dt">
 				# of Passes:</br>
 		        Purchased on:</br>
@@ -168,6 +169,7 @@
 				<%= pass.redeemed %></br>
 				<%= link_to pass.confirmation, pass %>
 			</div>
+			</small>
 		</div>
 	<% end %>
 	<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
