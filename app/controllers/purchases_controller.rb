@@ -60,21 +60,19 @@ class PurchasesController < ApplicationController
 			      end
 		    elsif params[:credit_card_save] == "1"
 		      logger.error "Here in 1"
-    		  if @purchase.save_with_payment(current_user)
+    		  if @purchase.return_customer_save_payment(current_user)
     		      @pass_set.sold_passes+=num_passes
     		      @pass_set.unsold_passes-=num_passes
     		      @pass_set.save
-    		      # for i in 0..num_passes-1
-    			      pass = Pass.new
-    			      pass.name = params[:purchase][:name]
-    			      pass.purchase_id = @purchase.id
-    			      pass.pass_set_id = @pass_set.id
-    			      pass.redeemed = false
+    			    pass = Pass.new
+    			    pass.name = params[:purchase][:name]
+    			    pass.purchase_id = @purchase.id
+    			    pass.pass_set_id = @pass_set.id
+    			    pass.redeemed = false
     				  pass.entries=num_passes
     				  pass.confirmation=SecureRandom.hex(4)
-    			      pass.save
-    		      #end
-    		UserMailer.purchase_confirmation(@user,pass).deliver
+    			    pass.save
+    		      UserMailer.purchase_confirmation(@user,pass).deliver
               redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     		  else
     		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'

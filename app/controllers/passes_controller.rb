@@ -12,6 +12,8 @@ class PassesController < ApplicationController
   def show
 		@user=current_user
 		@pass = Pass.find(params[:id])
+		logger.error "Purchase #: #{@pass.purchase}"
+		logger.error "User #: #{@pass.purchase.user}"
 		if(@user != @pass.purchase.user)
 		 if(!@user.partner?)
 		redirect_to:root
