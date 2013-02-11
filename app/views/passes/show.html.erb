@@ -24,6 +24,8 @@ Total Cost: <%= number_to_currency(@pass.pass_set.price*@pass.entries) %>
 <% if @pass.purchase.stripe_charge_token != nil %>
 	Card Type: <%= @card_type %>   Last Four Digits: <%= @card_four %>
 <% end %>
+</br>
+<%= link_to 'My Passes', '/mypasses' %>
 </p>
 <h3>Pass Instructions</h3>
 <ol>
