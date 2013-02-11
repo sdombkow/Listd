@@ -4,6 +4,11 @@ class PagesController < ApplicationController
 	end
 	
 	def download
-      send_file 'listd/public/data/listd_product_summary.zip', :x_sendfile=>true
+      send_file 'public/data/listd_product_summary.pdf'
   end
+  
+  def customers
+      #send_file 'public/data/listd_product_summary.pdf'
+  end
+  
 end

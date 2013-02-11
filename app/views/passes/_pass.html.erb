@@ -1,14 +1,17 @@
-   	  <div class="row">
-	    	<div class="bar-preview span4 shadow">
-      <div class="passPoller" data-time="<%= pass.created_at.to_i %>">
-        <strong>Name: <%= pass.name %>	|	<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %></strong> </br>
-	    <em>Entry Date: <%= pass.pass_set.date.strftime('%b %d, %Y at %I:%M %p') %></em> </br>
-		<em>Bar: <%= pass.pass_set.bar.name%></em> </br>
-		<em># of Passes: <%= pass.entries %></em> </br>
-        <em>Purchased on: <%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></em> </br>
-		<em>Passes Redeemed?: <%= pass.redeemed %> </em> </br>
-		<em>Confirmation Number: <%= link_to pass.confirmation, pass %> </em> </br>
-      </div>
-	  </br>
-	  		</div> <!-- end of .bar-preview -->
- 	  </div>
+<div class="pass-preview">
+	<p class="title">
+		Name: <%= pass.name %>	|	<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %>
+	</p>
+	<div class="pull-left dt">
+		# of Passes:</br>
+        Purchased on:</br>
+		Passes Redeemed?:</br>
+		Confirmation Number:
+	</div>
+	<div class="pull-left dd">
+ 		<%= pass.entries %></br>
+		<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+		<%= pass.redeemed %></br>
+		<%= link_to pass.confirmation, pass %>
+	</div>
+</div>

@@ -4,6 +4,58 @@
 
 /* my passes page */
 
+body.passes.index {
+  background: #e7e7e7;
+}
+
+.footer-cushion {
+  margin-bottom: 20px;
+}
+
+.index-type {
+  margin-left: 1%;
+}
+
+.pass-preview {
+  padding: 3% 4%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.pass-history-preview {
+  padding: 5% 6%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.dt {
+  color: #888;
+}
+
+.dd {
+  margin-left: 20px;
+}
+
+.vertical-rule {
+  border-left: 1px solid #d7d7d7;
+  margin-left: 5%;
+  padding-left: 5%;
+}
+
+/* pass show */
+
 #purchased-pass {
   background: url('pass_bg.png') no-repeat;
   width: 290px;
@@ -40,4 +92,13 @@
   font-size: 32px;
   line-height: 1.75;
   text-transform: uppercase;
+}
+
+/* Landscape phones and down */
+@media (max-width: 767px) {
+  body.passes.index .vertical-rule {
+	border-left: none;
+	margin-left: 0%;
+	padding-left: 0%;
+  }
 }
