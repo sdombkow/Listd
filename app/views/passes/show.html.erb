@@ -15,6 +15,14 @@
 	</div>
   </div>
   <% end %>
+
+<p> 
+Confirmation Number: <%= @pass.confirmation %>
+</br>
+Total Cost: <%= number_to_currency(@pass.pass_set.price*@pass.entries) %>
+</br>
+Card Type: <%= @card_type %>   Last Four Digits: <%= @card_four %>
+</p>
 <h3>Pass Instructions</h3>
 <ol>
 	<li>Have this confirmation pass on your phone or printed out read. You can also go to "My Passes" or your email to retrieve this confirmation</li>

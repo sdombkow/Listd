@@ -23,7 +23,7 @@ class PurchasesController < ApplicationController
 	      @decimals = String(@pass_set.price).split(".").last 
 	  end
 		@purchase.price = String(@pass_set.price).split(".").first+@decimals
-		
+		logger.error "Stripe Card Token: #{@purchase.stripe_card_token}"
 		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
 		if @user.stripe_customer_token != nil
 		    logger.error "Here in not nil"
@@ -36,7 +36,9 @@ class PurchasesController < ApplicationController
 		    logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
 		    if @purchase.stripe_card_token == ""
 		        if @end_month < Time.now.month || @end_year < Time.now.year
-    		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired.'
+		            cu = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+                cu.delete
+    		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired and is no longer valid.'
     		        logger.error "Something is wrong here"
     				    return
     			  end

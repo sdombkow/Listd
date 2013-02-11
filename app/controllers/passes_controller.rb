@@ -12,6 +12,9 @@ class PassesController < ApplicationController
   def show
 		@user=current_user
 		@pass = Pass.find(params[:id])
+		@customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+    @card_type = @customer_card.active_card.type
+    @card_four = @customer_card.active_card.last4
 		logger.error "Purchase #: #{@pass.purchase}"
 		logger.error "User #: #{@pass.purchase.user}"
 		if(@user != @pass.purchase.user)
