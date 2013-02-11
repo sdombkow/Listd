@@ -35,6 +35,7 @@ class Purchase < ActiveRecord::Base
           :currency => "usd",
           :customer => user.stripe_customer_token
         )
+        self.stripe_charge_token = charge.id
         save!
       end
       rescue Stripe::InvalidRequestError => e
@@ -58,6 +59,24 @@ class Purchase < ActiveRecord::Base
           :customer => user.stripe_customer_token
         )
         save!
+      end
+      rescue Stripe::InvalidRequestError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          errors.add :base, "There was a problem with your credit card."
+          false
+      end
+    
+    def return_customer_save_payment(user)
+      if valid?
+          cu = Stripe::Customer.retrieve(user.stripe_customer_token)
+          cu.card = stripe_card_token
+          cu.save
+          charge = Stripe::Charge.create(
+            :amount => price,
+            :currency => "usd",
+            :customer => user.stripe_customer_token
+          )
+          save!
       end
       rescue Stripe::InvalidRequestError => e
           logger.error "Stripe error while creating customer: #{e.message}"

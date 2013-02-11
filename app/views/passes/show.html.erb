@@ -16,10 +16,20 @@
   </div>
   <% end %>
 
+<p> 
+Confirmation Number: <%= @pass.confirmation %>
+</br>
+Total Cost: <%= number_to_currency(@pass.pass_set.price*@pass.entries) %>
+</br>
+<% if @pass.purchase.stripe_charge_token != nil %>
+	Card Type: <%= @card_type %>   Last Four Digits: <%= @card_four %>
+<% end %>
+</br>
+<%= link_to 'My Passes', '/mypasses' %>
+</p>
 <h3>Pass Instructions</h3>
 <ol>
-	<li>If possible, print out a copy of this page to bring to the LISTD bar or nightclub.</li>
-	<li>Have the print out or this page opened up on your mobile device when you arrive at the specified LISTD bar or nightclub.</li>
-	<li>Show either the print out or the electronic version of this page and your I.D. to the doorman.</li>
+	<li>Have this confirmation pass on your phone or printed out read. You can also go to "My Passes" or your email to retrieve this confirmation</li>
+	<li>Walk to the front of the line and show confirmation to bouncer</li>
 	<li>Gain immediate entry and enjoy your night!</li>
 </ol>
