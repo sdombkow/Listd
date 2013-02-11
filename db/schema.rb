@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130128012325) do
+ActiveRecord::Schema.define(:version => 20130209173528) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -110,12 +110,13 @@ ActiveRecord::Schema.define(:version => 20130128012325) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.string   "name"
-    t.boolean  "admin",                  :default => false, :null => false
-    t.boolean  "partner",                :default => false, :null => false
+    t.boolean  "admin",                  :default => false
+    t.boolean  "partner",                :default => false
     t.string   "provider"
     t.string   "uid"
     t.string   "stripe_customer_token"
     t.string   "stripe_card_token"
+    t.string   "authentication_token"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
