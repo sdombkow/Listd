@@ -35,6 +35,7 @@ class Purchase < ActiveRecord::Base
           :currency => "usd",
           :customer => user.stripe_customer_token
         )
+        self.stripe_charge_token = charge.id
         save!
       end
       rescue Stripe::InvalidRequestError => e

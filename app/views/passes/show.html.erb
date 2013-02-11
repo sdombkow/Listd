@@ -21,7 +21,9 @@ Confirmation Number: <%= @pass.confirmation %>
 </br>
 Total Cost: <%= number_to_currency(@pass.pass_set.price*@pass.entries) %>
 </br>
-Card Type: <%= @card_type %>   Last Four Digits: <%= @card_four %>
+<% if @pass.purchase.stripe_charge_token != nil %>
+	Card Type: <%= @card_type %>   Last Four Digits: <%= @card_four %>
+<% end %>
 </p>
 <h3>Pass Instructions</h3>
 <ol>
