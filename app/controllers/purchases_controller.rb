@@ -33,9 +33,12 @@ class PurchasesController < ApplicationController
         @end_year = @customer_card.active_card.exp_year
         logger.error "#{@end_month < Time.now.month}"
         logger.error "#{@end_year < Time.now.year}"
-		    if @end_month < Time.now.month or @end_year < Time.now.year
+		logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
+		    if @end_month < Time.now.month || @end_year < Time.now.year
 		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired.'
-		    end
+				return
+			end
+		logger.error "Something is wrong here"
 		    if @purchase.stripe_card_token == ""
 		        if @purchase.payment_return_customer(current_user)
 		            @pass_set.sold_passes+=num_passes

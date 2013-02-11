@@ -3,7 +3,11 @@
   <%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :class => "form-horizontal row"} ) do |f| %>
   <div class="span8 offset2">
     <!-- <%= devise_error_messages! %> -->
-    <%= f.input :name, :autofocus => true %>
+      <div class="span6 offset2">
+      <%= render "devise/shared/fb" %>
+	  <br>
+    </div> 
+   <%= f.input :name, :autofocus => true %>
     <%= f.input :email %>
     <%= f.input :password %>
     <%= f.input :password_confirmation %>
@@ -11,8 +15,11 @@
       <%= f.submit "Sign Up", :class => "btn btn-primary" %>
     </div>
     <div class="span6 offset2">
-      <%= render "devise/shared/links" %>
-    </div>
+	  <%= render "devise/shared/links" %>
+	</div>
   </div>
   <% end %>
+  <h4 align = "center">Are you a business interested in working with us?</h5>
+  <h4 align = "center">Email us at team@listdnow.com </h5>
+
 </div>
