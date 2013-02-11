@@ -36,7 +36,6 @@ class PurchasesController < ApplicationController
 		    logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
 		    if @purchase.stripe_card_token == ""
 		        if @end_month < Time.now.month || @end_year < Time.now.year
-		            @user.stripe_customer_token = nil
     		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired.'
     		        logger.error "Something is wrong here"
     				    return
