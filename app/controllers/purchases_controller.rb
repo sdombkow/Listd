@@ -28,6 +28,14 @@ class PurchasesController < ApplicationController
 		if @user.stripe_customer_token != nil
 		    logger.error "Here in not nil"
 		    logger.error "#{@user.stripe_card_token}"
+		    @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+        @end_month = @customer_card.active_card.exp_month
+        @end_year = @customer_card.active_card.exp_year
+        logger.error "#{@end_month < Time.now.month}"
+        logger.error "#{@end_year < Time.now.year}"
+		    if @end_month < Time.now.month or @end_year < Time.now.year
+		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired.'
+		    end
 		    if @purchase.stripe_card_token == ""
 		        if @purchase.payment_return_customer(current_user)
 		            @pass_set.sold_passes+=num_passes
