@@ -111,8 +111,8 @@ ActiveRecord::Schema.define(:version => 20130211232539) do
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
     t.string   "name"
-    t.boolean  "admin",                  :default => false
-    t.boolean  "partner",                :default => false
+    t.boolean  "admin",                  :default => false, :null => false
+    t.boolean  "partner",                :default => false, :null => false
     t.string   "provider"
     t.string   "uid"
     t.string   "stripe_customer_token"
