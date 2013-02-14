@@ -174,7 +174,7 @@
 	<% end %>
 	<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 <% else %>
-	<% if current_user.stripe_customer_token == nil %>
+	<% if current_user.stripe_customer_token == nil && @customer_card.active_card != nil %>
 		<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
 			<fieldset>
 				

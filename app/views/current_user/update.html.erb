@@ -5,8 +5,12 @@
 </br>
 <% if current_user.stripe_customer_token != nil %>
 	<h4>Card Information:</h4>
-	<p>Last 4 digits of Stored Credit Card: <%= @last_four %></p>
-	<p>Card expires in: <%= @end_month_name %> <%= @end_year %></p>
+	<% if @customer_card.active_card != nil %>
+		<p>Last 4 digits of Stored Credit Card: <%= @last_four %></p>
+		<p>Card expires in: <%= @end_month_name %> <%= @end_year %></p>
+	<% else %>
+		<p>No Card on File</p>
+	<% end %>
 	<hr>
 	<h4>To update or change your credit/debit card information for future purchases, submit the following form.</h4>
 	<%= render "credit_form" %>
