@@ -24,10 +24,10 @@ class PurchasesController < ApplicationController
 	  end
 		@purchase.price = String(@pass_set.price).split(".").first+@decimals
 		logger.error "Stripe Card Token: #{@purchase.stripe_card_token}"
-		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
+		logger.error "Stripe customer: #{@user.stripe_customer_token}"
 		if @user.stripe_customer_token != nil
 		    logger.error "Here in not nil"
-		    logger.error "#{@user.stripe_card_token}"
+		    logger.error "Stripe Card Token: #{@user.stripe_card_token}"
 		    @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
 		    if @customer_card.active_card != nil
           @end_month = @customer_card.active_card.exp_month
@@ -37,6 +37,7 @@ class PurchasesController < ApplicationController
         logger.error "#{@end_year < Time.now.year}"
 		    logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
 		    if @purchase.stripe_card_token == ""
+		        logger.error "Here in Stipe Card Token Not Nil"
 		        if @end_month < Time.now.month || @end_year < Time.now.year
 		            cu = Stripe::Customer.retrieve(current_user.stripe_customer_token)
                 cu.delete
@@ -44,6 +45,7 @@ class PurchasesController < ApplicationController
     		        logger.error "Something is wrong here"
     				    return
     			  end
+    			  logger.error "Here in 0 right before"
 		        if @purchase.payment_return_customer(current_user)
 		            logger.error "Here in 0"
 		            @pass_set.sold_passes+=num_passes
@@ -84,6 +86,7 @@ class PurchasesController < ApplicationController
     		  end
 		    else
 		        if @purchase.payment
+		            logger.error "Here in 2"
 		            @pass_set.sold_passes+=num_passes
 		            @pass_set.unsold_passes-=num_passes
 		            @pass_set.save

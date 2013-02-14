@@ -10,7 +10,7 @@
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
-                    var nameRegex = /^([a-zA-Z]+[a-zA-Z]* [a-zA-Z]+[a-zA-Z]*)$/;
+                    var nameRegex = /[\s-]([A-Z][a-z]{2,4})/;
                     if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
