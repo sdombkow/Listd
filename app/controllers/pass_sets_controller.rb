@@ -25,7 +25,8 @@ class PassSetsController < ApplicationController
   def show
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	  @passes = @pass_set.passes.order("created_at ASC").paginate(:page => params[:page], :per_page => 5)
+	  @used_passes = @pass_set.passes.order("name DESC").where('redeemed == ?', true).paginate(:page => params[:page], :per_page => 5)
+	  @unused_passes = @pass_set.passes.order("name DESC").where('redeemed == ?', false).paginate(:page => params[:page], :per_page => 5)
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)

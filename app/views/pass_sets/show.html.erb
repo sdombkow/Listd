@@ -10,7 +10,7 @@
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
-                    var nameRegex = /^([a-zA-Z]+[a-zA-Z]*( [a-zA-Z]+[a-zA-Z]*)* [a-zA-Z]+[a-zA-Z]*)$/;
+                    var nameRegex = /^([a-zA-Z]+[a-zA-Z]* [a-zA-Z]+[a-zA-Z]*)$/;
                     if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
@@ -151,28 +151,62 @@
 </br>
 
 <% if current_user.partner? || current_user.admin? %>
-	<% for pass in @passes %>
-		<div class="pass-preview">
-			<p class="title">
-				Name: <%= pass.name %> |  <%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %>
-			</p>
-			<small>
-			<div class="pull-left dt">
-				# of Passes:</br>
-		        Purchased on:</br>
-				Passes Redeemed?:</br>
-				Confirmation Number:
-			</div>
-			<div class="pull-left dd">
-		 		<%= pass.entries %></br>
-				<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
-				<%= pass.redeemed %></br>
-				<%= link_to pass.confirmation, pass %>
-			</div>
-			</small>
+	<div class="row footer-cushion">
+		<div class="span7">
+			<h4 class="index-type">Unused Passes</h4>
+			<% for pass in @unused_passes %>
+				<div class="pass-preview">
+					<p class="title">
+						Name: <%= pass.name %>
+					</p>
+					<small>
+						<div class="pull-left dt">
+							<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+							# of Passes:</br>
+		        			Purchased on:</br>
+							Passes Redeemed?:</br>
+							Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+							</br>
+		 					<%= pass.entries %></br>
+							<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+							<%= pass.redeemed %></br>
+							<%= link_to pass.confirmation, pass %>
+						</div>
+					</small>
+				</div>
+			<% end %>
+			<%= will_paginate @unused_passes, :previous_label => "Previous", :next_label => "Next" %>
 		</div>
-	<% end %>
-	<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
+		<div class="span4 vertical-rule">
+			<h4 class="index-type">Used Passes</h4>
+			<% for pass in @used_passes %>
+				<div class="pass-history-preview">
+	      			<p class="title">
+						Name: <%= pass.name %>
+					</p>
+					<small>	
+						<div class="pull-left dt">
+							<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+				  			# of Passes:</br>
+		        			Purchased on:</br>
+							Passes Redeemed?:</br>
+							Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+							</br>
+				  			<%= pass.entries %></br>
+							<%= pass.created_at.strftime('%b %d, %Y') %></br>
+							<%= pass.redeemed %></br>
+							<%= link_to pass.confirmation, pass %>
+						</div>
+					</small>
+				</div>
+			<% end %>
+			<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next" %>
+	 	</div>
+	</div>
 <% else %>
 	<% if current_user.stripe_customer_token == nil && @customer_card.active_card != nil %>
 		<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>

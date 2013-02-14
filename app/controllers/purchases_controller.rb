@@ -29,8 +29,10 @@ class PurchasesController < ApplicationController
 		    logger.error "Here in not nil"
 		    logger.error "#{@user.stripe_card_token}"
 		    @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
-        @end_month = @customer_card.active_card.exp_month
-        @end_year = @customer_card.active_card.exp_year
+		    if @customer_card.active_card != nil
+          @end_month = @customer_card.active_card.exp_month
+          @end_year = @customer_card.active_card.exp_year
+        end
         logger.error "#{@end_month < Time.now.month}"
         logger.error "#{@end_year < Time.now.year}"
 		    logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
@@ -43,6 +45,7 @@ class PurchasesController < ApplicationController
     				    return
     			  end
 		        if @purchase.payment_return_customer(current_user)
+		            logger.error "Here in 0"
 		            @pass_set.sold_passes+=num_passes
 		            @pass_set.unsold_passes-=num_passes
 		            @pass_set.save
