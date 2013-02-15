@@ -231,7 +231,9 @@
           					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
         				</div>
       				</div>
-      				<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+      				<div class = "controls">
+						<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+					</div>
 				<hr>
   				</div>
 
@@ -277,7 +279,7 @@
 								<hr>
 							</div>
 							<div id = "cancelView">
-								<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
 					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
 							</div>
 							</br>
@@ -314,7 +316,9 @@
 		          				<%= f.text_field :name %> <small>(Must match Valid ID)</small>
 		        			</div>
 		      			</div>
-		      			<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" style = "margin-left: 180px" />
+						<div class = "controls">
+						<input type = "button" id = "nextPurchase" value = "Continue" class = "btn"  />
+						</div>
 						<hr>
 		  			</div>
 		
@@ -365,7 +369,7 @@
 						<%= f.submit "Purchase with New Card", :class => "btn btn-primary cancelBtn", :onclick => "return getlistd();" %>
 						<hr class = "cancelBtn">
 						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn cancelBtn" />
-						<hr>
+						</hr>
 					</div>		
                     <div id = "cancelOpts">
                     	<div id = "purchaseLoading" style = "display:none;">
@@ -377,7 +381,7 @@
 							<hr>
 						</div>
 						<div id = "cancelView">
-							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
 				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
 						</div>
 						</br>
