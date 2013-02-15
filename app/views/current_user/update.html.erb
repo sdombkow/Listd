@@ -6,7 +6,7 @@
 <% if current_user.stripe_customer_token != nil %>
 	<h4>Card Information:</h4>
 	<% if @customer_card.active_card != nil %>
-		<p>Last 4 digits of Stored Credit Card: <%= @last_four %></p>
+		<p>Last 4 digits of Stored Credit/Debit Card: <%= @last_four %></p>
 		<p>Card expires in: <%= @end_month_name %> <%= @end_year %></p>
 	<% else %>
 		<p>No Card on File</p>
