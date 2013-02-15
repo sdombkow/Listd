@@ -10,7 +10,7 @@
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
-                    var nameRegex = /[\s-]([A-Z][a-z]{2,4})/;
+                    var nameRegex = /[\s-]([A-Z][a-z])/;
                     if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
@@ -177,7 +177,7 @@
 					</small>
 				</div>
 			<% end %>
-			<%= will_paginate @unused_passes, :previous_label => "Previous", :next_label => "Next" %>
+			<%= will_paginate @unused_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'unused_passes_page' %>
 		</div>
 		<div class="span4 vertical-rule">
 			<h4 class="index-type">Used Passes</h4>
@@ -204,7 +204,7 @@
 					</small>
 				</div>
 			<% end %>
-			<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next" %>
+			<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'used_passes_page' %>
 	 	</div>
 	</div>
 <% else %>
@@ -280,7 +280,7 @@
 							</div>
 							<div id = "cancelView">
 								<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
-					    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
+					    		&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
 							</div>
 							</br>
 							</br>
@@ -382,7 +382,7 @@
 						</div>
 						<div id = "cancelView">
 							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
-				    		<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
+				    		&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
 						</div>
 						</br>
 						</br>

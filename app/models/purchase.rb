@@ -18,6 +18,7 @@ class Purchase < ActiveRecord::Base
         :card => stripe_card_token,
         :description => "payinguser@example.com"
       )
+      self.stripe_charge_token = charge.id
       save!
     end
     rescue Stripe::InvalidRequestError => e
@@ -58,6 +59,7 @@ class Purchase < ActiveRecord::Base
           :currency => "usd",
           :customer => user.stripe_customer_token
         )
+        self.stripe_charge_token = charge.id
         save!
       end
       rescue Stripe::InvalidRequestError => e
@@ -76,6 +78,7 @@ class Purchase < ActiveRecord::Base
             :currency => "usd",
             :customer => user.stripe_customer_token
           )
+          self.stripe_charge_token = charge.id
           save!
       end
       rescue Stripe::InvalidRequestError => e
