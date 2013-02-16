@@ -82,12 +82,16 @@ h2 {
 }
 
 #logo img {
-  height: 25px;
+  height: 22px;
 }
 
 #logo:hover {
   color: #fff;
   text-decoration: none;
+}
+
+.navbar .btn, .navbar .btn-group {
+  margin-top: 17px;
 }
 
 /* search */
@@ -97,8 +101,25 @@ h2 {
 }
 
 .search-length {
-  width: 250px;
+  width: 200px;
   margin-right: 25px;
+}
+
+.navbar-search {
+  margin-top: 17px;
+}
+
+.navbar-inverse .navbar-search .search-query:-moz-placeholder {
+  color: #888888;
+}
+
+.navbar-inverse .navbar-search .search-query {
+  background-color: #ccc;
+  height: 17px;
+}
+
+.navbar-search .search-query {
+  font-size: 12px;
 }
 
 /* footer */
