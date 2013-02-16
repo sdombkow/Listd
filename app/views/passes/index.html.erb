@@ -26,7 +26,7 @@
 	</small>
 	</div> <!-- end of .pass-preview -->
 	<% end %>
-	<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next" %>
+	<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
   </div>
 
   <div class="span4 vertical-rule">
@@ -52,6 +52,6 @@
 		</small>
 	</div> <!-- end of .pass-preview -->
 	<% end %>
-	<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next" %>
+	<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
   </div>
 </div>

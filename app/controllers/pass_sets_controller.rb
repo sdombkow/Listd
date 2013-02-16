@@ -25,13 +25,16 @@ class PassSetsController < ApplicationController
   def show
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	@passes = @pass_set.passes.order("created_at ASC").paginate(:page => params[:page], :per_page => 5)
+	  @used_passes = @pass_set.passes.order("name DESC").where('redeemed == ?', true).paginate(:page => params[:used_passes_page], :per_page => 5)
+	  @unused_passes = @pass_set.passes.order("name DESC").where('redeemed == ?', false).paginate(:page => params[:unused_passes_page], :per_page => 5)
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
-      @last_four = @customer_card.active_card.last4
-      @end_month = @customer_card.active_card.exp_month
-      @end_year = @customer_card.active_card.exp_year
+      if @customer_card.active_card != nil
+          @last_four = @customer_card.active_card.last4
+          @end_month = @customer_card.active_card.exp_month
+          @end_year = @customer_card.active_card.exp_year
+      end
     end
     @full_bar_path = "http://#{request.host}" + (bar_path @pass_set.bar).to_s
     @open_graph = false

@@ -6,7 +6,7 @@ class Purchase < ActiveRecord::Base
   attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price
   
   validates :name, :bar, :pass_set, :price, :num_passes, :date, :presence => true
-  validates :name, :format => {:with => /^([A-Z]+[a-zA-Z]* [A-Z]+[a-zA-Z]*)$/, :message => "Name is not valid"}
+  validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   
   
   def payment
@@ -18,6 +18,7 @@ class Purchase < ActiveRecord::Base
         :card => stripe_card_token,
         :description => "payinguser@example.com"
       )
+      self.stripe_charge_token = charge.id
       save!
     end
     rescue Stripe::InvalidRequestError => e
@@ -35,6 +36,7 @@ class Purchase < ActiveRecord::Base
           :currency => "usd",
           :customer => user.stripe_customer_token
         )
+        self.stripe_charge_token = charge.id
         save!
       end
       rescue Stripe::InvalidRequestError => e
@@ -57,7 +59,27 @@ class Purchase < ActiveRecord::Base
           :currency => "usd",
           :customer => user.stripe_customer_token
         )
+        self.stripe_charge_token = charge.id
         save!
+      end
+      rescue Stripe::InvalidRequestError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          errors.add :base, "There was a problem with your credit card."
+          false
+      end
+    
+    def return_customer_save_payment(user)
+      if valid?
+          cu = Stripe::Customer.retrieve(user.stripe_customer_token)
+          cu.card = stripe_card_token
+          cu.save
+          charge = Stripe::Charge.create(
+            :amount => price,
+            :currency => "usd",
+            :customer => user.stripe_customer_token
+          )
+          self.stripe_charge_token = charge.id
+          save!
       end
       rescue Stripe::InvalidRequestError => e
           logger.error "Stripe error while creating customer: #{e.message}"

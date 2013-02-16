@@ -51,7 +51,7 @@
     </br>
 	<% if @bar.website_url != "" %>
 		<small>
-			<%= link_to 'Website', @bar.website_url %>
+			<%= link_to "Website", "http://#{@bar.website_url}", :target => "_blank"%></br>
 		</small>
 	<% end %>
 	</br>

@@ -23,13 +23,31 @@ class PurchasesController < ApplicationController
 	      @decimals = String(@pass_set.price).split(".").last 
 	  end
 		@purchase.price = String(@pass_set.price).split(".").first+@decimals
-		
-		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
+		logger.error "Stripe Card Token: #{@purchase.stripe_card_token}"
+		logger.error "Stripe customer: #{@user.stripe_customer_token}"
 		if @user.stripe_customer_token != nil
 		    logger.error "Here in not nil"
-		    logger.error "#{@user.stripe_card_token}"
+		    logger.error "Stripe Card Token: #{@user.stripe_card_token}"
+		    @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+		    if @customer_card.active_card != nil
+          @end_month = @customer_card.active_card.exp_month
+          @end_year = @customer_card.active_card.exp_year
+        end
+        logger.error "#{@end_month < Time.now.month}"
+        logger.error "#{@end_year < Time.now.year}"
+		    logger.error "#{@end_month < Time.now.month || @end_year < Time.now.year}"
 		    if @purchase.stripe_card_token == ""
+		        logger.error "Here in Stipe Card Token Not Nil"
+		        if @end_month < Time.now.month || @end_year < Time.now.year
+		            cu = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+                cu.delete
+    		        redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured. Your current saved card has expired and is no longer valid.'
+    		        logger.error "Something is wrong here"
+    				    return
+    			  end
+    			  logger.error "Here in 0 right before"
 		        if @purchase.payment_return_customer(current_user)
+		            logger.error "Here in 0"
 		            @pass_set.sold_passes+=num_passes
 		            @pass_set.unsold_passes-=num_passes
 		            @pass_set.save
@@ -49,27 +67,26 @@ class PurchasesController < ApplicationController
 			      end
 		    elsif params[:credit_card_save] == "1"
 		      logger.error "Here in 1"
-    		  if @purchase.save_with_payment(current_user)
+    		  if @purchase.return_customer_save_payment(current_user)
     		      @pass_set.sold_passes+=num_passes
     		      @pass_set.unsold_passes-=num_passes
     		      @pass_set.save
-    		      # for i in 0..num_passes-1
-    			      pass = Pass.new
-    			      pass.name = params[:purchase][:name]
-    			      pass.purchase_id = @purchase.id
-    			      pass.pass_set_id = @pass_set.id
-    			      pass.redeemed = false
+    			    pass = Pass.new
+    			    pass.name = params[:purchase][:name]
+    			    pass.purchase_id = @purchase.id
+    			    pass.pass_set_id = @pass_set.id
+    			    pass.redeemed = false
     				  pass.entries=num_passes
     				  pass.confirmation=SecureRandom.hex(4)
-    			      pass.save
-    		      #end
-    		UserMailer.purchase_confirmation(@user,pass).deliver
+    			    pass.save
+    		      UserMailer.purchase_confirmation(@user,pass).deliver
               redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     		  else
     		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
     		  end
 		    else
 		        if @purchase.payment
+		            logger.error "Here in 2"
 		            @pass_set.sold_passes+=num_passes
 		            @pass_set.unsold_passes-=num_passes
 		            @pass_set.save

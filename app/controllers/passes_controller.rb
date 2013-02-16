@@ -5,13 +5,20 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 9)
-  	@past_passes = @user.passes.includes(:pass_set).where('date < ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:page], :per_page => 6)
+  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.passes.includes(:pass_set).where('date < ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
   end
   
   def show
 		@user=current_user
 		@pass = Pass.find(params[:id])
+		if @pass.purchase.stripe_charge_token != nil
+		  @customer_card = Stripe::Charge.retrieve(@pass.purchase.stripe_charge_token)
+      @card_type = @customer_card.card.type
+      @card_four = @customer_card.card.last4
+    end
+		logger.error "Purchase #: #{@pass.purchase}"
+		logger.error "User #: #{@pass.purchase.user}"
 		if(@user != @pass.purchase.user)
 		 if(!@user.partner?)
 		redirect_to:root
