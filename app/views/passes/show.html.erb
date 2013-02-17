@@ -1,4 +1,48 @@
-<% content_for :title, "Listd - Pass ##{@pass.confirmation}" %>
+<% content_for :title, "Listd - Purchase Confirmation" %>
+
+<h3>Thank you for making a purchase</h3>
+<p>You will receive a confirmation email with a copy of your pass and instruction on how to use it.</p>
+<div class="pass-preview">
+<small>
+  <h5 class="title title-confirmation">Purchase Summary on <%= @pass.created_at.strftime("%m/%d/%Y") %></h5>
+	<div class="pull-left dt">
+	  Bar Name: <br>
+	  Date of Pass: <br>
+	  Name on Purchase: <br>
+	  Confirmation Number: <br>
+	  <hr class="ns-rule">
+	  Total Passes: <br>
+	  Subtotal: <br>
+	  <% if @pass.purchase.stripe_charge_token != nil %>
+		<%= @card_type %> Card:
+	  <% end %>
+	</div>
+	<div class="pull-left dd">
+	  <%= @pass.pass_set.bar.name %> <br>
+	  <%= @pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+	  <%= @pass.name %> <br>
+	  <%= @pass.confirmation %> <br>
+	  <hr class="ns-rule">
+	  <%= @pass.entries%> <br>
+	  <%= number_to_currency(@pass.pass_set.price * @pass.entries) %> <br>
+	  <% if @pass.purchase.stripe_charge_token != nil %>
+		XXXX-XXXX-XXXX-<%= @card_four %>
+	  <% end %>
+	</div>
+	<br>
+	<div class="pull-right dd">
+	  <%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), @pass, :class => "btn title links-confirmation" %> <br>
+	  <%= link_to raw("Download <i class=\"icon-download\"></i>"), nil, :class => "btn title links-confirmation" %> <br>
+	  <%= link_to raw("All Passes <i class=\"icon-circle-arrow-right\"></i>"), '/mypasses', :class => "btn title links-confirmation" %>
+	</div>
+</small>
+</div> <!-- end of .pass-preview -->
+<hr>
+<div class="help-confirmation">
+  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact questions@listd.com or call 1-800-000-0000.</small></p>
+</div> <!-- end of .help-confirmation -->
+
+<!-- <% content_for :title, "Listd - Pass ##{@pass.confirmation}" %>
 <h2>Pass #<%=@pass.confirmation%></h2>
   <% if (!@pass.redeemed) %>
   <div class="span4 shadow" id="purchased-pass">
@@ -34,4 +78,4 @@ Total Cost: <%= number_to_currency(@pass.pass_set.price*@pass.entries) %>
 	<li>When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device.</li>
 	<li>Skip the line and show your LISTD pass and photo ID at the door.</li>
 	<li>Gain immediate entry and enjoy your night!</li>
-</ol>
+</ol> -->

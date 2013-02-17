@@ -94,6 +94,23 @@ body.passes.index {
   text-transform: uppercase;
 }
 
+/* confirmation page */
+.title-confirmation {
+  margin-bottom: 10px;
+}
+
+hr.ns-rule {
+  margin: 10px 0px 7px;
+}
+
+.links-confirmation {
+  margin-bottom: 10px;
+}
+
+.help-confirmation {
+  color: #aaa;
+}
+
 /* Landscape phones and down */
 @media (max-width: 767px) {
   body.passes.index .vertical-rule {
