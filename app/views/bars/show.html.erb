@@ -29,6 +29,7 @@
   <meta property="og:title"  content="<%=@bar.name %>" /> 
   <meta property="og:image"  content="http://cdn1.iconfinder.com/data/icons/Symbolicons_Drink/502/Drink_BeerPint.png"  /> 
 <% end %>
+<% content_for :title, "Listd - #{@bar.name}" %>
 <div>
 <div class="row">
   <div class="pull-left span7" id="bar-main">
