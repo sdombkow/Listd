@@ -37,3 +37,5 @@ gem 'simple_form'
 gem 'will_paginate'
 gem 'friendly_id'
 gem 'whenever', :require => false
+gem 'prawn', "~> 1.0.0.rc1"
+gem 'prawnto'

@@ -17,6 +17,7 @@ ListdApp::Application.routes.draw do
   get "pages/download"
   match "purchases/purchase_history" => 'purchases#purchase_history'
   match '/businesspdf' => 'pages#download'
+  match '/pdfversion' => 'passes#pdfversion'
 
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
 match 'contact' => 'contact#create', :as => 'contact', :via => :post
