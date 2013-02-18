@@ -11,13 +11,14 @@ pdf.grid([0,0], [3,3]).bounding_box do
 end
 
 pdf.grid([0,4], [3,7]).bounding_box do
-	pdf.image "#{Rails.root}/app/assets/images/logo.png", :width => 225, :position => :center, :vposition => :center
+	pdf.image "#{Rails.root}/app/assets/images/get_listed_text.png", :width => 225, :position => :center, :vposition => :center
 end
 
+pdf.move_down 40
 pdf.stroke_horizontal_rule
+pdf.move_down 50
 
 pdf.font "Helvetica"
-pdf.move_down 20
 pdf.text "Pass Instructions", :size => 20, :align => :center
 pdf.move_down 20
 pdf.text "1. If possible, download and print LISTD pass."
@@ -27,6 +28,10 @@ pdf.move_down 10
 pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
 pdf.move_down 10
 pdf.text "4. Gain immediate entry and enjoy your night!"
+
+pdf.grid([7,2], [7,5]).bounding_box do
+	pdf.image "#{Rails.root}/app/assets/images/logo_14.png", :width => 150, :position => :center, :vposition => :center
+end
 
 pdf.encrypt_document(:permissions => { :print_document => true,
 	:modify_contents => false,
