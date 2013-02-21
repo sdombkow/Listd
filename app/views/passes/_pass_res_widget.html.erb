@@ -1,24 +1,18 @@
 <div class="title-bar">
-  <h5>My Passes</h5>
+  <h5>My Reservations</h5>
 </div>
 
 <% if current_user != nil %>
 	<div class="content-box">
-  		<% @passes.each do |pass| %>
+  		<% @reservations.each do |pass| %>
 			<% if (!pass.redeemed) %>
       			<div class="pass-item">
 					<span><%= link_to pass.pass_set.bar.name, pass %></span>
 					<span class="offset1">Date: <%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
-					<span class="offset1"># of Passes: <%= pass.entries %></span>
+					<span class="offset1"># of Guests: <%= pass.entries %></span>
   	  			</div> <!-- end of .pass-item -->
 			<% end %>
-  		<% end %>
+		<% end %>
   		<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 	</div>
-<% else %>
-  	<div class="content-box">
-		<div class="vertical-line">
-    		<%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.
-    	</div> <!-- end of .vertical-line -->
-  	</div>
 <% end %>

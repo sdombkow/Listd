@@ -87,12 +87,14 @@
 	  			<small>Sun: <%= @bar.houropen_sunday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_sunday.strftime('%l:%M %p') %></small><br>
 			<% end %>
   		</div>
-
-  		<% if @pass_sets.empty? %>
-    		<div class="shadow span11 center-text" id="passes-none">
-      			<h2>Sorry, there are no available passes at this time</h2>
-    		</div>
-  		<% else %>
+		
+		<% if @pass_sets.empty? && @reservation_sets.empty? %>
+			<div class="shadow span11 center-text" id="passes-none">
+  				<h2>Sorry, there are no available passes or reservations at this time</h2>
+			</div>
+		<% end %>
+		
+  		<% if @pass_sets.empty? == false %>
 			<div class="span11" id="passes-avail">
 	  			<div class="div-header">
         			<h5>Available Passes</h5>
@@ -108,11 +110,7 @@
 			</div>
 		<% end %>
 		
-		<% if @reservation_sets.empty? %>
-    		<div class="shadow span11 center-text" id="passes-none">
-      			<h2>Sorry, there are no available reservations at this time</h2>
-    		</div>
-  		<% else %>
+		<% if @reservation_sets.empty? == false %>
 			<div class="span11" id="passes-avail">
 	  			<div class="div-header">
         			<h5>Available Reservations</h5>

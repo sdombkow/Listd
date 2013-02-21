@@ -5,9 +5,16 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
-  	@past_passes = @user.passes.includes(:pass_set).where('date < ?', Time.now.to_date).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ? AND redeemed == ?', Time.now.to_date, true).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.passes.includes(:pass_set).where('date < ? AND redeemed == ?', Time.now.to_date, true).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
   end
+  
+  def index_res
+    @user = current_user
+    # Eager loading pass sets on the user's passes
+  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ? AND redeemed == ?', Time.now.to_date, false).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.passes.includes(:pass_set).where('date < ? AND redeemed == ?', Time.now.to_date, false).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  end 
   
   def show
 		@user=current_user
@@ -69,16 +76,21 @@ class PassesController < ApplicationController
       pdf.stroke_horizontal_rule
       pdf.move_down 50
 
-      pdf.font "Helvetica"
-      pdf.text "Pass Instructions", :size => 20, :align => :center
-      pdf.move_down 20
-      pdf.text "1. If possible, download and print LISTD pass."
-      pdf.move_down 10
-      pdf.text "2. When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device."
-      pdf.move_down 10
-      pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
-      pdf.move_down 10
-      pdf.text "4. Gain immediate entry and enjoy your night!"
+      if @pass.pass_set.selling_passes == true
+      	pdf.font "Helvetica"
+      	pdf.text "Pass Instructions", :size => 20, :align => :center
+      	pdf.move_down 20
+      	pdf.text "1. If possible, download and print LISTD pass."
+      	pdf.move_down 10
+      	pdf.text "2. When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device."
+      	pdf.move_down 10
+      	pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
+      	pdf.move_down 10
+      	pdf.text "4. Gain immediate entry and enjoy your night!"
+      else
+      	pdf.font "Helvetica"
+      	pdf.text "Reservation Instructions", :size => 20, :align => :center
+      end
 
       pdf.grid([7,2], [7,5]).bounding_box do
       	pdf.image "#{Rails.root}/app/assets/images/logo_14.png", :width => 150, :position => :center, :vposition => :center
@@ -89,6 +101,10 @@ class PassesController < ApplicationController
       	:copy_contents => false,
       	:modify_annotations => false })
 
-      send_data pdf.render, :filename => "LISTDPASS(#{@pass.confirmation}).pdf", :type => "application/pdf"
+      if @pass.pass_set.selling_passes == true
+          send_data pdf.render, :filename => "LISTDPASS(#{@pass.confirmation}).pdf", :type => "application/pdf"
+      else
+          send_data pdf.render, :filename => "LISTDRESERVATION(#{@pass.confirmation}).pdf", :type => "application/pdf"
+      end
   end
 end

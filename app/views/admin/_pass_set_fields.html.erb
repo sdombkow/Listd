@@ -1,0 +1,20 @@
+ <div class="field">
+    <%= f.label :date %><br />
+    <%= f.date_select(:date,:start_year=>2012) %>
+  </div>
+  <div class="field">
+    <%= f.label :total_released_passes %><br />
+    <%= f.number_field :total_released_passes %>
+  </div>
+  <div class="field">
+    <%= f.label :sold_passes %><br />
+    <%= f.number_field :sold_passes %>
+  </div>
+  <div class="field">
+    <%= f.label :unsold_passes %><br />
+    <%= f.number_field :unsold_passes %>
+  </div>
+  <div class="field">
+    <%= f.label :price %><br />
+    <%= f.number_field :price %>
+  </div>

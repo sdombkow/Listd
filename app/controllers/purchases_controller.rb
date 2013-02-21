@@ -48,8 +48,13 @@ class PurchasesController < ApplicationController
     			  logger.error "Here in 0 right before"
 		        if @purchase.payment_return_customer(current_user)
 		            logger.error "Here in 0"
-		            @pass_set.sold_passes+=num_passes
-		            @pass_set.unsold_passes-=num_passes
+		            if @pass_set.selling_passes == true
+		              @pass_set.sold_passes+=num_passes
+		              @pass_set.unsold_passes-=num_passes
+		            else
+		              @pass_set.sold_passes++
+		              @pass_set.unsold_passes--
+		            end 
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -68,8 +73,13 @@ class PurchasesController < ApplicationController
 		    elsif params[:credit_card_save] == "1"
 		      logger.error "Here in 1"
     		  if @purchase.return_customer_save_payment(current_user)
-    		      @pass_set.sold_passes+=num_passes
-    		      @pass_set.unsold_passes-=num_passes
+    		      if @pass_set.selling_passes == true
+	              @pass_set.sold_passes+=num_passes
+	              @pass_set.unsold_passes-=num_passes
+	            else
+	              @pass_set.sold_passes++
+	              @pass_set.unsold_passes--
+	            end
     		      @pass_set.save
     			    pass = Pass.new
     			    pass.name = params[:purchase][:name]
@@ -87,8 +97,13 @@ class PurchasesController < ApplicationController
 		    else
 		        if @purchase.payment
 		            logger.error "Here in 2"
-		            @pass_set.sold_passes+=num_passes
-		            @pass_set.unsold_passes-=num_passes
+		            if @pass_set.selling_passes == true
+		              @pass_set.sold_passes+=num_passes
+		              @pass_set.unsold_passes-=num_passes
+		            else
+		              @pass_set.sold_passes++
+		              @pass_set.unsold_passes--
+		            end
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -108,8 +123,13 @@ class PurchasesController < ApplicationController
 		elsif params[:credit_card_save] == "1"
 		  logger.error "Here in 1"
 		  if @purchase.save_with_payment(current_user)
-		      @pass_set.sold_passes+=num_passes
-		      @pass_set.unsold_passes-=num_passes
+		      if @pass_set.selling_passes == true
+            @pass_set.sold_passes+=num_passes
+            @pass_set.unsold_passes-=num_passes
+          else
+            @pass_set.sold_passes++
+            @pass_set.unsold_passes--
+          end
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -130,8 +150,13 @@ class PurchasesController < ApplicationController
           logger.error "Purchase: #{@purchase.inspect}"
 		  logger.error "Here in nothing"
 		  if @purchase.payment
-		      @pass_set.sold_passes+=num_passes
-		      @pass_set.unsold_passes-=num_passes
+		      if @pass_set.selling_passes == true
+            @pass_set.sold_passes+=num_passes
+            @pass_set.unsold_passes-=num_passes
+          else
+            @pass_set.sold_passes++
+            @pass_set.unsold_passes--
+          end
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -171,8 +196,13 @@ class PurchasesController < ApplicationController
   		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
   		if @user.stripe_customer_token != nil
   		  if @purchase.payment_return_customer(current_user)
-  		      @pass_set.sold_passes+=num_passes
-  		      @pass_set.unsold_passes-=num_passes
+  		      if @pass_set.selling_passes == true
+              @pass_set.sold_passes+=num_passes
+              @pass_set.unsold_passes-=num_passes
+            else
+              @pass_set.sold_passes++
+              @pass_set.unsold_passes--
+            end
   		      @pass_set.save
   		      # for i in 0..num_passes-1
   			      pass = Pass.new

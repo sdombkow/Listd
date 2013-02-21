@@ -31,6 +31,8 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   resources :passes
   get "passes/index"
   match '/mypasses' => 'passes#index'
+  get "passes/index_res"
+  match '/myreservations' => 'passes#index_res'
   
   resources :purchases do
   	collection do

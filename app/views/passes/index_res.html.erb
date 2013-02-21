@@ -1,0 +1,57 @@
+<h2>My Reservations</h2>
+
+<div class="row footer-cushion">
+	<div class="span7">
+		<h4 class="index-type">Current</h4>
+		<% for pass in @valid_passes %>
+			<div class="pass-preview">
+				<small>
+  					<p class="title"><%= pass.pass_set.bar.name %></p>
+					<div class="pull-left dt">
+	  					Date of Reservation: <br>
+	  					# of Guests: <br>
+	  					Name on Purchase: <br>
+	  					Confirmation Number:
+					</div>
+					<div class="pull-left dd">
+	  					<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+	  					<%= pass.entries%> <br>
+	  					<%= pass.name %> <br>
+	  					<%= pass.confirmation %>
+					</div>
+					<br>
+					<div class="pull-right dd">
+	  					<%= link_to raw("View Reservation <i class=\"icon-circle-arrow-right\"></i>"), pass, :class => "btn title" %>
+					</div>
+				</small>
+			</div> <!-- end of .pass-preview -->
+		<% end %>
+		<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
+	</div>
+
+	<div class="span4 vertical-rule">
+		<h4 class="index-type">Past</h4>
+		<% for pass in @past_passes %>
+			<div class="pass-history-preview">
+				<small>
+      				<p class="title"><%= pass.pass_set.bar.name %></p>
+					<div class="pull-left dt">
+		  				Date of Reservation: <br>
+		  				# of Guests: <br>
+		  				Name on Purchase: <br>
+		  				Confirmation Number: <br>
+		  				Redeemed:
+					</div>
+					<div class="pull-left dd">
+		  				<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+		  				<%= pass.entries%> <br>
+		  				<%= pass.name %> <br>
+		  				<%= pass.confirmation %> <br>
+		  				<%= pass.redeemed %>
+					</div>
+				</small>
+			</div> <!-- end of .pass-preview -->
+		<% end %>
+		<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
+	</div>
+</div>

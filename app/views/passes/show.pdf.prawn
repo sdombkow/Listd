@@ -18,16 +18,21 @@ pdf.move_down 40
 pdf.stroke_horizontal_rule
 pdf.move_down 50
 
-pdf.font "Helvetica"
-pdf.text "Pass Instructions", :size => 20, :align => :center
-pdf.move_down 20
-pdf.text "1. If possible, download and print LISTD pass."
-pdf.move_down 10
-pdf.text "2. When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device."
-pdf.move_down 10
-pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
-pdf.move_down 10
-pdf.text "4. Gain immediate entry and enjoy your night!"
+if @pass.pass_set.selling_passes == true
+	pdf.font "Helvetica"
+	pdf.text "Pass Instructions", :size => 20, :align => :center
+	pdf.move_down 20
+	pdf.text "1. If possible, download and print LISTD pass."
+	pdf.move_down 10
+	pdf.text "2. When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device."
+	pdf.move_down 10
+	pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
+	pdf.move_down 10
+	pdf.text "4. Gain immediate entry and enjoy your night!"
+else
+	pdf.font "Helvetica"
+	pdf.text "Reservation Instructions", :size => 20, :align => :center
+end
 
 pdf.grid([7,2], [7,5]).bounding_box do
 	pdf.image "#{Rails.root}/app/assets/images/logo_14.png", :width => 150, :position => :center, :vposition => :center
