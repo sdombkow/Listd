@@ -49,11 +49,11 @@ class PurchasesController < ApplicationController
 		        if @purchase.payment_return_customer(current_user)
 		            logger.error "Here in 0"
 		            if @pass_set.selling_passes == true
-		              @pass_set.sold_passes+=num_passes
-		              @pass_set.unsold_passes-=num_passes
+		                @pass_set.sold_passes+=num_passes
+		                @pass_set.unsold_passes-=num_passes
 		            else
-		              @pass_set.sold_passes++
-		              @pass_set.unsold_passes--
+		                @pass_set.sold_passes+=1
+		                @pass_set.unsold_passes-=1
 		            end 
 		            @pass_set.save
 		            # for i in 0..num_passes-1
@@ -74,11 +74,11 @@ class PurchasesController < ApplicationController
 		      logger.error "Here in 1"
     		  if @purchase.return_customer_save_payment(current_user)
     		      if @pass_set.selling_passes == true
-	              @pass_set.sold_passes+=num_passes
-	              @pass_set.unsold_passes-=num_passes
+	                @pass_set.sold_passes+=num_passes
+	                @pass_set.unsold_passes-=num_passes
 	            else
-	              @pass_set.sold_passes++
-	              @pass_set.unsold_passes--
+	                @pass_set.sold_passes+=1
+	                @pass_set.unsold_passes-=1
 	            end
     		      @pass_set.save
     			    pass = Pass.new
@@ -98,11 +98,11 @@ class PurchasesController < ApplicationController
 		        if @purchase.payment
 		            logger.error "Here in 2"
 		            if @pass_set.selling_passes == true
-		              @pass_set.sold_passes+=num_passes
-		              @pass_set.unsold_passes-=num_passes
+		                @pass_set.sold_passes+=num_passes
+		                @pass_set.unsold_passes-=num_passes
 		            else
-		              @pass_set.sold_passes++
-		              @pass_set.unsold_passes--
+		                @pass_set.sold_passes+=1
+		                @pass_set.unsold_passes-=1
 		            end
 		            @pass_set.save
 		            # for i in 0..num_passes-1
@@ -124,11 +124,11 @@ class PurchasesController < ApplicationController
 		  logger.error "Here in 1"
 		  if @purchase.save_with_payment(current_user)
 		      if @pass_set.selling_passes == true
-            @pass_set.sold_passes+=num_passes
-            @pass_set.unsold_passes-=num_passes
+              @pass_set.sold_passes+=num_passes
+              @pass_set.unsold_passes-=num_passes
           else
-            @pass_set.sold_passes++
-            @pass_set.unsold_passes--
+              @pass_set.sold_passes+=1
+              @pass_set.unsold_passes-=1
           end
 		      @pass_set.save
 		      # for i in 0..num_passes-1
@@ -151,11 +151,11 @@ class PurchasesController < ApplicationController
 		  logger.error "Here in nothing"
 		  if @purchase.payment
 		      if @pass_set.selling_passes == true
-            @pass_set.sold_passes+=num_passes
-            @pass_set.unsold_passes-=num_passes
+              @pass_set.sold_passes+=num_passes
+              @pass_set.unsold_passes-=num_passes
           else
-            @pass_set.sold_passes++
-            @pass_set.unsold_passes--
+              @pass_set.sold_passes+=1
+              @pass_set.unsold_passes-=1
           end
 		      @pass_set.save
 		      # for i in 0..num_passes-1
@@ -197,11 +197,11 @@ class PurchasesController < ApplicationController
   		if @user.stripe_customer_token != nil
   		  if @purchase.payment_return_customer(current_user)
   		      if @pass_set.selling_passes == true
-              @pass_set.sold_passes+=num_passes
-              @pass_set.unsold_passes-=num_passes
+                @pass_set.sold_passes+=num_passes
+                @pass_set.unsold_passes-=num_passes
             else
-              @pass_set.sold_passes++
-              @pass_set.unsold_passes--
+                @pass_set.sold_passes+=1
+                @pass_set.unsold_passes-=1
             end
   		      @pass_set.save
   		      # for i in 0..num_passes-1

@@ -321,7 +321,7 @@
 						<div class="control-group">
         					<%= f.label "Number of Guests", class: "control-label" %>
         					<div class="controls">
-          						<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+          						<%= f.select :num_passes, (1..15) %>
 		  						<small>(Number of people in your party)</small>
           						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         					</div>
@@ -423,7 +423,7 @@
 							<div class="control-group">
 	        					<%= f.label "Number of Guests", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+	          						<%= f.select :num_passes, (1..15) %>
 			  						<small>(Number of people in your party)</small>
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
