@@ -1,5 +1,5 @@
 <div class="title-bar">
-  <h5>My Reservations</h5>
+  <h5>Upcoming Reservations</h5>
 </div>
 
 <% if current_user != nil %>
@@ -13,6 +13,5 @@
   	  			</div> <!-- end of .pass-item -->
 			<% end %>
 		<% end %>
-  		<%= will_paginate @passes, :previous_label => "Previous", :next_label => "Next" %>
 	</div>
 <% end %>

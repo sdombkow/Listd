@@ -1,3 +1,5 @@
+<% content_for :title, "Listd - My Reservations" %>
+
 <h2>My Reservations</h2>
 
 <div class="row footer-cushion">
@@ -26,7 +28,7 @@
 				</small>
 			</div> <!-- end of .pass-preview -->
 		<% end %>
-		<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
+		<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_res_page' %>
 	</div>
 
 	<div class="span4 vertical-rule">
@@ -52,6 +54,7 @@
 				</small>
 			</div> <!-- end of .pass-preview -->
 		<% end %>
-		<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
+		<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_res_page' %>
 	</div>
+	
 </div>

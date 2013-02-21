@@ -5,15 +5,15 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ? AND redeemed == ?', Time.now.to_date, true).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
-  	@past_passes = @user.passes.includes(:pass_set).where('date < ? AND redeemed == ?', Time.now.to_date, true).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  	@valid_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date < ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_passes_page], :per_page => 5)
   end
   
   def index_res
     @user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.includes(:pass_set).where('date >= ? AND redeemed == ?', Time.now.to_date, false).order('updated_at DESC').paginate(:page => params[:valid_passes_page], :per_page => 5)
-  	@past_passes = @user.passes.includes(:pass_set).where('date < ? AND redeemed == ?', Time.now.to_date, false).order('updated_at DESC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  	@valid_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
+  	@past_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_res_page], :per_page => 5)
   end 
   
   def show
