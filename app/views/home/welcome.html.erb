@@ -61,13 +61,17 @@
   <% end %> 
 </div> <!-- end of .section-container -->
 
-<div class="section-container">
-  <%= render "/passes/pass_widget"%>
-</div> <!-- end of .section-container -->
+<% if @pass.empty? == false %>
+	<div class="section-container">
+  		<%= render "/passes/pass_widget"%>
+	</div> <!-- end of .section-container -->
+<% end %>
 
-<div class="section-container">
-  <%= render "/passes/pass_res_widget"%>
-</div> <!-- end of .section-container -->
+<% if @reservations.empty? == false%>
+	<div class="section-container">
+  		<%= render "/passes/pass_res_widget"%>
+	</div> <!-- end of .section-container -->
+<% end %>
 
 <% if user_signed_in? %>
 	<div class="section-container">
