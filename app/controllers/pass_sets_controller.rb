@@ -108,10 +108,13 @@ class PassSetsController < ApplicationController
 		flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
 	    format.html { render action: "edit" }
         format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+    # Following segment does not allow a user to edit a pass set. Will allows return true
+=begin
 	elsif @existing_set
 		flash[:notice] = 'Error: You are trying to edit a pass to a date that has already exists!'
 	    format.html { render action: "edit" }
         format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+=end
 	elsif @pass_set.update_attributes(params[:pass_set])
         format.html { redirect_to [@bar.user, @bar], notice: 'Pass set was successfully updated.' }
         format.json { head :no_content }
