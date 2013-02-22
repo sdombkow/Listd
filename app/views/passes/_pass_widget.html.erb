@@ -1,8 +1,8 @@
-<div class="title-bar">
-  <h5>Upcoming Passes</h5>
-</div>
-
 <% if current_user != nil %>
+	<div class="title-bar">
+  		<h5>Upcoming Passes</h5>
+	</div>
+
 	<div class="content-box">
   		<% @passes.each do |pass| %>
 			<% if (!pass.redeemed) %>
@@ -14,10 +14,4 @@
 			<% end %>
   		<% end %>
 	</div>
-<% else %>
-  	<div class="content-box">
-		<div class="vertical-line">
-    		<%= link_to 'Create an account', new_user_registration_path %>, so that you can reap all of LISTD's benefits.
-    	</div> <!-- end of .vertical-line -->
-  	</div>
 <% end %>

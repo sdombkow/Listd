@@ -63,7 +63,7 @@
 	  			<%= @pass.confirmation %> <br>
 	  			<hr class="ns-rule">
 	  			<%= @pass.entries%> <br>
-	  			<%= number_to_currency(@pass.pass_set.price * @pass.entries) %> <br>
+	  			<%= number_to_currency(@pass.price * @pass.entries) %> <br>
 	  			<% if @pass.purchase.stripe_charge_token != nil %>
 					XXXX-XXXX-XXXX-<%= @card_four %>
 	  			<% end %>

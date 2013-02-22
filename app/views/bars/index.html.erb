@@ -44,7 +44,7 @@
     				<td><%= pass_set.sold_passes %></td>
     				<td><%= pass_set.unsold_passes %></td>
     				<td><%= number_to_currency(pass_set.price) %></td>
-					<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+					<td><%= number_to_currency(pass_set.revenue_total) %></td>
 					<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
   				</tr>
 			<% end %>
@@ -75,7 +75,7 @@
     				<td><%= pass_set.sold_passes %></td>
     				<td><%= pass_set.unsold_passes %></td>
     				<td><%= number_to_currency(pass_set.price) %></td>
-					<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+					<td><%= number_to_currency(pass_set.revenue_total) %></td>
 					<td><%= link_to 'Show Purchased Reservations', [bar, pass_set] %></td>
   				</tr>
 			<% end %>

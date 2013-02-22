@@ -159,7 +159,7 @@
     						<td><%= pass_set.sold_passes %></td>
     						<td><%= pass_set.unsold_passes %></td>
     						<td><%= number_to_currency(pass_set.price) %></td>
-							<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+							<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Passes', [@bar.user, @bar, pass_set] %></td>
@@ -200,7 +200,7 @@
     						<td><%= pass_set.sold_passes %></td>
     						<td><%= pass_set.unsold_passes %></td>
     						<td><%= number_to_currency(pass_set.price) %></td>
-							<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+							<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Reservations', [@bar.user, @bar, pass_set] %></td>
@@ -241,7 +241,7 @@
     					<td><%= pass_set.sold_passes %></td>
     					<td><%= pass_set.unsold_passes %></td>
     					<td><%= pass_set.price %></td>
-						<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+						<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -281,7 +281,7 @@
     					<td><%= pass_set.sold_passes %></td>
     					<td><%= pass_set.unsold_passes %></td>
     					<td><%= pass_set.price %></td>
-						<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+						<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>

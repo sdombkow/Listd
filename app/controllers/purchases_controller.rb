@@ -54,7 +54,8 @@ class PurchasesController < ApplicationController
 		            else
 		                @pass_set.sold_passes+=1
 		                @pass_set.unsold_passes-=1
-		            end 
+		            end
+		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -62,6 +63,7 @@ class PurchasesController < ApplicationController
 			          pass.purchase_id = @purchase.id
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
+			          pass.price = @pass_set.price
 				        pass.entries=num_passes
 				        pass.confirmation=SecureRandom.hex(4)
 			          pass.save
@@ -80,12 +82,14 @@ class PurchasesController < ApplicationController
 	                @pass_set.sold_passes+=1
 	                @pass_set.unsold_passes-=1
 	            end
+	            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
     		      @pass_set.save
     			    pass = Pass.new
     			    pass.name = params[:purchase][:name]
     			    pass.purchase_id = @purchase.id
     			    pass.pass_set_id = @pass_set.id
     			    pass.redeemed = false
+    			    pass.price = @pass_set.price
     				  pass.entries=num_passes
     				  pass.confirmation=SecureRandom.hex(4)
     			    pass.save
@@ -104,6 +108,7 @@ class PurchasesController < ApplicationController
 		                @pass_set.sold_passes+=1
 		                @pass_set.unsold_passes-=1
 		            end
+		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -111,6 +116,7 @@ class PurchasesController < ApplicationController
 			          pass.purchase_id = @purchase.id
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
+			          pass.price = @pass_set.price
 			          pass.entries=num_passes
 		            pass.confirmation=SecureRandom.hex(4)
 			          pass.save
@@ -130,6 +136,7 @@ class PurchasesController < ApplicationController
               @pass_set.sold_passes+=1
               @pass_set.unsold_passes-=1
           end
+          @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -137,8 +144,9 @@ class PurchasesController < ApplicationController
 			      pass.purchase_id = @purchase.id
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
-				  pass.entries=num_passes
-				  pass.confirmation=SecureRandom.hex(4)
+			      pass.price = @pass_set.price
+				    pass.entries=num_passes
+				    pass.confirmation=SecureRandom.hex(4)
 			      pass.save
 		      #end
 		UserMailer.purchase_confirmation(@user,pass).deliver
@@ -157,6 +165,7 @@ class PurchasesController < ApplicationController
               @pass_set.sold_passes+=1
               @pass_set.unsold_passes-=1
           end
+          @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -164,8 +173,9 @@ class PurchasesController < ApplicationController
 			      pass.purchase_id = @purchase.id
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
-				  pass.entries=num_passes
-				  pass.confirmation=SecureRandom.hex(4)
+			      pass.price = @pass_set.price
+				    pass.entries=num_passes
+				    pass.confirmation=SecureRandom.hex(4)
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver

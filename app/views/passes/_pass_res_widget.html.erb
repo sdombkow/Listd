@@ -1,8 +1,8 @@
-<div class="title-bar">
-  <h5>Upcoming Reservations</h5>
-</div>
-
 <% if current_user != nil %>
+	<div class="title-bar">
+  		<h5>Upcoming Reservations</h5>
+	</div>
+
 	<div class="content-box">
   		<% @reservations.each do |pass| %>
 			<% if (!pass.redeemed) %>
