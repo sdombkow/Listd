@@ -291,7 +291,6 @@
 			<% end %>
 			<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'used_passes_page' %>
 	 	</div>
-        <%= link_to "Edit Passes", :action => "edit", :id => @pass_set.id %>
 	</div>
 <% else %>
 	<% if current_user.stripe_customer_token == nil || @customer_card.active_card == nil %>
