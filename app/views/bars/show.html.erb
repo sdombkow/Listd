@@ -98,6 +98,7 @@
 			<div class="span11" id="passes-avail">
 	  			<div class="div-header">
         			<h5>Available Passes</h5>
+					<small>A LISTD pass provides immediate entry to <%= @bar.name %>.</small>
 	  			</div>
 	  			<% @pass_sets.each do |pass_set| %>
 					<div class="date-box span1 center-text">
@@ -114,6 +115,7 @@
 			<div class="span11" id="passes-avail">
 	  			<div class="div-header">
         			<h5>Available Reservations</h5>
+					<small>A LISTD reservation reserves a table for your party at <%= @bar.name %>.</small>
 	  			</div>
 	  			<% @reservation_sets.each do |pass_set| %>
 					<div class="date-box span1 center-text">

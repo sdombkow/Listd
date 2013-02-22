@@ -25,7 +25,7 @@ if @pass.pass_set.selling_passes == true
 	pdf.move_down 10
 	pdf.text "2. When arriving at the bar or nightclub, have LISTD pass available as a print out or on your mobile device."
 	pdf.move_down 10
-	pdf.text "3. Skip the line and show your LISTD pass and photo ID at the door."
+	pdf.text "3. Show your LISTD pass and photo ID at the door."
 	pdf.move_down 10
 	pdf.text "4. Gain immediate entry and enjoy your night!"
 else
