@@ -20,7 +20,7 @@
 	
 	
 	
-	<% if bar.pass_sets.where('selling_passes == ?', true).empty? %>
+	<% if bar.pass_sets.where('selling_passes = ?', true).empty? %>
 		<h5>No Pass Sets Available</h5>
 	<% else %>
 		<h5>Pass Sets</h5>
@@ -37,7 +37,7 @@
     			<th></th>
   			</tr>
 
-			<% bar.pass_sets.where('selling_passes == ?', true).each do |pass_set| %>
+			<% bar.pass_sets.where('selling_passes = ?', true).each do |pass_set| %>
   				<tr>
     				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
     				<td><%= pass_set.total_released_passes %></td>
@@ -51,7 +51,7 @@
 		</table>
 	<% end %>
 	</br>
-	<% if bar.pass_sets.where('selling_passes == ?', false).empty? %>
+	<% if bar.pass_sets.where('selling_passes = ?', false).empty? %>
 		<h5>No Reservation Sets Available</h5>
 	<% else %>
 		<h5>Reservation Sets</h5>
@@ -68,7 +68,7 @@
     			<th></th>
   			</tr>
 
-			<% bar.pass_sets.where('selling_passes == ?', false).each do |pass_set| %>
+			<% bar.pass_sets.where('selling_passes = ?', false).each do |pass_set| %>
   				<tr>
     				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
     				<td><%= pass_set.total_released_passes %></td>
