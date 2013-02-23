@@ -38,9 +38,9 @@
 			});
 			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
 		<% end %>
-		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude + 0.005 %>,<%= bar.longitude + 0.005 %>));
-		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude - 0.005 %>,<%= bar.longitude - 0.005 %>));
-		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude - 0.0125 %>));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %> + 0.005,<%= bar.longitude %> + 0.005));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %> - 0.005 ,<%= bar.longitude %> - 0.005));
+		markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %> - 0.0125 ));
 		map.fitBounds(markerBounds);
 		}
     </script>
