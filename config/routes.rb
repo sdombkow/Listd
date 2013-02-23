@@ -52,6 +52,7 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
 		end
 	end
 	
+resources :tokens,:only => [:create, :destroy]
 
 
 end
