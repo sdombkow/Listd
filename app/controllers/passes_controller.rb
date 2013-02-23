@@ -5,15 +5,15 @@ class PassesController < ApplicationController
   def index
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
-  	@past_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date < ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  	@valid_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_passes_page], :per_page => 5)
   end
   
   def reservation_archive
     @user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
-  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes == ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_res_page], :per_page => 5)
+  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
+  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_res_page], :per_page => 5)
   end 
   
   def show
