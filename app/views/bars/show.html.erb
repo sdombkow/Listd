@@ -30,170 +30,271 @@
   <meta property="og:image"  content="http://cdn1.iconfinder.com/data/icons/Symbolicons_Drink/502/Drink_BeerPint.png"  /> 
 <% end %>
 <% content_for :title, "Listd - #{@bar.name}" %>
+
 <div>
-<div class="row">
-  <div class="pull-left span7" id="bar-main">
-    <h3> <%= @bar.name %> </h3>
-    <address>
-	  <small style = "line-height:.7em">	<%= @bar.street_address %>, <%= @bar.city%>,  <%=@bar.state%> <%=@bar.zip_code%> </small>
-    </address>
 	<div class="row">
-      <body onload="initialize()">
-	    <div id="map_canvas" class="map span6"></div>
-      </body>
+  		<div class="pull-left span7" id="bar-main">
+    		<h3> <%= @bar.name %> </h3>
+    		<address>
+	  			<small style = "line-height:.7em">	<%= @bar.street_address %>, <%= @bar.city%>,  <%=@bar.state%> <%=@bar.zip_code%> </small>
+    		</address>
+			<div class="row">
+      			<body onload="initialize()">
+	    			<div id="map_canvas" class="map span6"></div>
+      			</body>
+			</div>
+  		</div>
+
+  		<div class="pull-left span3" id="bar-info">
+    		<h5>Contact</h5>
+    		<small>
+				<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
+			</small>
+    		</br>
+			<% if @bar.website_url != "" %>
+				<small>
+					<%= link_to "Website", "http://#{@bar.website_url}", :target => "_blank"%></br>
+				</small>
+			<% end %>
+			</br>
+    		<% if @bar.facebook_url != "" %>
+				<%= link_to image_tag("fb_icon(bar).png"), @bar.facebook_url %>
+			<% end %>
+			<% if @bar.twitter_url != "" %>
+				<%= link_to image_tag("twitter_icon(bar).png"), @bar.twitter_url %>
+			<% end %>
+    		</br>
+    		<h5>Hours</h5>
+			<% if @bar.open_monday %>
+	  			<small>Mon: <%= @bar.houropen_monday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_monday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_tuesday %>
+	  			<small>Tues: <%= @bar.houropen_tuesday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_tuesday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_wednesday %>
+	  			<small>Wed: <%= @bar.houropen_wednesday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_wednesday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_thursday %>
+	  			<small>Thurs: <%= @bar.houropen_thursday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_thursday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_friday %>
+	  			<small>Fri: <%= @bar.houropen_friday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_friday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_saturday %>
+	  			<small>Sat: <%= @bar.houropen_saturday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_saturday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+			<% if @bar.open_sunday %>
+	  			<small>Sun: <%= @bar.houropen_sunday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_sunday.strftime('%l:%M %p') %></small><br>
+			<% end %>
+  		</div>
+		
+		<% if @pass_sets.empty? && @reservation_sets.empty? %>
+			<div class="shadow span11 center-text" id="passes-none">
+  				<h2>Sorry, there are no available passes or reservations at this time</h2>
+			</div>
+		<% end %>
+		
+  		<% if @pass_sets.empty? == false %>
+			<div class="span11" id="passes-avail">
+	  			<div class="div-header">
+        			<h5>Available Passes</h5>
+					<small>A LISTD pass provides immediate entry to <%= @bar.name %>.</small>
+	  			</div>
+	  			<% @pass_sets.each do |pass_set| %>
+					<div class="date-box span1 center-text">
+	      				<p class="lead"><%= link_to pass_set.date.strftime("%d"), [@bar, pass_set] %></p>
+		  				<div>
+							<%= link_to pass_set.date.strftime("%a"), [@bar, pass_set] %>
+						</div>
+					</div>
+	  			<% end %>
+			</div>
+		<% end %>
+		
+		<% if @reservation_sets.empty? == false %>
+			<div class="span11" id="passes-avail">
+	  			<div class="div-header">
+        			<h5>Available Reservations</h5>
+					<small>A LISTD reservation reserves a table for your party at <%= @bar.name %>.</small>
+	  			</div>
+	  			<% @reservation_sets.each do |pass_set| %>
+					<div class="date-box span1 center-text">
+	      				<p class="lead"><%= link_to pass_set.date.strftime("%d"), [@bar, pass_set] %></p>
+		  				<div>
+							<%= link_to pass_set.date.strftime("%a"), [@bar, pass_set] %>
+						</div>
+					</div>
+	  			<% end %>
+			</div>
+		<% end %>
+		
 	</div>
-  </div>
-
-  <div class="pull-left span3" id="bar-info">
-    <h5>Contact</h5>
-    <small>
-		<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
-	</small>
-    </br>
-	<% if @bar.website_url != "" %>
-		<small>
-			<%= link_to "Website", "http://#{@bar.website_url}", :target => "_blank"%></br>
-		</small>
-	<% end %>
-	</br>
-    <% if @bar.facebook_url != "" %>
-		<%= link_to image_tag("fb_icon(bar).png"), @bar.facebook_url %>
-	<% end %>
-	<% if @bar.twitter_url != "" %>
-		<%= link_to image_tag("twitter_icon(bar).png"), @bar.twitter_url %>
-	<% end %>
-    </br>
-    <h5>Hours</h5>
-	<% if @bar.open_monday %>
-	  <small>Mon: <%= @bar.houropen_monday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_monday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_tuesday %>
-	  <small>Tues: <%= @bar.houropen_tuesday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_tuesday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_wednesday %>
-	  <small>Wed: <%= @bar.houropen_wednesday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_wednesday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_thursday %>
-	  <small>Thurs: <%= @bar.houropen_thursday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_thursday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_friday %>
-	  <small>Fri: <%= @bar.houropen_friday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_friday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_saturday %>
-	  <small>Sat: <%= @bar.houropen_saturday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_saturday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-	<% if @bar.open_sunday %>
-	  <small>Sun: <%= @bar.houropen_sunday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_sunday.strftime('%l:%M %p') %></small><br>
-	<% end %>
-  </div>
-
-  <% if @pass_sets.empty? %>
-    <div class="shadow span11 center-text" id="passes-none">
-      <h2>Sorry, there are no available passes at this time</h2>
-    </div>
-  <% else %>
-	<div class="span11" id="passes-avail">
-	  <div class="div-header">
-        <h5>Available Passes</h5>
-	  </div>
-	  <% @pass_sets.each do |pass_set| %>
-		<div class="date-box span1 center-text">
-	      <p class="lead"><%= link_to pass_set.date.strftime("%d"), [@bar, pass_set] %></p>
-		  <div><%= link_to pass_set.date.strftime("%a"), [@bar, pass_set] %></div>
-		</div>
-	  <% end %>
-	</div>
-</div>
-
-<% end %>
 </div>
 
 <%if(user_signed_in? && current_user.admin?) %>
-<div>
-<%if @pass_sets.empty? %>
-<h5>No Active Pass Sets</h5>
-<% else %>
-<h5>Active Pass Sets</h5>
-<table cellpadding="10">
-  <tr>
-    <th>Date</th>
-    <th>Total released passes</th>
-    <th>Sold passes</th>
-    <th>Unsold passes</th>
-    <th>Price</th>
-	<th>Earnings</th>
-    <th>Purchase?</th>
-	<th></th>
-	<th></th>
-	<th></th>
-  </tr>
+	<div>
+		
+		<%if @pass_sets.empty? %>
+			<h5>No Active Pass Sets</h5>
+		<% else %>
+			<h5>Active Pass Sets</h5>
+				<table cellpadding="10">
+  					<tr>
+    					<th>Date</th>
+    					<th>Total Released Passes</th>
+    					<th>Pass Sold</th>
+    					<th>Passes Unsold</th>
+    					<th>Price</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
 
-<% @pass_sets.each do |pass_set| %>
-  <tr>
-    <td><%= pass_set.date %></td>
-    <td><%= pass_set.total_released_passes %></td>
-    <td><%= pass_set.sold_passes %></td>
-    <td><%= pass_set.unsold_passes %></td>
-    <td><%= number_to_currency(pass_set.price) %></td>
-	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+					<% @pass_sets.each do |pass_set| %>
+  						<tr>
+    						<td><%= pass_set.date %></td>
+    						<td><%= pass_set.total_released_passes %></td>
+    						<td><%= pass_set.sold_passes %></td>
+    						<td><%= pass_set.unsold_passes %></td>
+    						<td><%= number_to_currency(pass_set.price) %></td>
+							<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
-	<%if(user_signed_in? && current_user.admin?) %>
-    <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
-	<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
-	<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],
-               :confirm => 'Are you sure?',
-               :method => :delete %> <td>
-			   <%elsif (current_user.partner?)%>
-			       <td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
-				   <%else %>
-			    <td><%= link_to 'Purchase a Ticket', [@bar,pass_set] %></td>   
-			   <%end%>
-  </tr>
-<% end %>
-</table>
-<% end %>
-</br>
-<% if @expired_sets.empty? %>
-<h5> No Expired Pass Sets </h5>
-<% else %>
-<h5>Expired Pass Sets</h5>
-<table cellpadding="10">
-  <tr>
-    <th>Date</th>
-    <th>Total released passes</th>
-    <th>Sold passes</th>
-    <th>Unsold passes</th>
-    <th>Price</th>
-	<th>Earnings</th>
-    <th>Purchase?</th>
-	<th></th>
-	<th></th>
-	<th></th>
-  </tr>
+							<%if(user_signed_in? && current_user.admin?) %>
+    							<td><%= link_to 'Show Purchased Passes', [@bar.user, @bar, pass_set] %></td>
+								<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
+								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> <td>
+			   				<%elsif (current_user.partner?)%>
+			      				<td><%= link_to 'Show Purchased Passes', [@bar, pass_set] %></td>
+				   			<%else %>
+			    				<td><%= link_to 'Purchase a Passes', [@bar,pass_set] %></td>   
+			   				<%end%>
+  						</tr>
+					<% end %>
+				</table>
+		<% end %>
+		</br>
+		<%if @reservation_sets.empty? %>
+			<h5>No Active Reservation Sets</h5>
+		<% else %>
+			<h5>Active Reservation Sets</h5>
+				<table cellpadding="10">
+  					<tr>
+    					<th>Date</th>
+    					<th>Total Released Reservations</th>
+    					<th>Reservations Made</th>
+    					<th>Open Reservations</th>
+    					<th>Price Per Person</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
+
+					<% @reservation_sets.each do |pass_set| %>
+  						<tr>
+    						<td><%= pass_set.date %></td>
+    						<td><%= pass_set.total_released_passes %></td>
+    						<td><%= pass_set.sold_passes %></td>
+    						<td><%= pass_set.unsold_passes %></td>
+    						<td><%= number_to_currency(pass_set.price) %></td>
+							<td><%= number_to_currency(pass_set.revenue_total) %></td>
+
+							<%if(user_signed_in? && current_user.admin?) %>
+    							<td><%= link_to 'Show Purchased Reservations', [@bar.user, @bar, pass_set] %></td>
+								<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
+								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> <td>
+			   				<%elsif (current_user.partner?)%>
+			      				<td><%= link_to 'Show Purchased Reservations', [@bar, pass_set] %></td>
+				   			<%else %>
+			    				<td><%= link_to 'Purchase a Reservation', [@bar,pass_set] %></td>   
+			   				<%end%>
+  						</tr>
+					<% end %>
+				</table>
+		<% end %>
+		</br>
+		<% if @expired_sets.empty? %>
+			<h5> No Expired Pass Sets </h5>
+		<% else %>
+			<h5>Expired Pass Sets</h5>
+			<table cellpadding="10">
+  				<tr>
+    				<th>Date</th>
+    				<th>Total released passes</th>
+    				<th>Sold passes</th>
+    				<th>Unsold passes</th>
+    				<th>Price</th>
+					<th>Earnings</th>
+    				<th>Purchase?</th>
+					<th></th>
+					<th></th>
+					<th></th>
+  				</tr>
   
-<% @expired_sets.each do |pass_set| %>
-  <tr>
-    <td><%= pass_set.date %></td>
-    <td><%= pass_set.total_released_passes %></td>
-    <td><%= pass_set.sold_passes %></td>
-    <td><%= pass_set.unsold_passes %></td>
-    <td><%= pass_set.price %></td>
-	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
+				<% @expired_sets.each do |pass_set| %>
+  					<tr>
+    					<td><%= pass_set.date %></td>
+    					<td><%= pass_set.total_released_passes %></td>
+    					<td><%= pass_set.sold_passes %></td>
+    					<td><%= pass_set.unsold_passes %></td>
+    					<td><%= pass_set.price %></td>
+						<td><%= number_to_currency(pass_set.revenue_total) %></td>
 
-	<%if(user_signed_in? && current_user.admin?) %>
-    <td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
-	<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],
-               :confirm => 'Are you sure?',
-               :method => :delete %> <td>
-			   <%elsif (current_user.partner?)%>
-			       <td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
-				   <%else %>
-			    <td><%= link_to 'Purchase a Ticket', [@bar,pass_set] %></td>   
-			   <%end%>
-  </tr>
-<% end %>
-</table>
-<% end %>
+						<%if(user_signed_in? && current_user.admin?) %>
+    						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
+							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> <td>
+			   			<%elsif (current_user.partner?)%>
+			       			<td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
+				   		<%else %>
+			    			<td><%= link_to 'Purchase a Ticket', [@bar,pass_set] %></td>   
+			   			<%end%>
+  					</tr>
+				<% end %>
+			</table>
+		<% end %>
+		</br>
+		<% if @expired_reservation_sets.empty? %>
+			<h5> No Expired Reservation Sets </h5>
+		<% else %>
+			<h5>Expired Reservation Sets</h5>
+			<table cellpadding="10">
+  				<tr>
+    				<th>Date</th>
+    				<th>Total Released Reservations</th>
+    				<th>Reservations Made</th>
+    				<th>Open Reservations</th>
+    				<th>Price Per Person</th>
+					<th>Earnings</th>
+    				<th>Purchase?</th>
+					<th></th>
+					<th></th>
+					<th></th>
+  				</tr>
+  
+				<% @expired_sets.each do |pass_set| %>
+  					<tr>
+    					<td><%= pass_set.date %></td>
+    					<td><%= pass_set.total_released_passes %></td>
+    					<td><%= pass_set.sold_passes %></td>
+    					<td><%= pass_set.unsold_passes %></td>
+    					<td><%= pass_set.price %></td>
+						<td><%= number_to_currency(pass_set.revenue_total) %></td>
+
+						<%if(user_signed_in? && current_user.admin?) %>
+    						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
+							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> <td>
+			   			<%elsif (current_user.partner?)%>
+			       			<td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
+				   		<%else %>
+			    			<td><%= link_to 'Purchase a Ticket', [@bar,pass_set] %></td>   
+			   			<%end%>
+  					</tr>
+				<% end %>
+			</table>
+		<% end %>
 </div>
 </br>
 <%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |

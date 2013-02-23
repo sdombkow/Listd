@@ -72,11 +72,11 @@ class PassSetsController < ApplicationController
   # POST /pass_sets.json
   def create
     @pass_set = PassSet.new(params[:pass_set])
-	@pass_set.sold_passes = 0
-	@pass_set.unsold_passes = @pass_set.total_released_passes
+	  @pass_set.sold_passes = 0
+	  @pass_set.unsold_passes = @pass_set.total_released_passes
     @bar = Bar.find(params[:bar_id])
     @pass_set.bar = @bar
-	@existing_set = @bar.pass_sets.where("date = ?", @pass_set.date).first
+	  @existing_set = @bar.pass_sets.where("date = ?", @pass_set.date).first
     respond_to do |format|
 		if @pass_set.date < Date.today
 		flash[:notice] = 'Error: You are trying to create a pass for a date that has already passed!'
@@ -101,27 +101,33 @@ class PassSetsController < ApplicationController
   def update
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
-	@date = Date.new(params[:pass_set]["date(1i)"].to_i,params[:pass_set]["date(2i)"].to_i,params[:pass_set]["date(3i)"].to_i)
-	@existing_set = @bar.pass_sets.where("date = ?", @date).first
+	  @date = Date.new(params[:pass_set]["date(1i)"].to_i,params[:pass_set]["date(2i)"].to_i,params[:pass_set]["date(3i)"].to_i)
+	  @existing_set = @bar.pass_sets.where("date = ?", @date).first
+    if @existing_set.nil?
+        logger.error "Nil Existing Set"
+        flash[:notice] = "Error: You cannot change the date of this pass set. Please create a new one"
+        redirect_to :action => "index", :controller => "bars"
+        return
+    end
+	  @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
+    @existing_sets = @bar.pass_sets.where("date = ?", @date).length
     respond_to do |format|
-	if @date < Date.today
-		flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
-	    format.html { render action: "edit" }
-        format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-    # Following segment does not allow a user to edit a pass set. Will allows return true
-=begin
-	elsif @existing_set
-		flash[:notice] = 'Error: You are trying to edit a pass to a date that has already exists!'
-	    format.html { render action: "edit" }
-        format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-=end
-	elsif @pass_set.update_attributes(params[:pass_set])
-        format.html { redirect_to [@bar.user, @bar], notice: 'Pass set was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-      end
+	      if @date < Date.today
+		        flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
+	          format.html { render action: "edit" }
+            format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+            # Next if statements prevents any editing to this pass set
+	      elsif @existing_sets == 1 and @existing_set.id != @pass_set.id
+    	      flash[:notice] = 'Error: There is already a pass set with this date!'
+	          format.html { render action: "edit" }
+            format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+	      elsif @pass_set.update_attributes(params[:pass_set])
+            format.html { redirect_to [@bar.user, @bar], notice: 'Pass set was successfully updated.' }
+            format.json { head :no_content }
+        else
+            format.html { render action: "edit" }
+            format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+        end
     end
   end
 

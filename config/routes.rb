@@ -29,8 +29,8 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
 		end
   resources :admin
   resources :passes
-  get "passes/index"
   match '/mypasses' => 'passes#index'
+  match '/myreservations' => 'passes#reservation_archive'
   
   resources :purchases do
   	collection do

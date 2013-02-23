@@ -20,36 +20,67 @@
 	
 	
 	
-	<% if bar.pass_sets.empty? %>
-<h5>No Pass Sets available</h5>
-<% else %>
-<h5>Pass Sets</h5>
-<table cellpadding="10">
-  <tr>
-    <th>Date</th>
-    <th>Total released passes</th>
-    <th>Sold passes</th>
-    <th>Unsold passes</th>
-    <th>Price</th>
-	<th>Total Revenue</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+	<% if bar.pass_sets.where('selling_passes == ?', true).empty? %>
+		<h5>No Pass Sets Available</h5>
+	<% else %>
+		<h5>Pass Sets</h5>
+		<table cellpadding="10">
+  			<tr>
+    			<th>Date</th>
+    			<th>Total released passes</th>
+    			<th>Sold passes</th>
+    			<th>Unsold passes</th>
+    			<th>Price</th>
+				<th>Total Revenue</th>
+    			<th></th>
+    			<th></th>
+    			<th></th>
+  			</tr>
 
-<% bar.pass_sets.each do |pass_set| %>
-  <tr>
-    <td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
-    <td><%= pass_set.total_released_passes %></td>
-    <td><%= pass_set.sold_passes %></td>
-    <td><%= pass_set.unsold_passes %></td>
-    <td><%= number_to_currency(pass_set.price) %></td>
-	<td><%= number_to_currency(pass_set.sold_passes*pass_set.price) %></td>
-	<td><%= link_to 'Show Purchased Tickets', [bar, pass_set] %></td>
-  </tr>
-<% end %>
-</table>
-<% end %>
+			<% bar.pass_sets.where('selling_passes == ?', true).each do |pass_set| %>
+  				<tr>
+    				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    				<td><%= pass_set.total_released_passes %></td>
+    				<td><%= pass_set.sold_passes %></td>
+    				<td><%= pass_set.unsold_passes %></td>
+    				<td><%= number_to_currency(pass_set.price) %></td>
+					<td><%= number_to_currency(pass_set.revenue_total) %></td>
+					<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
+  				</tr>
+			<% end %>
+		</table>
+	<% end %>
+	</br>
+	<% if bar.pass_sets.where('selling_passes == ?', false).empty? %>
+		<h5>No Reservation Sets Available</h5>
+	<% else %>
+		<h5>Reservation Sets</h5>
+		<table cellpadding="10">
+  			<tr>
+    			<th>Date</th>
+    			<th>Total Released Reservation</th>
+    			<th>Sold Reservations</th>
+    			<th>Open Reservations</th>
+    			<th>Price Per Person</th>
+				<th>Total Revenue</th>
+    			<th></th>
+    			<th></th>
+    			<th></th>
+  			</tr>
+
+			<% bar.pass_sets.where('selling_passes == ?', false).each do |pass_set| %>
+  				<tr>
+    				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    				<td><%= pass_set.total_released_passes %></td>
+    				<td><%= pass_set.sold_passes %></td>
+    				<td><%= pass_set.unsold_passes %></td>
+    				<td><%= number_to_currency(pass_set.price) %></td>
+					<td><%= number_to_currency(pass_set.revenue_total) %></td>
+					<td><%= link_to 'Show Purchased Reservations', [bar, pass_set] %></td>
+  				</tr>
+			<% end %>
+		</table>
+	<% end %>
 	
 	
 	

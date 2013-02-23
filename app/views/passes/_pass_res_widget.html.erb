@@ -1,17 +1,17 @@
 <% if current_user != nil %>
 	<div class="title-bar">
-  		<h5>Upcoming Passes</h5>
+  		<h5>Upcoming Reservations</h5>
 	</div>
 
 	<div class="content-box">
-  		<% @passes.each do |pass| %>
+  		<% @reservations.each do |pass| %>
 			<% if (!pass.redeemed) %>
       			<div class="pass-item">
 					<span><%= link_to pass.pass_set.bar.name, pass %></span>
 					<span class="offset1">Date: <%= pass.pass_set.date.strftime("%m/%d/%Y") %></span>
-					<span class="offset1"># of Passes: <%= pass.entries %></span>
+					<span class="offset1"># of Guests: <%= pass.entries %></span>
   	  			</div> <!-- end of .pass-item -->
 			<% end %>
-  		<% end %>
+		<% end %>
 	</div>
 <% end %>

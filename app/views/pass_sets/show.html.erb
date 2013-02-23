@@ -84,162 +84,242 @@
     }
 </script>
 <% end %>
+
 <% content_for :title, "Listd - Purchase" %>
-<!-- Version 2 -->
-<div id="stripe_error">
-	<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-</div>
-
-<div id = "availableSummary">
-  <legend>Summary of Passes (<%= @pass_set.date.strftime("%m/%d/%y") %>)</legend>
-  <dl class="dl-horizontal">
-    <dt>Bar</dt>
-    <dd><%= @pass_set.bar.name %></dd>
-	<dt>Pass Date</dt>
-	<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
-	<dt>Sold Passes</dt>
-	<dd><%= @pass_set.sold_passes %></dd>
-	<dt>Unsold Passes</dt>
-	<dd><%= @pass_set.unsold_passes %></dd>
-	<dt>Pass Price</dt>
-	<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
-  </dl>
-</div>
-
-<div id = "purchaseSummary" style = "display:none;">
-<legend>Summary of Your Purchase</legend>
-  <dl class="dl-horizontal">
-    <dt>Bar</dt>
-    <dd><%= @pass_set.bar.name %></dd>
-	<dt>Date</dt>
-	<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
-	<dt>Passes Purchased</dt>
-	<dd id = "ticketsPurchased"></dd>
-	<dt>Total Amount</dt>
-	<dd id = "totalAmount"></dd>
-  </dl>
-</div>
-
-<!-- Version 1 -->
-<!-- <div class="row">
-<div class="shadow span7" id="purchase-descr">
-<h3><%= @pass_set.unsold_passes %> available passes for <%= @pass_set.date.strftime("%B %d, %Y") %></h3>
-
-<p>
-  <b>Bar:</b>
-  <%= @pass_set.bar.name %><br>
-  <b>Date:</b>
-  <%= @pass_set.date.strftime("%m/%d/%Y") %><br>
-  <b>Passes Left:</b>
-  <%= @pass_set.unsold_passes %><br>
-  <b>Price:</b>
-  $<%= @pass_set.price.round %><br>
-</p>
-</div>
-</div> -->
-
-<!-- <p>
-  <b>Total released passes:</b>
-  <%= @pass_set.total_released_passes %>
-</p>
-
-<p>
-  <b>Sold passes:</b>
-  <%= @pass_set.sold_passes %>
-</p> -->
-
-</br>
-
-<% if current_user.partner? || current_user.admin? %>
-	<div class="row footer-cushion">
-		<div class="span7">
-			<h4 class="index-type">Unused Passes</h4>
-			<% for pass in @unused_passes %>
-				<div class="pass-preview">
-					<p class="title">
-						Name: <%= pass.name %>
-					</p>
-					<small>
-						<div class="pull-left dt">
-							<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
-							# of Passes:</br>
-		        			Purchased on:</br>
-							Passes Redeemed?:</br>
-							Confirmation Number:
-						</div>
-						<div class="pull-left dd">
-							</br>
-		 					<%= pass.entries %></br>
-							<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
-							<%= pass.redeemed %></br>
-							<%= link_to pass.confirmation, pass %>
-						</div>
-					</small>
-				</div>
-			<% end %>
-			<%= will_paginate @unused_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'unused_passes_page' %>
-		</div>
-		<div class="span4 vertical-rule">
-			<h4 class="index-type">Used Passes</h4>
-			<% for pass in @used_passes %>
-				<div class="pass-history-preview">
-	      			<p class="title">
-						Name: <%= pass.name %>
-					</p>
-					<small>	
-						<div class="pull-left dt">
-							<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
-				  			# of Passes:</br>
-		        			Purchased on:</br>
-							Passes Redeemed?:</br>
-							Confirmation Number:
-						</div>
-						<div class="pull-left dd">
-							</br>
-				  			<%= pass.entries %></br>
-							<%= pass.created_at.strftime('%b %d, %Y') %></br>
-							<%= pass.redeemed %></br>
-							<%= link_to pass.confirmation, pass %>
-						</div>
-					</small>
-				</div>
-			<% end %>
-			<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'used_passes_page' %>
-        </div>
-	 	<%= link_to "Edit Passes", :action => "edit", :id => @pass_set.id %>
+	<!-- Version 2 -->
+	<div id="stripe_error">
+		<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
 	</div>
-<% else %>
-	<% if current_user.stripe_customer_token == nil || @customer_card.active_card == nil %>
-		<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
-			<fieldset>
-				
-  				<div id = "makePurchase">
-      				<legend>Make a Purchase</legend>
-      				<%= f.hidden_field :stripe_card_token %>
-      				<%= f.hidden_field :date,:value => @pass_set.date %>
-      				<%= f.hidden_field :bar,:value =>  @bar.id %>
-      				<div class="control-group">
-        				<%= f.label "Number of Passes", class: "control-label" %>
-        				<div class="controls">
-          					<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
-		  					<small>(You can purchase passes for your friends)</small>
-          					<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
-        				</div>
-      				</div>
-      				<div class="control-group">
-        				<%= f.label :name, "Full Name", class: "control-label" %>
-        				<div class="controls">
-          					<%= f.text_field :name %> <small>(Must match Valid ID)</small>
-        				</div>
-      				</div>
-      				<div class = "controls">
-						<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
-					</div>
-					<hr>
-  				</div>
 
-  				<div id = "purchaseInformation">
-  					<legend>Purchase Information</legend>
+	<div id = "availableSummary">
+		<% if @pass_set.selling_passes == true %>
+  			<legend><%= @pass_set.bar.name %> Passes (<%= @pass_set.date.strftime("%m/%d/%y") %>)</legend>
+  			<dl class="dl-horizontal">
+    			<dt>Bar</dt>
+    			<dd><%= @pass_set.bar.name %></dd>
+				<dt>Pass Date</dt>
+				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
+				<dt>Sold Passes</dt>
+				<dd><%= @pass_set.sold_passes %></dd>
+				<dt>Unsold Passes</dt>
+				<dd><%= @pass_set.unsold_passes %></dd>
+				<dt>Pass Price</dt>
+				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
+				<dt>Description</dt>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+  			</dl>
+		<% else %>
+			<legend><%= @pass_set.bar.name %> Reservations (<%= @pass_set.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+    			<dt>Location</dt>
+    			<dd><%= @pass_set.bar.name %></dd>
+				<dt>Reservation Date</dt>
+				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
+				<dt>Reservations Available</dt>
+				<% if @pass_set.unsold_passes > 0 %>
+					<dd>Yes</dd>
+				<% else %>
+					<dd>No</dd>
+				<% end %>
+				<dt>Price Per Person</dt>
+				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
+				<dt>Description</dt>
+				<dd>The purchase of this LISTD reservation reserves a table for your party at <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+  			</dl>
+		<% end %>
+	</div>
+
+	<div id = "purchaseSummary" style = "display:none;">
+		<legend>Summary of Your Purchase</legend>
+		<% if @pass_set.selling_passes == true %>
+  			<dl class="dl-horizontal">
+    			<dt>Bar</dt>
+    			<dd><%= @pass_set.bar.name %></dd>
+				<dt>Date</dt>
+				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
+				<dt>Passes Purchased</dt>
+				<dd id = "ticketsPurchased"></dd>
+				<dt>Total Amount</dt>
+				<dd id = "totalAmount"></dd>
+				<dt>Description</dt>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+  			</dl>
+		<% else %>
+			<dl class="dl-horizontal">
+    			<dt>Location</dt>
+    			<dd><%= @pass_set.bar.name %></dd>
+				<dt>Date</dt>
+				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
+				<dt># of Guests</dt>
+				<dd id = "ticketsPurchased"></dd>
+				<dt>Total Amount</dt>
+				<dd id = "totalAmount"></dd>
+				<dt>Description</dt>
+				<dd>The purchase of this LISTD reservation reserves a table for your party at <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+  			</dl>
+		<% end %>
+	</div>
+
+	</br>
+
+	<% if current_user.partner? || current_user.admin? %>
+		<div class="row footer-cushion">
+			<div class="span7">
+				<% if @pass_set.selling_passes == true %>
+					<h4 class="index-type">Unused Passes</h4>
+					<% for pass in @unused_passes %>
+						<div class="pass-preview">
+							<p class="title">
+								Name: <%= pass.name %>
+							</p>
+							<small>
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+									# of Passes:</br>
+		        					Purchased on:</br>
+									Passes Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+		 							<%= pass.entries %></br>
+									<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+									<%= pass.redeemed %></br>
+									<%= link_to pass.confirmation, pass %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<% else %>
+					<h4 class="index-type">Open Reservations</h4>
+					<% for pass in @unused_passes %>
+						<div class="pass-preview">
+							<p class="title">
+								Name: <%= pass.name %>
+							</p>
+							<small>
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+									# of Guests:</br>
+		        					Purchased on:</br>
+									Reservation Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+		 							<%= pass.entries %></br>
+									<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+									<%= pass.redeemed %></br>
+									<%= link_to pass.confirmation, pass %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<% end %>
+				<%= will_paginate @unused_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'unused_passes_page' %>
+			</div>
+			<div class="span4 vertical-rule">
+				<% if @pass_set.selling_passes == true %>
+					<h4 class="index-type">Used Passes</h4>
+					<% for pass in @used_passes %>
+						<div class="pass-history-preview">
+	      					<p class="title">
+								Name: <%= pass.name %>
+							</p>
+							<small>	
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+				  					# of Passes:</br>
+		        					Purchased on:</br>
+									Passes Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+				  					<%= pass.entries %></br>
+									<%= pass.created_at.strftime('%b %d, %Y') %></br>
+									<%= pass.redeemed %></br>
+									<%= link_to pass.confirmation, pass %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<% else %>
+					<h4 class="index-type">Used Reservations</h4>
+					<% for pass in @used_passes %>
+						<div class="pass-history-preview">
+	      					<p class="title">
+								Name: <%= pass.name %>
+							</p>
+							<small>	
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
+				  					# of Guests:</br>
+		        					Purchased on:</br>
+									Reservation Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+				  					<%= pass.entries %></br>
+									<%= pass.created_at.strftime('%b %d, %Y') %></br>
+									<%= pass.redeemed %></br>
+									<%= link_to pass.confirmation, pass %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<% end %>
+				<%= will_paginate @used_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'used_passes_page' %>
+	 		</div>
+		</div>
+	<% else %>
+		<% if current_user.stripe_customer_token == nil || @customer_card.active_card == nil %>
+			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+				<fieldset>
+					<div id = "makePurchase">
+      					<legend>Make a Purchase</legend>
+      					<%= f.hidden_field :stripe_card_token %>
+      					<%= f.hidden_field :date,:value => @pass_set.date %>
+      					<%= f.hidden_field :bar,:value =>  @bar.id %>
+						<% if @pass_set.selling_passes == true %>
+      						<div class="control-group">
+        						<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+		  							<small>(You can purchase passes for your friends)</small>
+          							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+        						</div>
+      						</div>
+      						<div class="control-group">
+        						<%= f.label :name, "Full Name", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+        						</div>
+      						</div>
+						<% else %>
+							<div class="control-group">
+        						<%= f.label :num_passes, "Party Size", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.select :num_passes, (1..15) %>
+          							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+        						</div>
+      						</div>
+      						<div class="control-group">
+        						<%= f.label :name, "Name", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.text_field :name %> <small>(Name on Reservation)</small>
+        						</div>
+      						</div>
+						<% end %>
+      					<div class = "controls">
+							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
+						</div>
+						<hr>
+  					</div>
+
+  					<div id = "purchaseInformation">
+  						<legend>Purchase Information</legend>
 						<div class="field control-group">
 	  						<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
 	  						<div class="controls">
@@ -266,57 +346,73 @@
 								</label>
 	  						</div>
 						</div>
-	
 						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
 						<hr>
+					</div>
+						
+					<div id = "cancelOpts">
+	                   	<div id = "purchaseLoading" style = "display:none;">
+							<small>
+								Purchase in process...
+							</small>
+							</br>
+							<%= image_tag("loader.gif") %>
+							<hr>
 						</div>
-						<div id = "cancelOpts">
-	                    	<div id = "purchaseLoading" style = "display:none;">
-								<small>
-									Purchase in process...
-								<small>
-								</br>
-								<%= image_tag("loader.gif") %>
-								<hr>
-							</div>
-							<div id = "cancelView">
-								<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
-					    		&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
-							</div>
-							</br>
-							</br>
-							<legend>Our Commitment to You</legend>
-							<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
+						</br>
+						<div id = "cancelView">
+							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
+					    	&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
+						</div>
+						</br>
+						</br>
+						<legend>Our Commitment to You</legend>
+						<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
 							</br>
 							</br>
 							Don't Wait In Line. Get LISTD.
-							</guarantee>
-	                    </div>			
+						</guarantee>
+	               	</div>			
 				</fieldset>
 			<% end %>
 		<% else %>
 			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
 				<fieldset>
-					
 					<div id = "makePurchase">
 		      			<legend>Make a Purchase</legend>
 		      			<%= f.hidden_field :stripe_card_token %>
 		      			<%= f.hidden_field :date,:value => @pass_set.date %>
 		      			<%= f.hidden_field :bar,:value =>  @bar.id %>
-		      			<div class="control-group">
-		        			<%= f.label "Number of Passes", class: "control-label" %>
-		        			<div class="controls">
-		          				<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
-				  				<small>(You can purchase passes for your friends)</small>
-		          				<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
-		        			</div>
-		      			</div>
-		      			<div class="control-group">
-		        			<%= f.label :name, class: "control-label" %>
-		        			<div class="controls">
-		          				<%= f.text_field :name %> <small>(Must match Valid ID)</small>
-		        			</div>
-		      			</div>
+		      			<% if @pass_set.selling_passes == true %>
+	      					<div class="control-group">
+	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+			  						<small>(You can purchase passes for your friends)</small>
+	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+	        					</div>
+	      					</div>
+	      					<div class="control-group">
+	        					<%= f.label :name, "Full Name", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+	        					</div>
+	      					</div>
+						<% else %>
+							<div class="control-group">
+	        					<%= f.label :num_passes, "Party Size", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.select :num_passes, (1..15) %>
+	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
+	        					</div>
+	      					</div>
+	      					<div class="control-group">
+	        					<%= f.label :name, "Name", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.text_field :name %> <small>(Name on Reservation)</small>
+	        					</div>
+	      					</div>
+						<% end %>
 						<div class = "controls">
 							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
 						</div>
@@ -335,7 +431,7 @@
       					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
 						<hr class = "cancelBtn">
 						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn cancelBtn" />
-						<hr>
+						</hr>
 					</div>
 					
 					<div id = "newInformation">
@@ -376,11 +472,12 @@
                     	<div id = "purchaseLoading" style = "display:none;">
 							<small>
 								Purchase in process...
-							<small>
+							</small>
 							</br>
 							<%= image_tag("loader.gif") %>
-							<hr>
+							</hr>
 						</div>
+						</br>
 						<div id = "cancelView">
 							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
 				    		&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
@@ -389,12 +486,12 @@
 						</br>
 						<legend>Our Commitment to You</legend>
 						<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
-						</br>
-						</br>
-						Don't Wait In Line. Get LISTD.
+							</br>
+							</br>
+							Don't Wait In Line. Get LISTD.
 						</guarantee>
                     </div>			
 				</fieldset>
 			<% end %>
 		<% end %>
-<% end %>
+	<% end %>
