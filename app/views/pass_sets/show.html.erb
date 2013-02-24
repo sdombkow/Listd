@@ -106,7 +106,7 @@
 				<dt>Pass Price</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+				<dd><%= @pass_set.description %></dd>
   			</dl>
 		<% else %>
 			<legend><%= @pass_set.bar.name %> Reservations (<%= @pass_set.date.strftime("%m/%d/%y") %>)</legend>
@@ -124,7 +124,7 @@
 				<dt>Price Per Person</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD reservation reserves a table for your party at <%= @pass_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+				<dd><%= @pass_set.description %></dd>
   			</dl>
 		<% end %>
 	</div>

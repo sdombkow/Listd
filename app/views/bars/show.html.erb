@@ -53,7 +53,7 @@
     		</br>
 			<% if @bar.website_url != "" %>
 				<small>
-					<%= link_to "Website", "http://#{@bar.website_url}", :target => "_blank"%></br>
+					<%= link_to @bar.website_url, "http://#{@bar.website_url}", :target => "_blank"%></br>
 				</small>
 			<% end %>
     		<% if @bar.facebook_url != "" %>
@@ -140,9 +140,9 @@
 				<table cellpadding="10">
   					<tr>
     					<th>Date</th>
-    					<th>Total Released Passes</th>
-    					<th>Pass Sold</th>
-    					<th>Passes Unsold</th>
+    					<th>Released Passes</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
     					<th>Price</th>
 						<th>Earnings</th>
     					<th></th>
@@ -167,7 +167,7 @@
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Passes', [@bar, pass_set] %></td>
 				   			<%else %>
-			    				<td><%= link_to 'Purchase a Passes', [@bar,pass_set] %></td>   
+			    				<td><%= link_to 'Purchase a Pass', [@bar,pass_set] %></td>   
 			   				<%end%>
   						</tr>
 					<% end %>
@@ -181,9 +181,9 @@
 				<table cellpadding="10">
   					<tr>
     					<th>Date</th>
-    					<th>Total Released Reservations</th>
-    					<th>Reservations Made</th>
-    					<th>Open Reservations</th>
+    					<th>Released Reservations</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
     					<th>Price Per Person</th>
 						<th>Earnings</th>
     					<th></th>
@@ -222,12 +222,12 @@
 			<table cellpadding="10">
   				<tr>
     				<th>Date</th>
-    				<th>Total released passes</th>
-    				<th>Sold passes</th>
-    				<th>Unsold passes</th>
+    				<th>Released Passes</th>
+    				<th>Sold</th>
+    				<th>Unsold</th>
     				<th>Price</th>
 					<th>Earnings</th>
-    				<th>Purchase?</th>
+    				<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
@@ -256,18 +256,18 @@
 		<% end %>
 		</br>
 		<% if @expired_reservation_sets.empty? %>
-			<h5> No Expired Reservation Sets </h5>
+			<h5>No Expired Reservation Sets</h5>
 		<% else %>
 			<h5>Expired Reservation Sets</h5>
 			<table cellpadding="10">
   				<tr>
     				<th>Date</th>
-    				<th>Total Released Reservations</th>
-    				<th>Reservations Made</th>
-    				<th>Open Reservations</th>
+    				<th>Released Reservations</th>
+    				<th>Sold</th>
+    				<th>Unsold</th>
     				<th>Price Per Person</th>
 					<th>Earnings</th>
-    				<th>Purchase?</th>
+    				<th></th>
 					<th></th>
 					<th></th>
 					<th></th>
