@@ -51,8 +51,8 @@ class PassSetsController < ApplicationController
   # GET /pass_sets/new.json
   def new
     @pass_set = PassSet.new
-	@pass_set.sold_passes = 0
-	@pass_set.unsold_passes = @pass_set.total_released_passes
+	  @pass_set.sold_passes = 0
+	  @pass_set.unsold_passes = @pass_set.total_released_passes
     @bar = Bar.find(params[:bar_id])
     @bar_label = "Bar ID for "<<@bar.name
     @pass_set.bar = @bar
@@ -142,5 +142,18 @@ class PassSetsController < ApplicationController
       format.html { redirect_to [@bar], notice: 'Pass set was successfully deleted.' }
       format.json { head :no_content }
     end
+  end
+  
+  def close_set
+      @pass_set = PassSet.find(params[:pass_set_id])
+      @bar = @pass_set.bar
+      @pass_set.total_released_passes = @pass_set.sold_passes
+      @pass_set.unsold_passes = 0
+      @pass_set.save
+    
+      respond_to do |format|
+          format.html { redirect_to [@bar], notice: 'Pass set was successfully closed.' }
+          format.json { head :no_content }
+      end
   end
 end

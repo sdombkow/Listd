@@ -44,11 +44,19 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   root :to => "home#index"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users do
-	resources :bars do
-  	resources :pass_sets
-    collection do
-      post 'search'
+	  resources :bars do
+  	  resources :pass_sets
+        collection do
+        post 'search'
 			end
+		end
+	end
+	
+	resources :users do
+	  resources :bars do
+  	  resources :pass_sets do
+          get 'close_set'
+      end
 		end
 	end
 	

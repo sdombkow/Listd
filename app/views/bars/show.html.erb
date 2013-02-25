@@ -163,7 +163,8 @@
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Passes', [@bar.user, @bar, pass_set] %></td>
 								<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
-								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> <td>
+								<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Passes', [@bar, pass_set] %></td>
 				   			<%else %>
@@ -204,6 +205,7 @@
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Reservations', [@bar.user, @bar, pass_set] %></td>
 								<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
+								<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
 								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> <td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Reservations', [@bar, pass_set] %></td>
@@ -244,7 +246,8 @@
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
-							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> <td>
+							<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
+							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> </td>
 			   			<%elsif (current_user.partner?)%>
 			       			<td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
 				   		<%else %>
@@ -284,7 +287,8 @@
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
-							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> <td>
+							<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
+							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> </td>
 			   			<%elsif (current_user.partner?)%>
 			       			<td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
 				   		<%else %>
@@ -298,9 +302,7 @@
 </br>
 <%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |
 <%= link_to 'Edit Bar Information', edit_user_bar_path(@user,@bar) %> |
-  <%= link_to 'Delete Bar Location', [@user,@bar],
-               :confirm => 'Are you sure?',
-               :method => :delete %> |
+<%= link_to 'Delete Bar Location', [@user,@bar], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>
 <%elsif(user_signed_in? && current_user.partner?) %>
 <% if current_user.admin? %>
