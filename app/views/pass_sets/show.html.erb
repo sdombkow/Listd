@@ -7,14 +7,15 @@
             $("#purchaseInformation").hide();
 			$("#newInformation").hide();
 			$('#BackToFirst').hide();
-			if ($("#unsold").val() == 0) {
+			if ($("#unsold").html() == 0) {
 				$("#makePurchase").hide();
 				$("#cancelView").hide();
 			}
-			if ($("#sold_out").val() == 0) {
+			if ($("#sold_num").html() == "No") {
 				$("#makePurchase").hide();
 				$("#cancelView").hide();
 			}
+			alert($("#sold_num").html())			
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
@@ -123,9 +124,9 @@
 				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
 				<dt>Reservations Available</dt>
 				<% if @pass_set.unsold_passes > 0 %>
-					<dd id = "sold_out">Yes</dd>
+					<dd id = "sold_num">Yes</dd>
 				<% else %>
-					<dd id = "sold_out">No</dd>
+					<dd id = "sold_num">No</dd>
 				<% end %>
 				<dt>Price Per Person</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
@@ -282,9 +283,9 @@
 	<% else %>
 		<div id="sold_out">
 			</br>
-			<% if @pass_set.selling_passes == true %>
+			<% if @pass_set.selling_passes == true && @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available passes for <%= @pass_set.date.strftime("%m/%d/%y")%>.</h1>
-			<% else %>
+			<% elsif @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available reservations for <%=@pass_set.date.strftime("%m/%d/%y")%>.</h1>
 			<% end %>
 		</div>
