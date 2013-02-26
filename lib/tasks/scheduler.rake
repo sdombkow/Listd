@@ -18,3 +18,7 @@ end
 task :update_bar_slug => :environment do
  Bar.find_each(&:save)
 end
+
+task :update_user_att => :environment do
+	User.find_each(&:save)
+end
