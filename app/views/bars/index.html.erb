@@ -24,8 +24,10 @@
 		<h5>No Pass Sets Available</h5>
 	<% else %>
 		<h5>Pass Sets</h5>
+        <div class = "passSetTable">
 		<table cellpadding="10">
-  			<tr>
+  			<thead>
+            <tr>
     			<th>Date</th>
     			<th>Released Passes</th>
     			<th>Sold</th>
@@ -33,29 +35,32 @@
     			<th>Price</th>
 				<th>Revenue</th>
     			<th></th>
-    			<th></th>
-    			<th></th>
-  			</tr>
-
+            </tr>
+  			</thead>
+            <tbody>
 			<% bar.pass_sets.where('selling_passes = ?', true).each do |pass_set| %>
   				<tr>
-    				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
-    				<td><%= pass_set.total_released_passes %></td>
-    				<td><%= pass_set.sold_passes %></td>
-    				<td><%= pass_set.unsold_passes %></td>
-    				<td><%= number_to_currency(pass_set.price) %></td>
-					<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    				<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    				<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    				<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
+					<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 					<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
   				</tr>
 			<% end %>
+            </tbody>
 		</table>
+        </div>
 	<% end %>
 	</br>
 	<% if bar.pass_sets.where('selling_passes = ?', false).empty? %>
 		<h5>No Reservation Sets Available</h5>
 	<% else %>
 		<h5>Reservation Sets</h5>
+        <div class = "passSetTable">
 		<table cellpadding="10">
+        <thead>
   			<tr>
     			<th>Date</th>
     			<th>Released Reservation</th>
@@ -67,19 +72,22 @@
     			<th></th>
     			<th></th>
   			</tr>
-
+         </thead>
+         <tbody>
 			<% bar.pass_sets.where('selling_passes = ?', false).each do |pass_set| %>
   				<tr>
-    				<td><%= pass_set.date.strftime("%m/%d/%Y") %></td>
-    				<td><%= pass_set.total_released_passes %></td>
-    				<td><%= pass_set.sold_passes %></td>
-    				<td><%= pass_set.unsold_passes %></td>
-    				<td><%= number_to_currency(pass_set.price) %></td>
-					<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    				<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    				<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    				<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
+					<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 					<td><%= link_to 'Show Purchased Reservations', [bar, pass_set] %></td>
   				</tr>
 			<% end %>
+          </tbody>
 		</table>
+    </div>
 	<% end %>
 	
 	

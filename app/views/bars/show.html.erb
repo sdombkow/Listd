@@ -46,6 +46,7 @@
   		</div>
 
   		<div class="pull-left span3" id="bar-info">
+            <div>
     		<h5>Contact</h5>
     		<small>
 				<abbr title="Phone">P: </abbr><%= number_to_phone(@bar.phone_number, :area_code => true) %>
@@ -85,6 +86,7 @@
 			<% if @bar.open_sunday %>
 	  			<small>Sun: <%= @bar.houropen_sunday.strftime('%l:%M %p') %> &ndash; <%= @bar.hourclose_sunday.strftime('%l:%M %p') %></small><br>
 			<% end %>
+            </div>
   		</div>
 		
 		<% if @pass_sets.empty? && @reservation_sets.empty? %>
