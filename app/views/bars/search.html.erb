@@ -34,7 +34,7 @@
 		        position: barlocation,
 		        map: map,
 				icon: image,
-				title: '<%= @bars.first.name %>'
+				title: '<%= bar.name %>'
 			});
 			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
 		<% end %>
