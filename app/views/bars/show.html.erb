@@ -139,7 +139,9 @@
 			<h5>No Active Pass Sets</h5>
 		<% else %>
 			<h5>Active Pass Sets</h5>
+            <div class = "passSetTable">
 				<table cellpadding="10">
+                <thead>
   					<tr>
     					<th>Date</th>
     					<th>Released Passes</th>
@@ -152,15 +154,16 @@
 						<th></th>
 						<th></th>
   					</tr>
-
+                </thead>
+                <tbody>
 					<% @pass_sets.each do |pass_set| %>
   						<tr>
-    						<td><%= pass_set.date %></td>
-    						<td><%= pass_set.total_released_passes %></td>
-    						<td><%= pass_set.sold_passes %></td>
-    						<td><%= pass_set.unsold_passes %></td>
-    						<td><%= number_to_currency(pass_set.price) %></td>
-							<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    						<td data-title="Date"><%= pass_set.date %></td>
+    						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    						<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    						<td data-title="Revenue"><%= number_to_currency(pass_set.price) %></td>
+							<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Passes', [@bar.user, @bar, pass_set] %></td>
@@ -174,14 +177,18 @@
 			   				<%end%>
   						</tr>
 					<% end %>
+                </tbody>
 				</table>
+        </div>
 		<% end %>
 		</br>
 		<%if @reservation_sets.empty? %>
 			<h5>No Active Reservation Sets</h5>
 		<% else %>
 			<h5>Active Reservation Sets</h5>
+                <div class = "passSetTable">
 				<table cellpadding="10">
+                <thead>
   					<tr>
     					<th>Date</th>
     					<th>Released Reservations</th>
@@ -194,15 +201,16 @@
 						<th></th>
 						<th></th>
   					</tr>
-
+                </thead>
+                <tbody>
 					<% @reservation_sets.each do |pass_set| %>
   						<tr>
-    						<td><%= pass_set.date %></td>
-    						<td><%= pass_set.total_released_passes %></td>
-    						<td><%= pass_set.sold_passes %></td>
-    						<td><%= pass_set.unsold_passes %></td>
-    						<td><%= number_to_currency(pass_set.price) %></td>
-							<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    						<td data-title="Date"><%= pass_set.date %></td>
+    						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    						<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    						<td data-title="Revenue"><%= number_to_currency(pass_set.price) %></td>
+							<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Reservations', [@bar.user, @bar, pass_set] %></td>
@@ -216,14 +224,18 @@
 			   				<%end%>
   						</tr>
 					<% end %>
+                </tbody>
 				</table>
+        </div>
 		<% end %>
 		</br>
 		<% if @expired_sets.empty? %>
 			<h5> No Expired Pass Sets </h5>
 		<% else %>
 			<h5>Expired Pass Sets</h5>
+            <div class = "passSetTable">
 			<table cellpadding="10">
+            <thead>
   				<tr>
     				<th>Date</th>
     				<th>Released Passes</th>
@@ -236,15 +248,16 @@
 					<th></th>
 					<th></th>
   				</tr>
-  
+            </thead>
+            <tbody>
 				<% @expired_sets.each do |pass_set| %>
   					<tr>
-    					<td><%= pass_set.date %></td>
-    					<td><%= pass_set.total_released_passes %></td>
-    					<td><%= pass_set.sold_passes %></td>
-    					<td><%= pass_set.unsold_passes %></td>
-    					<td><%= pass_set.price %></td>
-						<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    					<td data-title="Date"><%= pass_set.date %></td>
+    					<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    					<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    					<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    					<td data-title="Price"><%= pass_set.price %></td>
+						<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -257,14 +270,18 @@
 			   			<%end%>
   					</tr>
 				<% end %>
+                </tbody>
 			</table>
+            </div>
 		<% end %>
 		</br>
 		<% if @expired_reservation_sets.empty? %>
 			<h5>No Expired Reservation Sets</h5>
 		<% else %>
 			<h5>Expired Reservation Sets</h5>
+            <div class = "passSetTable">
 			<table cellpadding="10">
+            <thead>
   				<tr>
     				<th>Date</th>
     				<th>Released Reservations</th>
@@ -277,15 +294,16 @@
 					<th></th>
 					<th></th>
   				</tr>
-  
+            </thead>
+            <tbody>
 				<% @expired_sets.each do |pass_set| %>
   					<tr>
-    					<td><%= pass_set.date %></td>
-    					<td><%= pass_set.total_released_passes %></td>
-    					<td><%= pass_set.sold_passes %></td>
-    					<td><%= pass_set.unsold_passes %></td>
-    					<td><%= pass_set.price %></td>
-						<td><%= number_to_currency(pass_set.revenue_total) %></td>
+    					<td data-title="Date"><%= pass_set.date %></td>
+                <td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+                <td data-title="Sold"><%= pass_set.sold_passes %></td>
+    					<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    					<td data-title="Price"><%= pass_set.price %></td>
+						<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 
 						<%if(user_signed_in? && current_user.admin?) %>
     						<td><%= link_to 'Show Purchased Tickets', [@bar.user, @bar, pass_set] %></td>
@@ -298,7 +316,9 @@
 			   			<%end%>
   					</tr>
 				<% end %>
+            </tbody>
 			</table>
+            </div>
 		<% end %>
 </div>
 </br>
