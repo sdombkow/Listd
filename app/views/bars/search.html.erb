@@ -34,7 +34,7 @@
 		        position: barlocation,
 		        map: map,
 				icon: image,
-				title: '<%= bar.name %>'
+				title: "<%= bar.name.gsub(/'/,'') %>"
 			});
 			markerBounds.extend(new google.maps.LatLng(<%= bar.latitude %>,<%= bar.longitude %>)); 
 		<% end %>
@@ -47,19 +47,19 @@
 </head>
 <% content_for :title, "Listd - Search Results" %>
 <body onload="initialize()">
-  <div id="map_canvas" class="map_bg"></div>
+  	<div id="map_canvas" class="map_bg"></div>
 </body>
 <div id="map_overlay" class="span5">
-  <div id="search-query" class="shadow">
-	<% if @search.empty? %>
-	  Listing all bars
-	<% else %>
-      Results for <span><%= @search %></span><br>
-	  <small>Best Match</small>
-	<% end %>
-  </div>
-  <div id="search-results">
-    <%= render 'bars/search_results' %>
-  </div>
-  </br>
+  	<div id="search-query" class="shadow">
+		<% if @search.empty? %>
+	  		Listing all bars
+		<% else %>
+      		Results for <span><%= @search %></span><br>
+	  		<small>Best Match</small>
+		<% end %>
+  	</div>
+	<div id="search-results">
+    	<%= render 'bars/search_results' %>
+  	</div>
+  	</br>
 </div>
