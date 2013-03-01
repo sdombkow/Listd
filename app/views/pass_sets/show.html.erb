@@ -302,6 +302,7 @@
         						<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
         						<div class="controls">
           							<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+									</br>
 		  							<small>(You can purchase passes for your friends)</small>
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
@@ -309,7 +310,9 @@
       						<div class="control-group">
         						<%= f.label :name, "Full Name", class: "control-label" %>
         						<div class="controls">
-          							<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+          							<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
 						<% else %>
@@ -323,7 +326,9 @@
       						<div class="control-group">
         						<%= f.label :name, "Name", class: "control-label" %>
         						<div class="controls">
-          							<%= f.text_field :name %> <small>(Name on Reservation)</small>
+          							<%= f.text_field :name %> 
+									</br>
+									<small>(Name on Reservation)</small>
         						</div>
       						</div>
 						<% end %>
@@ -403,6 +408,7 @@
 	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+									</br>
 			  						<small>(You can purchase passes for your friends)</small>
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
@@ -410,7 +416,9 @@
 	      					<div class="control-group">
 	        					<%= f.label :name, "Full Name", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+	          						<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
 	        					</div>
 	      					</div>
 						<% else %>
@@ -424,7 +432,9 @@
 	      					<div class="control-group">
 	        					<%= f.label :name, "Name", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.text_field :name %> <small>(Name on Reservation)</small>
+	          						<%= f.text_field :name %> 
+									</br>
+									<small>(Name on Reservation)</small>
 	        					</div>
 	      					</div>
 						<% end %>
