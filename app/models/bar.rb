@@ -34,7 +34,10 @@ class Bar < ActiveRecord::Base
 	  @list1|@list2
 	end
 
-	
+    def get_reservations_by_date
+        sqlstring = "SELECT *, DATE(date) dateonly FROM pass_sets WHERE bar_id = #{self.id} AND selling_passes = 'f' GROUP BY dateonly ORDER BY dateonly"
+        return PassSet.find_by_sql(sqlstring)
+    end	
 
 	belongs_to :user
 end

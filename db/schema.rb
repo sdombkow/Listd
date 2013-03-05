@@ -59,7 +59,7 @@ ActiveRecord::Schema.define(:version => 20130224213151) do
 
   create_table "pass_sets", :force => true do |t|
     t.integer  "bar_id"
-    t.date     "date"
+    t.datetime "date"
     t.integer  "total_released_passes"
     t.integer  "sold_passes"
     t.integer  "unsold_passes"

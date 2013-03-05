@@ -2,7 +2,7 @@ class CreatePassSets < ActiveRecord::Migration
   def change
     create_table :pass_sets do |t|
       t.references :bar
-      t.date :date
+      t.datetime :date
       t.integer :total_released_passes
       t.integer :sold_passes
       t.integer :unsold_passes

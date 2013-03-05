@@ -15,7 +15,7 @@
   <% end %>
   <div class="field">
     <%= f.label :date %><br />
-    <%= f.date_select :date %>
+    <%= f.datetime_select :date, :ampm => true %>
   </div>
   <div class="field">
     <%= f.label :total_released_passes %><br />

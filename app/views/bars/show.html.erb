@@ -20,6 +20,35 @@
 					title: '<%= @bar.name %>'
 		        });
 		}
+
+    $(document).ready(function(){
+        function attachListeners(){
+            $(".passSetDate").click(function(e){
+                var psdate = $(this).attr("psdate");
+                var allPs = getAllPsForDate(psdate);
+
+                return false;
+            });
+        }
+
+        function getAllPsForDate(psdate){
+            var barId = $("#barId").html();
+            $.ajax({
+                type: "GET",
+                url: "/bars/times",
+                data: {
+                    "barId" : barId,
+                    "psdate" : psdate
+                },
+                dataType : "json",
+                success: function(response){
+                    console.log(response);
+                }
+            });
+        }
+
+        attachListeners();
+    });
     </script>
 </head>
 <% content_for :head do %>
@@ -32,6 +61,7 @@
 <% content_for :title, "Listd - #{@bar.name}" %>
 
 <div>
+<span style = "display:none;" id = "barId"><%=@bar.id%></span>
 	<div class="row">
   		<div class="pull-left span7" id="bar-main">
     		<h3> <%= @bar.name %> </h3>
@@ -119,10 +149,10 @@
 					<small>A LISTD reservation reserves a table for your party at <%= @bar.name %>.</small>
 	  			</div>
 	  			<% @reservation_sets.each do |pass_set| %>
-					<div class="date-box span1 center-text">
+					<div class="date-box span1 center-text passSetDate" psdate = "<%=pass_set.date.strftime("%Y-%m-%d")%>">
 	      				<p class="lead"><%= link_to pass_set.date.strftime("%d"), [@bar, pass_set] %></p>
 		  				<div>
-							<%= link_to pass_set.date.strftime("%a"), [@bar, pass_set] %>
+							<%= link_to pass_set.date.strftime("%a"), [@bar, pass_set]%>
 						</div>
 					</div>
 	  			<% end %>

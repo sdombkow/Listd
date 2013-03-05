@@ -32,13 +32,21 @@ class BarsController < ApplicationController
 	  @user = @bar.user
     @full_path = "http://#{request.host+request.fullpath}"
     @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
-    @reservation_sets = @bar.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
+    @reservation_sets = @bar.get_reservations_by_date
 	  @expired_sets= @bar.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
 	  @expired_reservation_sets= @bar.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @bar }
     end
+  end
+
+  # GET /bars/times
+  def times
+    @bar = Bar.find(params[:barId])
+    @date = params[:psdate]
+    @pass_sets = @bar.pass_sets.where("DATE(date) = ?",@date)
+    render json: @pass_sets
   end
 
   # GET /bars/new

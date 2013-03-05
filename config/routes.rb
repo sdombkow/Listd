@@ -19,6 +19,7 @@ ListdApp::Application.routes.draw do
   match '/businesspdf' => 'pages#download'
   match '/pdfversion' => 'passes#pdfversion'
 
+  match '/bars/times' => 'bars#times'
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
 match 'contact' => 'contact#create', :as => 'contact', :via => :post
 	resources :bars do
@@ -60,6 +61,7 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
 		end
 	end
 	
+
 resources :tokens,:only => [:create, :destroy]
 namespace :api do
   namespace :v1 do
