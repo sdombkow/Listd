@@ -31,9 +31,14 @@ class PassSetsController < ApplicationController
 	      @available_times = @pass_set.time_periods.first
 	      @reservations_times = Array.new
 	      @time_list = Array.new
+          time_columns = @available_times.attributes.values
+          # Remove fields that aren't times
+          3.times do
+            time_columns.delete_at(time_columns.length-1)
+          end
+          time_columns.delete_at(0)
 	      for x in 0..TimePeriod::TIME_LIST.length-1
-	          @time_marker = "@available_times."+TimePeriod::TIME_LIST[x].second+"_available".to_s
-	          if eval(@time_marker) == true
+	          if time_columns[x*2]
 	              @reservations_times.push(TimePeriod::TIME_LIST[x].first)
 	              @time_list.push(TimePeriod::TIME_LIST[x].second)
 	          end
