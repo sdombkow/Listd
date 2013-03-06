@@ -35,7 +35,13 @@ class Bar < ActiveRecord::Base
 	end
 
     def get_reservations_by_date
-        sqlstring = "SELECT *, DATE(date) dateonly FROM pass_sets WHERE bar_id = #{self.id} AND selling_passes = 'f' GROUP BY dateonly ORDER BY dateonly"
+        sqlstring = "SELECT *,
+                     SUM(total_released_passes) AS total_released_passes, 
+                     SUM(sold_passes) AS sold_passes, 
+                     SUM(unsold_passes) AS unsold_passes,
+                     SUM(revenue_total) AS revenue_total,
+                     DATE(date) dateonly 
+                     FROM pass_sets WHERE bar_id = #{self.id} AND selling_passes = 'f' GROUP BY dateonly ORDER BY dateonly"
         return PassSet.find_by_sql(sqlstring)
     end	
 

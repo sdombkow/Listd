@@ -26,7 +26,6 @@
             $(".passSetDate").click(function(e){
                 var psdate = $(this).attr("psdate");
                 var allPs = getAllPsForDate(psdate);
-
                 return false;
             });
         }
@@ -42,9 +41,23 @@
                 },
                 dataType : "json",
                 success: function(response){
-                    console.log(response);
+                    populateReservationTimes(response);
                 }
             });
+        }
+
+        function populateReservationTimes(rTimes){
+            $("#reservation-times").html("");
+            var barId = $("#barId").html();
+            for(var i = 0; i < rTimes.length; i++){
+                var rTime = rTimes[i];
+                var newTime = $("<a/>",{
+                    href : barId + "/pass_sets/" + rTime.id,
+                    style : "padding: 8px;"
+                });
+                newTime.html(rTime.date);
+                $("#reservation-times").append(newTime);
+            }
         }
 
         attachListeners();
@@ -157,6 +170,13 @@
 					</div>
 	  			<% end %>
 			</div>
+            <div class="span11" id="times-avail">
+                <div class="div-header">
+                    <h5>Available Times</h5>
+                    <small>The following times are available for your selected reservation</small>
+                </div>
+                <div id = "reservation-times"></div>
+            </div>
 		<% end %>
 		
 	</div>
@@ -188,7 +208,7 @@
                 <tbody>
 					<% @pass_sets.each do |pass_set| %>
   						<tr>
-    						<td data-title="Date"><%= pass_set.date %></td>
+    						<td data-title="Date"><%= pass_set.date.strftime("%B %d, %Y") %></td>
     						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
     						<td data-title="Sold"><%= pass_set.sold_passes %></td>
     						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
@@ -234,8 +254,8 @@
                 </thead>
                 <tbody>
 					<% @reservation_sets.each do |pass_set| %>
-  						<tr>
-    						<td data-title="Date"><%= pass_set.date %></td>
+  						<tr class = "reservation_row">
+    						<td data-title="Date"><%= pass_set.date.strftime("%B %d, %Y") %></td>
     						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
     						<td data-title="Sold"><%= pass_set.sold_passes %></td>
     						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
