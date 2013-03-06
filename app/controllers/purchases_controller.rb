@@ -52,8 +52,139 @@ class PurchasesController < ApplicationController
 		                @pass_set.sold_passes+=num_passes
 		                @pass_set.unsold_passes-=num_passes
 		            else
-		                @pass_set.sold_passes+=1
-		                @pass_set.unsold_passes-=1
+		                if @pass_set.reservation_time_periods == true
+		                    @table_times = @pass_set.time_periods.first
+		                    if params[:purchase][:reservation_time] == "10:00 AM"
+		                          @table_times.ten_am_tables -= 1
+		                          if @table_times.ten_am_tables == 0
+		                              @table_times.ten_am_available = false
+		                          end
+		                    elsif params[:purchase][:reservation_time] == "10:30 AM"
+    		                      @table_times.ten_thirty_am_tables -= 1
+    		                      if @table_times.ten_thirty_am_tables == 0
+		                              @table_times.ten_thrity_am_available = false
+		                          end
+    		                elsif params[:purchase][:reservation_time] == "11:00 AM"
+      		                    @table_times.eleven_am_tables -= 1
+      		                    if @table_times.eleven_am_tables == 0
+		                              @table_times.eleven_am_available = false
+		                          end
+      		              elsif params[:purchase][:reservation_time] == "11:30 AM"
+        		                  @table_times.eleven_thirty_am_tables -= 1
+        		                  if @table_times.eleven_thirty_am_tables == 0
+		                              @table_times.eleven_thirty_am_available = false
+		                          end
+        		            elsif params[:purchase][:reservation_time] == "12:00 PM"
+          		                @table_times.twelve_pm_tables -= 1
+          		                if @table_times.twelve_pm_tables == 0
+		                              @table_times.twelve_pm_available = false
+		                          end
+          		          elsif params[:purchase][:reservation_time] == "12:30 PM"
+            		              @table_times.twelve_thirty_pm_tables -= 1
+            		              if @table_times.twelve_thirty_pm_tables == 0
+		                              @table_times.twelve_thirty_pm_available = false
+		                          end
+            		        elsif params[:purchase][:reservation_time] == "1:00 PM"
+              		            @table_times.one_pm_tables -= 1
+              		            if @table_times.one_pm_tables == 0
+		                              @table_times.one_pm_available = false
+		                          end
+              		      elsif params[:purchase][:reservation_time] == "1:30 PM"
+                		          @table_times.one_thirty_pm_tables -= 1
+                		          if @table_times.one_thirty_pm_tables == 0
+		                              @table_times.one_thirty_pm_available = false
+		                          end
+                		    elsif params[:purchase][:reservation_time] == "2:00 PM"
+                  		        @table_times.two_pm_tables -= 1
+                  		        if @table_times.two_pm_tables == 0
+		                              @table_times.two_pm_available = false
+		                          end
+                  		  elsif params[:purchase][:reservation_time] == "2:30 PM"
+                    		      @table_times.two_thirty_pm_tables -= 1
+                    		      if @table_times.two_thirty_pm_tables == 0
+		                              @table_times.two_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "3:00 PM"
+                  		        @table_times.three_pm_tables -= 1
+                  		        if @table_times.three_pm_tables == 0
+		                              @table_times.three_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "3:30 PM"
+                	            @table_times.three_thirty_pm_tables -= 1
+                	            if @table_times.three_thirty_pm_tables == 0
+		                              @table_times.three_thirty_pm_available = false
+		                          end
+            		        elsif params[:purchase][:reservation_time] == "4:00 PM"
+                              @table_times.four_pm_tables -= 1
+                              if @table_times.four_pm_tables == 0
+		                              @table_times.four_pm_available = false
+		                          end
+              		      elsif params[:purchase][:reservation_time] == "4:30 PM"
+                    		      @table_times.four_thirty_pm_tables -= 1
+                    		      if @table_times.four_thirty_pm_tables == 0
+		                              @table_times.four_thirty_pm_available = false
+		                          end
+                		    elsif params[:purchase][:reservation_time] == "5:00 PM"
+                              @table_times.five_pm_tables -= 1
+                              if @table_times.five_pm_tables == 0
+		                              @table_times.five_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "5:30 PM"
+                    		      @table_times.five_thirty_pm_tables -= 1
+                    		      if @table_times.five_thirty_pm_tables == 0
+		                              @table_times.five_thirty_pm_available = false
+		                          end
+		                    elsif params[:purchase][:reservation_time] == "6:00 PM"
+                              @table_times.six_pm_tables -= 1
+                              if @table_times.six_pm_tables == 0
+		                              @table_times.six_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "6:30 PM"
+                    		      @table_times.six_thirty_pm_tables -= 1
+                    		      if @table_times.six_thirty_pm_tables == 0
+		                              @table_times.six_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "7:00 PM"
+                              @table_times.seven_pm_tables -= 1
+                              if @table_times.seven_pm_tables == 0
+		                              @table_times.seven_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "7:30 PM"
+                    		      @table_times.seven_thirty_pm_tables -= 1
+                    		      if @table_times.seven_thirty_pm_tables == 0
+		                              @table_times.seven_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "8:00 PM"
+                              @table_times.eight_pm_tables -= 1
+                              if @table_times.eight_pm_tables == 0
+		                              @table_times.eight_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "8:30 PM"
+                    		      @table_times.eight_thirty_pm_tables -= 1
+                    		      if @table_times.eight_thirty_pm_tables == 0
+		                              @table_times.eight_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "9:00 PM"
+                              @table_times.nine_pm_tables -= 1
+                              if @table_times.nine_pm_tables == 0
+		                              @table_times.nine_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "9:30 PM"
+                    		      @table_times.nine_thirty_pm_tables -= 1
+                    		      if @table_times.nine_thirty_pm_tables == 0
+		                              @table_times.nine_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "10:00 PM"
+                              @table_times.ten_pm_tables -= 1
+                              if @table_times.ten_pm_tables == 0
+		                              @table_times.ten_pm_available = false
+		                          end
+		                    end
+		                    @table_times.save
+		                else
+		                    @pass_set.sold_passes+=1
+		                    @pass_set.unsold_passes-=1
+		                end
 		            end
 		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		            @pass_set.save
@@ -64,6 +195,9 @@ class PurchasesController < ApplicationController
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
 			          pass.price = @pass_set.price
+			          if @pass_set.reservation_time_periods == true
+			            pass.reservation_time = params[:purchase][:reservation_time]
+			          end
 				        pass.entries=num_passes
 				        pass.confirmation=SecureRandom.hex(4)
 			          pass.save
@@ -79,8 +213,139 @@ class PurchasesController < ApplicationController
 	                @pass_set.sold_passes+=num_passes
 	                @pass_set.unsold_passes-=num_passes
 	            else
-	                @pass_set.sold_passes+=1
-	                @pass_set.unsold_passes-=1
+	                if @pass_set.reservation_time_periods == true
+	                    @table_times = @pass_set.time_periods.first
+	                    if params[:purchase][:reservation_time] == "10:00 AM"
+	                          @table_times.ten_am_tables -= 1
+	                          if @table_times.ten_am_tables == 0
+	                              @table_times.ten_am_available = false
+	                          end
+	                    elsif params[:purchase][:reservation_time] == "10:30 AM"
+  		                      @table_times.ten_thirty_am_tables -= 1
+  		                      if @table_times.ten_thirty_am_tables == 0
+	                              @table_times.ten_thrity_am_available = false
+	                          end
+  		                elsif params[:purchase][:reservation_time] == "11:00 AM"
+    		                    @table_times.eleven_am_tables -= 1
+    		                    if @table_times.eleven_am_tables == 0
+	                              @table_times.eleven_am_available = false
+	                          end
+    		              elsif params[:purchase][:reservation_time] == "11:30 AM"
+      		                  @table_times.eleven_thirty_am_tables -= 1
+      		                  if @table_times.eleven_thirty_am_tables == 0
+	                              @table_times.eleven_thirty_am_available = false
+	                          end
+      		            elsif params[:purchase][:reservation_time] == "12:00 PM"
+        		                @table_times.twelve_pm_tables -= 1
+        		                if @table_times.twelve_pm_tables == 0
+	                              @table_times.twelve_pm_available = false
+	                          end
+        		          elsif params[:purchase][:reservation_time] == "12:30 PM"
+          		              @table_times.twelve_thirty_pm_tables -= 1
+          		              if @table_times.twelve_thirty_pm_tables == 0
+	                              @table_times.twelve_thirty_pm_available = false
+	                          end
+          		        elsif params[:purchase][:reservation_time] == "1:00 PM"
+            		            @table_times.one_pm_tables -= 1
+            		            if @table_times.one_pm_tables == 0
+	                              @table_times.one_pm_available = false
+	                          end
+            		      elsif params[:purchase][:reservation_time] == "1:30 PM"
+              		          @table_times.one_thirty_pm_tables -= 1
+              		          if @table_times.one_thirty_pm_tables == 0
+	                              @table_times.one_thirty_pm_available = false
+	                          end
+              		    elsif params[:purchase][:reservation_time] == "2:00 PM"
+                		        @table_times.two_pm_tables -= 1
+                		        if @table_times.two_pm_tables == 0
+	                              @table_times.two_pm_available = false
+	                          end
+                		  elsif params[:purchase][:reservation_time] == "2:30 PM"
+                  		      @table_times.two_thirty_pm_tables -= 1
+                  		      if @table_times.two_thirty_pm_tables == 0
+	                              @table_times.two_thirty_pm_available = false
+	                          end
+                  		elsif params[:purchase][:reservation_time] == "3:00 PM"
+                		        @table_times.three_pm_tables -= 1
+                		        if @table_times.three_pm_tables == 0
+	                              @table_times.three_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "3:30 PM"
+              	            @table_times.three_thirty_pm_tables -= 1
+              	            if @table_times.three_thirty_pm_tables == 0
+	                              @table_times.three_thirty_pm_available = false
+	                          end
+          		        elsif params[:purchase][:reservation_time] == "4:00 PM"
+                            @table_times.four_pm_tables -= 1
+                            if @table_times.four_pm_tables == 0
+	                              @table_times.four_pm_available = false
+	                          end
+            		      elsif params[:purchase][:reservation_time] == "4:30 PM"
+                  		      @table_times.four_thirty_pm_tables -= 1
+                  		      if @table_times.four_thirty_pm_tables == 0
+	                              @table_times.four_thirty_pm_available = false
+	                          end
+              		    elsif params[:purchase][:reservation_time] == "5:00 PM"
+                            @table_times.five_pm_tables -= 1
+                            if @table_times.five_pm_tables == 0
+	                              @table_times.five_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "5:30 PM"
+                  		      @table_times.five_thirty_pm_tables -= 1
+                  		      if @table_times.five_thirty_pm_tables == 0
+	                              @table_times.five_thirty_pm_available = false
+	                          end
+	                    elsif params[:purchase][:reservation_time] == "6:00 PM"
+                            @table_times.six_pm_tables -= 1
+                            if @table_times.six_pm_tables == 0
+	                              @table_times.six_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "6:30 PM"
+                  		      @table_times.six_thirty_pm_tables -= 1
+                  		      if @table_times.six_thirty_pm_tables == 0
+	                              @table_times.six_thirty_pm_available = false
+	                          end
+                  		elsif params[:purchase][:reservation_time] == "7:00 PM"
+                            @table_times.seven_pm_tables -= 1
+                            if @table_times.seven_pm_tables == 0
+	                              @table_times.seven_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "7:30 PM"
+                  		      @table_times.seven_thirty_pm_tables -= 1
+                  		      if @table_times.seven_thirty_pm_tables == 0
+	                              @table_times.seven_thirty_pm_available = false
+	                          end
+                  		elsif params[:purchase][:reservation_time] == "8:00 PM"
+                            @table_times.eight_pm_tables -= 1
+                            if @table_times.eight_pm_tables == 0
+	                              @table_times.eight_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "8:30 PM"
+                  		      @table_times.eight_thirty_pm_tables -= 1
+                  		      if @table_times.eight_thirty_pm_tables == 0
+	                              @table_times.eight_thirty_pm_available = false
+	                          end
+                  		elsif params[:purchase][:reservation_time] == "9:00 PM"
+                            @table_times.nine_pm_tables -= 1
+                            if @table_times.nine_pm_tables == 0
+	                              @table_times.nine_pm_available = false
+	                          end
+                	    elsif params[:purchase][:reservation_time] == "9:30 PM"
+                  		      @table_times.nine_thirty_pm_tables -= 1
+                  		      if @table_times.nine_thirty_pm_tables == 0
+	                              @table_times.nine_thirty_pm_available = false
+	                          end
+                  		elsif params[:purchase][:reservation_time] == "10:00 PM"
+                            @table_times.ten_pm_tables -= 1
+                            if @table_times.ten_pm_tables == 0
+	                              @table_times.ten_pm_available = false
+	                          end
+	                    end
+	                    @table_times.save
+	                else
+	                    @pass_set.sold_passes+=1
+	                    @pass_set.unsold_passes-=1
+	                end
 	            end
 	            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
     		      @pass_set.save
@@ -90,6 +355,9 @@ class PurchasesController < ApplicationController
     			    pass.pass_set_id = @pass_set.id
     			    pass.redeemed = false
     			    pass.price = @pass_set.price
+    			    if @pass_set.reservation_time_periods == true
+		            pass.reservation_time = params[:purchase][:reservation_time]
+		          end
     				  pass.entries=num_passes
     				  pass.confirmation=SecureRandom.hex(4)
     			    pass.save
@@ -105,8 +373,139 @@ class PurchasesController < ApplicationController
 		                @pass_set.sold_passes+=num_passes
 		                @pass_set.unsold_passes-=num_passes
 		            else
-		                @pass_set.sold_passes+=1
-		                @pass_set.unsold_passes-=1
+		                if @pass_set.reservation_time_periods == true
+		                    @table_times = @pass_set.time_periods.first
+		                    if params[:purchase][:reservation_time] == "10:00 AM"
+		                          @table_times.ten_am_tables -= 1
+		                          if @table_times.ten_am_tables == 0
+		                              @table_times.ten_am_available = false
+		                          end
+		                    elsif params[:purchase][:reservation_time] == "10:30 AM"
+    		                      @table_times.ten_thirty_am_tables -= 1
+    		                      if @table_times.ten_thirty_am_tables == 0
+		                              @table_times.ten_thrity_am_available = false
+		                          end
+    		                elsif params[:purchase][:reservation_time] == "11:00 AM"
+      		                    @table_times.eleven_am_tables -= 1
+      		                    if @table_times.eleven_am_tables == 0
+		                              @table_times.eleven_am_available = false
+		                          end
+      		              elsif params[:purchase][:reservation_time] == "11:30 AM"
+        		                  @table_times.eleven_thirty_am_tables -= 1
+        		                  if @table_times.eleven_thirty_am_tables == 0
+		                              @table_times.eleven_thirty_am_available = false
+		                          end
+        		            elsif params[:purchase][:reservation_time] == "12:00 PM"
+          		                @table_times.twelve_pm_tables -= 1
+          		                if @table_times.twelve_pm_tables == 0
+		                              @table_times.twelve_pm_available = false
+		                          end
+          		          elsif params[:purchase][:reservation_time] == "12:30 PM"
+            		              @table_times.twelve_thirty_pm_tables -= 1
+            		              if @table_times.twelve_thirty_pm_tables == 0
+		                              @table_times.twelve_thirty_pm_available = false
+		                          end
+            		        elsif params[:purchase][:reservation_time] == "1:00 PM"
+              		            @table_times.one_pm_tables -= 1
+              		            if @table_times.one_pm_tables == 0
+		                              @table_times.one_pm_available = false
+		                          end
+              		      elsif params[:purchase][:reservation_time] == "1:30 PM"
+                		          @table_times.one_thirty_pm_tables -= 1
+                		          if @table_times.one_thirty_pm_tables == 0
+		                              @table_times.one_thirty_pm_available = false
+		                          end
+                		    elsif params[:purchase][:reservation_time] == "2:00 PM"
+                  		        @table_times.two_pm_tables -= 1
+                  		        if @table_times.two_pm_tables == 0
+		                              @table_times.two_pm_available = false
+		                          end
+                  		  elsif params[:purchase][:reservation_time] == "2:30 PM"
+                    		      @table_times.two_thirty_pm_tables -= 1
+                    		      if @table_times.two_thirty_pm_tables == 0
+		                              @table_times.two_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "3:00 PM"
+                  		        @table_times.three_pm_tables -= 1
+                  		        if @table_times.three_pm_tables == 0
+		                              @table_times.three_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "3:30 PM"
+                	            @table_times.three_thirty_pm_tables -= 1
+                	            if @table_times.three_thirty_pm_tables == 0
+		                              @table_times.three_thirty_pm_available = false
+		                          end
+            		        elsif params[:purchase][:reservation_time] == "4:00 PM"
+                              @table_times.four_pm_tables -= 1
+                              if @table_times.four_pm_tables == 0
+		                              @table_times.four_pm_available = false
+		                          end
+              		      elsif params[:purchase][:reservation_time] == "4:30 PM"
+                    		      @table_times.four_thirty_pm_tables -= 1
+                    		      if @table_times.four_thirty_pm_tables == 0
+		                              @table_times.four_thirty_pm_available = false
+		                          end
+                		    elsif params[:purchase][:reservation_time] == "5:00 PM"
+                              @table_times.five_pm_tables -= 1
+                              if @table_times.five_pm_tables == 0
+		                              @table_times.five_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "5:30 PM"
+                    		      @table_times.five_thirty_pm_tables -= 1
+                    		      if @table_times.five_thirty_pm_tables == 0
+		                              @table_times.five_thirty_pm_available = false
+		                          end
+		                    elsif params[:purchase][:reservation_time] == "6:00 PM"
+                              @table_times.six_pm_tables -= 1
+                              if @table_times.six_pm_tables == 0
+		                              @table_times.six_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "6:30 PM"
+                    		      @table_times.six_thirty_pm_tables -= 1
+                    		      if @table_times.six_thirty_pm_tables == 0
+		                              @table_times.six_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "7:00 PM"
+                              @table_times.seven_pm_tables -= 1
+                              if @table_times.seven_pm_tables == 0
+		                              @table_times.seven_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "7:30 PM"
+                    		      @table_times.seven_thirty_pm_tables -= 1
+                    		      if @table_times.seven_thirty_pm_tables == 0
+		                              @table_times.seven_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "8:00 PM"
+                              @table_times.eight_pm_tables -= 1
+                              if @table_times.eight_pm_tables == 0
+		                              @table_times.eight_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "8:30 PM"
+                    		      @table_times.eight_thirty_pm_tables -= 1
+                    		      if @table_times.eight_thirty_pm_tables == 0
+		                              @table_times.eight_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "9:00 PM"
+                              @table_times.nine_pm_tables -= 1
+                              if @table_times.nine_pm_tables == 0
+		                              @table_times.nine_pm_available = false
+		                          end
+                  	    elsif params[:purchase][:reservation_time] == "9:30 PM"
+                    		      @table_times.nine_thirty_pm_tables -= 1
+                    		      if @table_times.nine_thirty_pm_tables == 0
+		                              @table_times.nine_thirty_pm_available = false
+		                          end
+                    		elsif params[:purchase][:reservation_time] == "10:00 PM"
+                              @table_times.ten_pm_tables -= 1
+                              if @table_times.ten_pm_tables == 0
+		                              @table_times.ten_pm_available = false
+		                          end
+		                    end
+		                    @table_times.save
+		                else
+		                    @pass_set.sold_passes+=1
+		                    @pass_set.unsold_passes-=1
+		                end
 		            end
 		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		            @pass_set.save
@@ -117,6 +516,9 @@ class PurchasesController < ApplicationController
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
 			          pass.price = @pass_set.price
+			          if @pass_set.reservation_time_periods == true
+			            pass.reservation_time = params[:purchase][:reservation_time]
+			          end
 			          pass.entries=num_passes
 		            pass.confirmation=SecureRandom.hex(4)
 			          pass.save
@@ -133,8 +535,139 @@ class PurchasesController < ApplicationController
               @pass_set.sold_passes+=num_passes
               @pass_set.unsold_passes-=num_passes
           else
-              @pass_set.sold_passes+=1
-              @pass_set.unsold_passes-=1
+              if @pass_set.reservation_time_periods == true
+                  @table_times = @pass_set.time_periods.first
+                  if params[:purchase][:reservation_time] == "10:00 AM"
+                        @table_times.ten_am_tables -= 1
+                        if @table_times.ten_am_tables == 0
+                            @table_times.ten_am_available = false
+                        end
+                  elsif params[:purchase][:reservation_time] == "10:30 AM"
+	                      @table_times.ten_thirty_am_tables -= 1
+	                      if @table_times.ten_thirty_am_tables == 0
+                            @table_times.ten_thrity_am_available = false
+                        end
+	                elsif params[:purchase][:reservation_time] == "11:00 AM"
+		                    @table_times.eleven_am_tables -= 1
+		                    if @table_times.eleven_am_tables == 0
+                            @table_times.eleven_am_available = false
+                        end
+		              elsif params[:purchase][:reservation_time] == "11:30 AM"
+  		                  @table_times.eleven_thirty_am_tables -= 1
+  		                  if @table_times.eleven_thirty_am_tables == 0
+                            @table_times.eleven_thirty_am_available = false
+                        end
+  		            elsif params[:purchase][:reservation_time] == "12:00 PM"
+    		                @table_times.twelve_pm_tables -= 1
+    		                if @table_times.twelve_pm_tables == 0
+                            @table_times.twelve_pm_available = false
+                        end
+    		          elsif params[:purchase][:reservation_time] == "12:30 PM"
+      		              @table_times.twelve_thirty_pm_tables -= 1
+      		              if @table_times.twelve_thirty_pm_tables == 0
+                            @table_times.twelve_thirty_pm_available = false
+                        end
+      		        elsif params[:purchase][:reservation_time] == "1:00 PM"
+        		            @table_times.one_pm_tables -= 1
+        		            if @table_times.one_pm_tables == 0
+                            @table_times.one_pm_available = false
+                        end
+        		      elsif params[:purchase][:reservation_time] == "1:30 PM"
+          		          @table_times.one_thirty_pm_tables -= 1
+          		          if @table_times.one_thirty_pm_tables == 0
+                            @table_times.one_thirty_pm_available = false
+                        end
+          		    elsif params[:purchase][:reservation_time] == "2:00 PM"
+            		        @table_times.two_pm_tables -= 1
+            		        if @table_times.two_pm_tables == 0
+                            @table_times.two_pm_available = false
+                        end
+            		  elsif params[:purchase][:reservation_time] == "2:30 PM"
+              		      @table_times.two_thirty_pm_tables -= 1
+              		      if @table_times.two_thirty_pm_tables == 0
+                            @table_times.two_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "3:00 PM"
+            		        @table_times.three_pm_tables -= 1
+            		        if @table_times.three_pm_tables == 0
+                            @table_times.three_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "3:30 PM"
+          	            @table_times.three_thirty_pm_tables -= 1
+          	            if @table_times.three_thirty_pm_tables == 0
+                            @table_times.three_thirty_pm_available = false
+                        end
+      		        elsif params[:purchase][:reservation_time] == "4:00 PM"
+                        @table_times.four_pm_tables -= 1
+                        if @table_times.four_pm_tables == 0
+                            @table_times.four_pm_available = false
+                        end
+        		      elsif params[:purchase][:reservation_time] == "4:30 PM"
+              		      @table_times.four_thirty_pm_tables -= 1
+              		      if @table_times.four_thirty_pm_tables == 0
+                            @table_times.four_thirty_pm_available = false
+                        end
+          		    elsif params[:purchase][:reservation_time] == "5:00 PM"
+                        @table_times.five_pm_tables -= 1
+                        if @table_times.five_pm_tables == 0
+                            @table_times.five_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "5:30 PM"
+              		      @table_times.five_thirty_pm_tables -= 1
+              		      if @table_times.five_thirty_pm_tables == 0
+                            @table_times.five_thirty_pm_available = false
+                        end
+                  elsif params[:purchase][:reservation_time] == "6:00 PM"
+                        @table_times.six_pm_tables -= 1
+                        if @table_times.six_pm_tables == 0
+                            @table_times.six_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "6:30 PM"
+              		      @table_times.six_thirty_pm_tables -= 1
+              		      if @table_times.six_thirty_pm_tables == 0
+                            @table_times.six_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "7:00 PM"
+                        @table_times.seven_pm_tables -= 1
+                        if @table_times.seven_pm_tables == 0
+                            @table_times.seven_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "7:30 PM"
+              		      @table_times.seven_thirty_pm_tables -= 1
+              		      if @table_times.seven_thirty_pm_tables == 0
+                            @table_times.seven_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "8:00 PM"
+                        @table_times.eight_pm_tables -= 1
+                        if @table_times.eight_pm_tables == 0
+                            @table_times.eight_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "8:30 PM"
+              		      @table_times.eight_thirty_pm_tables -= 1
+              		      if @table_times.eight_thirty_pm_tables == 0
+                            @table_times.eight_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "9:00 PM"
+                        @table_times.nine_pm_tables -= 1
+                        if @table_times.nine_pm_tables == 0
+                            @table_times.nine_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "9:30 PM"
+              		      @table_times.nine_thirty_pm_tables -= 1
+              		      if @table_times.nine_thirty_pm_tables == 0
+                            @table_times.nine_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "10:00 PM"
+                        @table_times.ten_pm_tables -= 1
+                        if @table_times.ten_pm_tables == 0
+                            @table_times.ten_pm_available = false
+                        end
+                  end
+                  @table_times.save
+              else
+                  @pass_set.sold_passes+=1
+                  @pass_set.unsold_passes-=1
+              end
           end
           @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		      @pass_set.save
@@ -145,6 +678,9 @@ class PurchasesController < ApplicationController
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
 			      pass.price = @pass_set.price
+			      if @pass_set.reservation_time_periods == true
+	            pass.reservation_time = params[:purchase][:reservation_time]
+	          end
 				    pass.entries=num_passes
 				    pass.confirmation=SecureRandom.hex(4)
 			      pass.save
@@ -162,8 +698,139 @@ class PurchasesController < ApplicationController
               @pass_set.sold_passes+=num_passes
               @pass_set.unsold_passes-=num_passes
           else
-              @pass_set.sold_passes+=1
-              @pass_set.unsold_passes-=1
+              if @pass_set.reservation_time_periods == true
+                  @table_times = @pass_set.time_periods.first
+                  if params[:purchase][:reservation_time] == "10:00 AM"
+                        @table_times.ten_am_tables -= 1
+                        if @table_times.ten_am_tables == 0
+                            @table_times.ten_am_available = false
+                        end
+                  elsif params[:purchase][:reservation_time] == "10:30 AM"
+	                      @table_times.ten_thirty_am_tables -= 1
+	                      if @table_times.ten_thirty_am_tables == 0
+                            @table_times.ten_thrity_am_available = false
+                        end
+	                elsif params[:purchase][:reservation_time] == "11:00 AM"
+		                    @table_times.eleven_am_tables -= 1
+		                    if @table_times.eleven_am_tables == 0
+                            @table_times.eleven_am_available = false
+                        end
+		              elsif params[:purchase][:reservation_time] == "11:30 AM"
+  		                  @table_times.eleven_thirty_am_tables -= 1
+  		                  if @table_times.eleven_thirty_am_tables == 0
+                            @table_times.eleven_thirty_am_available = false
+                        end
+  		            elsif params[:purchase][:reservation_time] == "12:00 PM"
+    		                @table_times.twelve_pm_tables -= 1
+    		                if @table_times.twelve_pm_tables == 0
+                            @table_times.twelve_pm_available = false
+                        end
+    		          elsif params[:purchase][:reservation_time] == "12:30 PM"
+      		              @table_times.twelve_thirty_pm_tables -= 1
+      		              if @table_times.twelve_thirty_pm_tables == 0
+                            @table_times.twelve_thirty_pm_available = false
+                        end
+      		        elsif params[:purchase][:reservation_time] == "1:00 PM"
+        		            @table_times.one_pm_tables -= 1
+        		            if @table_times.one_pm_tables == 0
+                            @table_times.one_pm_available = false
+                        end
+        		      elsif params[:purchase][:reservation_time] == "1:30 PM"
+          		          @table_times.one_thirty_pm_tables -= 1
+          		          if @table_times.one_thirty_pm_tables == 0
+                            @table_times.one_thirty_pm_available = false
+                        end
+          		    elsif params[:purchase][:reservation_time] == "2:00 PM"
+            		        @table_times.two_pm_tables -= 1
+            		        if @table_times.two_pm_tables == 0
+                            @table_times.two_pm_available = false
+                        end
+            		  elsif params[:purchase][:reservation_time] == "2:30 PM"
+              		      @table_times.two_thirty_pm_tables -= 1
+              		      if @table_times.two_thirty_pm_tables == 0
+                            @table_times.two_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "3:00 PM"
+            		        @table_times.three_pm_tables -= 1
+            		        if @table_times.three_pm_tables == 0
+                            @table_times.three_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "3:30 PM"
+          	            @table_times.three_thirty_pm_tables -= 1
+          	            if @table_times.three_thirty_pm_tables == 0
+                            @table_times.three_thirty_pm_available = false
+                        end
+      		        elsif params[:purchase][:reservation_time] == "4:00 PM"
+                        @table_times.four_pm_tables -= 1
+                        if @table_times.four_pm_tables == 0
+                            @table_times.four_pm_available = false
+                        end
+        		      elsif params[:purchase][:reservation_time] == "4:30 PM"
+              		      @table_times.four_thirty_pm_tables -= 1
+              		      if @table_times.four_thirty_pm_tables == 0
+                            @table_times.four_thirty_pm_available = false
+                        end
+          		    elsif params[:purchase][:reservation_time] == "5:00 PM"
+                        @table_times.five_pm_tables -= 1
+                        if @table_times.five_pm_tables == 0
+                            @table_times.five_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "5:30 PM"
+              		      @table_times.five_thirty_pm_tables -= 1
+              		      if @table_times.five_thirty_pm_tables == 0
+                            @table_times.five_thirty_pm_available = false
+                        end
+                  elsif params[:purchase][:reservation_time] == "6:00 PM"
+                        @table_times.six_pm_tables -= 1
+                        if @table_times.six_pm_tables == 0
+                            @table_times.six_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "6:30 PM"
+              		      @table_times.six_thirty_pm_tables -= 1
+              		      if @table_times.six_thirty_pm_tables == 0
+                            @table_times.six_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "7:00 PM"
+                        @table_times.seven_pm_tables -= 1
+                        if @table_times.seven_pm_tables == 0
+                            @table_times.seven_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "7:30 PM"
+              		      @table_times.seven_thirty_pm_tables -= 1
+              		      if @table_times.seven_thirty_pm_tables == 0
+                            @table_times.seven_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "8:00 PM"
+                        @table_times.eight_pm_tables -= 1
+                        if @table_times.eight_pm_tables == 0
+                            @table_times.eight_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "8:30 PM"
+              		      @table_times.eight_thirty_pm_tables -= 1
+              		      if @table_times.eight_thirty_pm_tables == 0
+                            @table_times.eight_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "9:00 PM"
+                        @table_times.nine_pm_tables -= 1
+                        if @table_times.nine_pm_tables == 0
+                            @table_times.nine_pm_available = false
+                        end
+            	    elsif params[:purchase][:reservation_time] == "9:30 PM"
+              		      @table_times.nine_thirty_pm_tables -= 1
+              		      if @table_times.nine_thirty_pm_tables == 0
+                            @table_times.nine_thirty_pm_available = false
+                        end
+              		elsif params[:purchase][:reservation_time] == "10:00 PM"
+                        @table_times.ten_pm_tables -= 1
+                        if @table_times.ten_pm_tables == 0
+                            @table_times.ten_pm_available = false
+                        end
+                  end
+                  @table_times.save
+              else
+                  @pass_set.sold_passes+=1
+                  @pass_set.unsold_passes-=1
+              end
           end
           @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
 		      @pass_set.save
@@ -174,6 +841,9 @@ class PurchasesController < ApplicationController
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
 			      pass.price = @pass_set.price
+			      if @pass_set.reservation_time_periods == true
+	            pass.reservation_time = params[:purchase][:reservation_time]
+	          end
 				    pass.entries=num_passes
 				    pass.confirmation=SecureRandom.hex(4)
 			      pass.save
