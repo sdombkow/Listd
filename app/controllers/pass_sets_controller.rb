@@ -27,6 +27,18 @@ class PassSetsController < ApplicationController
     @pass_set = PassSet.find(params[:id])
 	  @used_passes = @pass_set.passes.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:used_passes_page], :per_page => 5)
 	  @unused_passes = @pass_set.passes.order("name DESC").where('redeemed = ?', false).paginate(:page => params[:unused_passes_page], :per_page => 5)
+	  if @pass_set.reservation_time_periods == true && @pass_set.selling_passes == false
+	      @available_times = @pass_set.time_periods.first
+	      @reservations_times = Array.new
+	      @time_list = Array.new
+	      for x in 0..TimePeriod::TIME_LIST.length-1
+	          @time_marker = "@available_times."+TimePeriod::TIME_LIST[x].second+"_available".to_s
+	          if eval(@time_marker) == true
+	              @reservations_times.push(TimePeriod::TIME_LIST[x].first)
+	              @time_list.push(TimePeriod::TIME_LIST[x].second)
+	          end
+	      end
+	  end
     @purchase = Purchase.new
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
@@ -51,6 +63,7 @@ class PassSetsController < ApplicationController
   # GET /pass_sets/new.json
   def new
     @pass_set = PassSet.new
+    @pass_set.time_periods.build
 	  @pass_set.sold_passes = 0
 	  @pass_set.unsold_passes = @pass_set.total_released_passes
     @bar = Bar.find(params[:bar_id])
@@ -72,10 +85,12 @@ class PassSetsController < ApplicationController
   # POST /pass_sets.json
   def create
     @pass_set = PassSet.new(params[:pass_set])
+    @time_period = TimePeriod.new(params[:time_period])
 	  @pass_set.sold_passes = 0
 	  @pass_set.unsold_passes = @pass_set.total_released_passes
     @bar = Bar.find(params[:bar_id])
     @pass_set.bar = @bar
+    @time_period.pass_set = @pass_set
 	  @existing_set = @bar.pass_sets.where("date = ?", @pass_set.date).first
     respond_to do |format|
 		if @pass_set.date < Date.today

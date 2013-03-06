@@ -316,6 +316,14 @@
         						</div>
       						</div>
 						<% else %>
+							<% if @pass_set.reservation_time_periods == true %>
+								<div class="control-group">
+    								<%= f.label :reservation_time, "Time of Reservation", class: "control-label" %>
+    								<div class="controls">
+      									<%= f.select :reservation_time, @reservations_times %>
+    								</div>
+  								</div>
+							<% end %>
 							<div class="control-group">
         						<%= f.label :num_passes, "Party Size", class: "control-label" %>
         						<div class="controls">
@@ -422,6 +430,14 @@
 	        					</div>
 	      					</div>
 						<% else %>
+							<% if @pass_set.reservation_time_periods == true %>
+								<div class="control-group">
+        							<%= f.label :reservation_time, "Time of Reservation", class: "control-label" %>
+        							<div class="controls">
+          								<%= f.select :reservation_time, @reservations_times %>
+        							</div>
+      							</div>
+							<% end %>
 							<div class="control-group">
 	        					<%= f.label :num_passes, "Party Size", class: "control-label" %>
 	        					<div class="controls">
