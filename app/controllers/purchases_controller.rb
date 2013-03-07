@@ -181,6 +181,8 @@ class PurchasesController < ApplicationController
 		                          end
 		                    end
 		                    @table_times.save
+		                    @pass_set.sold_passes+=1
+		                    @pass_set.unsold_passes-=1
 		                else
 		                    @pass_set.sold_passes+=1
 		                    @pass_set.unsold_passes-=1

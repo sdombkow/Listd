@@ -12,8 +12,8 @@ class PassesController < ApplicationController
   def reservation_archive
     @user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
-  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_res_page], :per_page => 5)
+  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
+  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').paginate(:page => params[:past_res_page], :per_page => 5)
   end 
   
   def show
