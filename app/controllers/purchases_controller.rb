@@ -22,7 +22,9 @@ class PurchasesController < ApplicationController
 	  else 
 	      @decimals = String(@pass_set.price).split(".").last 
 	  end
-		@purchase.price = String(@pass_set.price).split(".").first+@decimals
+		@purchase.price = (String(@pass_set.price).split(".").first+@decimals)
+		@purchase.price = Integer(@purchase.price)*num_passes
+		logger.error "Price: #{@purchase.price}"
 		logger.error "Stripe Card Token: #{@purchase.stripe_card_token}"
 		logger.error "Stripe customer: #{@user.stripe_customer_token}"
 		if @user.stripe_customer_token != nil
