@@ -148,9 +148,7 @@ class PassSetsController < ApplicationController
         redirect_to :action => "index", :controller => "bars"
         return
     end
-    if @pass_set.reservation_time_periods == true && @pass_set.selling_passes == false
-  
-	  else
+    if @pass_set.reservation_time_periods == false
 	      @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
 	  end
     @existing_sets = @bar.pass_sets.where("date = ?", @date).length
