@@ -299,6 +299,110 @@ class PassSetsController < ApplicationController
       @bar = @pass_set.bar
       @pass_set.total_released_passes = @pass_set.sold_passes
       @pass_set.unsold_passes = 0
+      if @pass_set.reservation_time_periods == true
+            @available_times = @pass_set.time_periods.first
+            if @available_times.ten_am_available == true
+                @available_times.ten_am_available = false
+                @available_times.ten_am_tables = 0
+            end
+            if @available_times.ten_thirty_am_available == true
+                @available_times.ten_thirty_am_available = false
+                @available_times.ten_thirty_am_tables = 0
+            end
+            if @available_times.eleven_am_available == true
+                @available_times.eleven_am_tables = 0
+                @available_times.eleven_am_available = false
+            end
+            if @available_times.eleven_thirty_am_available == true
+                @available_times.eleven_thirty_am_tables = 0
+                @available_times.eleven_thirty_am_available = false
+            end
+            if @available_times.twelve_pm_available == true
+                @available_times.twelve_pm_tables = 0
+                @available_times.twelve_pm_available = false
+            end
+            if @available_times.twelve_thirty_pm_available == true
+                @available_times.twelve_thirty_pm_tables = 0
+                @available_times.twelve_thirty_pm_available = false
+            end
+            if @available_times.one_pm_available == true
+                @available_times.one_pm_tables = 0
+                @available_times.one_pm_available = false
+            end
+            if @available_times.one_thirty_pm_available == true
+                @available_times.one_thirty_pm_tables = 0
+                @available_times.one_thirty_pm_available = false
+            end
+            if @available_times.two_pm_available == true
+                @available_times.two_pm_tables = 0
+                @available_times.two_pm_available = false
+            end
+            if @available_times.two_thirty_pm_available == true
+                  @available_times.two_thirty_pm_tables = 0
+                  @available_times.two_thirty_pm_available = false
+            end
+            if @available_times.three_pm_available == true
+                  @available_times.three_pm_tables = 0
+                  @available_times.three_pm_available = false
+            end
+            if @available_times.three_thirty_pm_available == true
+                 @available_times.three_thirty_pm_tables = 0
+                 @available_times.three_thirty_pm_available = false
+            end
+            if @available_times.four_pm_available == true
+                 @available_times.four_pm_tables = 0
+                 @available_times.four_pm_available = false
+            end
+            if @available_times.four_thirty_pm_available == true
+                @available_times.four_thirty_pm_tables = 0 
+                @available_times.four_thirty_pm_available = false
+            end
+            if @available_times.five_pm_available == true
+                @available_times.five_pm_tables = 0
+                @available_times.five_pm_available = false
+            end
+            if @available_times.five_thirty_pm_available == true
+                @available_times.five_thirty_pm_tables = 0
+                @available_times.five_thirty_pm_available = false
+            end
+            if @available_times.six_pm_available == true
+                @available_times.six_pm_tables = 0
+                @available_times.six_pm_available = false
+            end
+            if @available_times.six_thirty_pm_available == true
+                @available_times.six_thirty_pm_tables = 0
+                @available_times.six_thirty_pm_available = false
+            end
+            if @available_times.seven_pm_available == true
+                @available_times.seven_pm_tables = 0
+                @available_times.seven_pm_available = false
+            end
+            if @available_times.seven_thirty_pm_available == true
+                @available_times.seven_thirty_pm_tables = 0
+                @available_times.seven_thirty_pm_available = false
+            end
+            if @available_times.eight_pm_available == true
+                @available_times.eight_pm_tables = 0
+                @available_times.eight_pm_available = false
+            end
+            if @available_times.eight_thirty_pm_available == true
+                @available_times.eight_thirty_pm_tables = 0
+                @available_times.eight_thirty_pm_available = false
+            end
+            if @available_times.nine_pm_available == true
+                @available_times.nine_pm_tables = 0
+                @available_times.nine_pm_available = false
+            end
+            if @available_times.nine_thirty_pm_available == true
+                @available_times.nine_thirty_pm_tables = 0
+                @available_times.nine_thirty_pm_available = false
+            end
+            if @available_times.ten_pm_available == true
+                @available_times.ten_pm_tables = 0
+                @available_times.ten_pm_available = false
+            end
+            @available_times.save
+      end
       @pass_set.save
     
       respond_to do |format|

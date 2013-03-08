@@ -25,9 +25,10 @@ class PassesController < ApplicationController
       @card_four = @customer_card.card.last4
     end
 		logger.error "Purchase #: #{@pass.purchase}"
-		logger.error "User #: #{@pass.purchase.user}"
+		logger.error "Pass User #: #{@pass.purchase.user}"
+		logger.error "Real User #: #{@user}"
 		if(@user != @pass.purchase.user)
-		  if(!@user.partner?)
+		  if(!@user.partner? && !@user.admin?)
 		    redirect_to:root
 		    flash[:notice] = "Opps! You went somewhere you're not supposed to."
 		  end
