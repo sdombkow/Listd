@@ -48,8 +48,8 @@ class HomeController < ApplicationController
     if user_signed_in?
        @user = current_user
        # Eager loading pass sets
-   	   @passes = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', true, Time.now.to_date+1).order('pass_sets.date ASC').limit(3)
-   	   @reservations = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date+1).order('pass_sets.date ASC, passes.reservation_time ASC').limit(3)
+   	   @passes = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').limit(3)
+   	   @reservations = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').limit(3)
    	end
   end
 
