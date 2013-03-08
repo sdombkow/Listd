@@ -6,8 +6,13 @@ class PurchasesController < ApplicationController
 		@bar = Bar.find(params[:purchase][:bar])
 		@pass_set = PassSet.find(params[:purchase][:pass_set])
 		num_passes = params[:purchase][:num_passes].to_i
-		if num_passes > @pass_set.unsold_passes
+		if num_passes > @pass_set.unsold_passes && @pass_set.selling_passes == true
 			flash[:error] = 'Not enough passes left'
+			redirect_to [@bar,@pass_set]
+			return
+		end
+		if @pass_set.unsold_passes == 0
+		  flash[:error] = 'Not enough passes left'
 			redirect_to [@bar,@pass_set]
 			return
 		end
