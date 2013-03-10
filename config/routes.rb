@@ -61,6 +61,7 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
 	end
 	
 resources :tokens,:only => [:create, :destroy]
+
 namespace :api do
   namespace :v1 do
     devise_scope :user do
@@ -68,6 +69,7 @@ namespace :api do
       post 'sessions' => 'sessions#create', :as => 'login'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
+    get 'tasks' => 'tasks#index', :as => 'tasks'
   end
 end
 
