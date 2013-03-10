@@ -95,6 +95,12 @@ class PassesController < ApplicationController
       else
       	pdf.font "Helvetica"
       	pdf.text "Reservation Instructions", :size => 20, :align => :center
+      	pdf.move_down 20
+      	pdf.text "1. Arrive at designated time and date, inform the location of your reservation."
+      	pdf.move_down 10
+      	pdf.text "2. If needed, show your LISTD confirmation."
+      	pdf.move_down 10
+      	pdf.text "3. Enjoy your meal!"
       end
       
       pdf.encrypt_document(:permissions => { :print_document => true,
