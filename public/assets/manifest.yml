@@ -23,6 +23,8 @@ mug-icon.png: mug-icon-b21b1607ecc3beb8a9fe418a95bc547f.png
 mug-icon/index.png: mug-icon-b21b1607ecc3beb8a9fe418a95bc547f.png
 pass_bg.png: pass_bg-265af4970977859b5c5ff40fbed9791c.png
 pass_bg/index.png: pass_bg-265af4970977859b5c5ff40fbed9791c.png
+pass_reserv_bg.png: pass_reserv_bg-a0dcefad64df03d4ea40945376c35e5a.png
+pass_reserv_bg/index.png: pass_reserv_bg-a0dcefad64df03d4ea40945376c35e5a.png
 pass_watermark_bg.png: pass_watermark_bg-71337ac16aab284754d9880fb94626e9.png
 pass_watermark_bg/index.png: pass_watermark_bg-71337ac16aab284754d9880fb94626e9.png
 phone.png: phone-0eea71ef842539dbb993d79663ac8199.png
@@ -41,8 +43,8 @@ twitter_icon.png: twitter_icon-c3e9436c8711b048b00be5b453b02b86.png
 twitter_icon/index.png: twitter_icon-c3e9436c8711b048b00be5b453b02b86.png
 application.js: application-da290912de45c2fe28a3eb82d82a3bf4.js
 application/index.js: application-da290912de45c2fe28a3eb82d82a3bf4.js
-application.css: application-d86453e2c1d252151bf368da83354618.css
-application/index.css: application-d86453e2c1d252151bf368da83354618.css
+application.css: application-a8c4de189d1117a9b2bb4e732124e3ca.css
+application/index.css: application-a8c4de189d1117a9b2bb4e732124e3ca.css
 glyphicons-halflings-white.png: glyphicons-halflings-white-6cccd17a7aed91dbc0157d343c68c0d9.png
 glyphicons-halflings-white/index.png: glyphicons-halflings-white-6cccd17a7aed91dbc0157d343c68c0d9.png
 glyphicons-halflings.png: glyphicons-halflings-2851b489e8c39f8fad44fc10efb99c3e.png

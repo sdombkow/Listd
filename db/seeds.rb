@@ -10,9 +10,9 @@ user = User.create! :name => 'Listd Admin', :email => 'admin@listdnow.com', :pas
 puts 'New user created: ' << user.name
 user.admin = true
 user.save
-user2 = User.create! :name => 'First partner', :email => 'partner@example.com', :password => 'please', :password_confirmation => 'please'
+user2 = User.create! :name => 'First partner', :email => 'partner@listdnow.com', :password => 'partnerpw', :password_confirmation => 'partnerpw'
 puts 'New user created: ' << user2.name
 user2.partner = true
 user2.save
-user3 = User.create! :name => 'First User', :email => 'user3@example.com', :password => 'please', :password_confirmation => 'please'
+user3 = User.create! :name => 'First User', :email => 'user@listdnow.com', :password => 'userpw', :password_confirmation => 'userpw'
 puts 'New user created: ' << user3.name

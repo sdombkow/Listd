@@ -7,14 +7,16 @@
             $("#purchaseInformation").hide();
 			$("#newInformation").hide();
 			$('#BackToFirst').hide();
-			if ($("#unsold").val() == 0) {
+			$("#reservation_sold").hide();
+			$("#sold_num").hide();
+			if ($("#unsold").html() == 0) {
 				$("#makePurchase").hide();
 				$("#cancelView").hide();
 			}
-			if ($("#sold_out").val() == 0) {
+			if ($("#sold_num").html() == "No") {
 				$("#makePurchase").hide();
 				$("#cancelView").hide();
-			}
+			}		
             $("#nextPurchase").click(function(){
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
@@ -121,11 +123,11 @@
     			<dd><%= @pass_set.bar.name %></dd>
 				<dt>Reservation Date</dt>
 				<dd><%= @pass_set.date.strftime("%m/%d/%Y") %></dd>
-				<dt>Reservations Available</dt>
+				<dt id = "reservation_sold">Reservations Available</dt>
 				<% if @pass_set.unsold_passes > 0 %>
-					<dd id = "sold_out">Yes</dd>
+					<dd id = "sold_num">Yes</dd>
 				<% else %>
-					<dd id = "sold_out">No</dd>
+					<dd id = "sold_num">No</dd>
 				<% end %>
 				<dt>Price Per Person</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
@@ -207,6 +209,9 @@
 								<div class="pull-left dt">
 									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
 									# of Guests:</br>
+									<% if pass.pass_set.reservation_time_periods == true %>
+										Time of Reservation:<br>
+									<% end %>
 		        					Purchased on:</br>
 									Reservation Redeemed?:</br>
 									Confirmation Number:
@@ -214,6 +219,9 @@
 								<div class="pull-left dd">
 									</br>
 		 							<%= pass.entries %></br>
+									<% if pass.pass_set.reservation_time_periods == true %>
+										<%= pass.reservation_time %> <br>
+									<% end %>
 									<%= pass.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
 									<%= pass.redeemed %></br>
 									<%= link_to pass.confirmation, pass %>
@@ -261,6 +269,9 @@
 								<div class="pull-left dt">
 									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id), :method=>:post %> </br>
 				  					# of Guests:</br>
+									<% if pass.pass_set.reservation_time_periods == true %>
+										Time of Reservation:<br>
+									<% end %>
 		        					Purchased on:</br>
 									Reservation Redeemed?:</br>
 									Confirmation Number:
@@ -268,6 +279,9 @@
 								<div class="pull-left dd">
 									</br>
 				  					<%= pass.entries %></br>
+									<% if pass.pass_set.reservation_time_periods == true %>
+										<%= pass.reservation_time %> <br>
+									<% end %>
 									<%= pass.created_at.strftime('%b %d, %Y') %></br>
 									<%= pass.redeemed %></br>
 									<%= link_to pass.confirmation, pass %>
@@ -282,9 +296,9 @@
 	<% else %>
 		<div id="sold_out">
 			</br>
-			<% if @pass_set.selling_passes == true %>
+			<% if @pass_set.selling_passes == true && @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available passes for <%= @pass_set.date.strftime("%m/%d/%y")%>.</h1>
-			<% else %>
+			<% elsif @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available reservations for <%=@pass_set.date.strftime("%m/%d/%y")%>.</h1>
 			<% end %>
 		</div>
@@ -302,6 +316,7 @@
         						<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
         						<div class="controls">
           							<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+									</br>
 		  							<small>(You can purchase passes for your friends)</small>
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
@@ -309,10 +324,20 @@
       						<div class="control-group">
         						<%= f.label :name, "Full Name", class: "control-label" %>
         						<div class="controls">
-          							<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+          							<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
 						<% else %>
+							<% if @pass_set.reservation_time_periods == true %>
+								<div class="control-group">
+    								<%= f.label :reservation_time, "Time of Reservation", class: "control-label" %>
+    								<div class="controls">
+      									<%= f.select :reservation_time, @reservations_times %>
+    								</div>
+  								</div>
+							<% end %>
 							<div class="control-group">
         						<%= f.label :num_passes, "Party Size", class: "control-label" %>
         						<div class="controls">
@@ -323,7 +348,9 @@
       						<div class="control-group">
         						<%= f.label :name, "Name", class: "control-label" %>
         						<div class="controls">
-          							<%= f.text_field :name %> <small>(Name on Reservation)</small>
+          							<%= f.text_field :name %> 
+									</br>
+									<small>(Name on Reservation)</small>
         						</div>
       						</div>
 						<% end %>
@@ -382,7 +409,8 @@
 						</br>
 						</br>
 						<legend>Our Commitment to You</legend>
-						<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
+						<guarantee>
+							When you use LISTD, you and your friends are part of an exclusive group that is guaranteed premium access to our partnered nightlife and dining locations. With your LISTD purchase, your experience will be more enjoyable and convenient.
 							</br>
 							</br>
 							Don't Wait In Line. Get LISTD.
@@ -403,6 +431,7 @@
 	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.select :num_passes, (1..@pass_set.unsold_passes) %>
+									</br>
 			  						<small>(You can purchase passes for your friends)</small>
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
@@ -410,10 +439,20 @@
 	      					<div class="control-group">
 	        					<%= f.label :name, "Full Name", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.text_field :name %> <small>(Must Match Valid ID)</small>
+	          						<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
 	        					</div>
 	      					</div>
 						<% else %>
+							<% if @pass_set.reservation_time_periods == true %>
+								<div class="control-group">
+        							<%= f.label :reservation_time, "Time of Reservation", class: "control-label" %>
+        							<div class="controls">
+          								<%= f.select :reservation_time, @reservations_times %>
+        							</div>
+      							</div>
+							<% end %>
 							<div class="control-group">
 	        					<%= f.label :num_passes, "Party Size", class: "control-label" %>
 	        					<div class="controls">
@@ -424,7 +463,9 @@
 	      					<div class="control-group">
 	        					<%= f.label :name, "Name", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.text_field :name %> <small>(Name on Reservation)</small>
+	          						<%= f.text_field :name %> 
+									</br>
+									<small>(Name on Reservation)</small>
 	        					</div>
 	      					</div>
 						<% end %>
@@ -500,7 +541,8 @@
 						</br>
 						</br>
 						<legend>Our Commitment to You</legend>
-						<guarantee>When you use LISTD, you and your friends are part of an exclusive group that is guaranteed to instantly skip the lines at our partnered bars and nightclubs. After your purchase, all you and your party have to do is walk straight into the bar or nightclub without any hassle. Just tell the bouncer that you are LISTD and you are in!
+						<guarantee>
+							When you use LISTD, you and your friends are part of an exclusive group that is guaranteed premium access to our partnered nightlife and dining locations. With your LISTD purchase, your experience will be more enjoyable and convenient.
 							</br>
 							</br>
 							Don't Wait In Line. Get LISTD.

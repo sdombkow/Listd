@@ -47,6 +47,9 @@
 			<div class="pull-left dt">
 	  			Location: <br>
 	  			Date of Reservation: <br>
+				<% if @pass.pass_set.reservation_time_periods ==  true %>
+					Time of Reservation: <br>
+				<% end %>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
 	  			<hr class="ns-rule">
@@ -59,11 +62,14 @@
 			<div class="pull-left dd">
 	  			<%= @pass.pass_set.bar.name %> <br>
 	  			<%= @pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+				<% if @pass.pass_set.reservation_time_periods ==  true %>
+					<%= @pass.reservation_time %> <br>
+				<% end %>
 	  			<%= @pass.name %> <br>
 	  			<%= @pass.confirmation %> <br>
 	  			<hr class="ns-rule">
 	  			<%= @pass.entries%> <br>
-	  			<%= number_to_currency(@pass.price * @pass.entries) %> <br>
+	  			<%= number_to_currency(@pass.pass_set.price * @pass.entries) %> <br>
 	  			<% if @pass.purchase.stripe_charge_token != nil %>
 					XXXX-XXXX-XXXX-<%= @card_four %>
 	  			<% end %>
@@ -79,7 +85,7 @@
 <% end %>
 <hr>
 <div class="help-confirmation">
-  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact questions@listd.com or call 1-800-000-0000.</small></p>
+  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact us at <%= mail_to("contactus@listdnow.com")%>.</small></p>
 </div> <!-- end of .help-confirmation -->
 
 <!-- <% content_for :title, "Listd - Pass ##{@pass.confirmation}" %>

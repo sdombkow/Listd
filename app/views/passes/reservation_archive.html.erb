@@ -11,13 +11,19 @@
   					<p class="title"><%= pass.pass_set.bar.name %></p>
 					<div class="pull-left dt">
 	  					Date of Reservation: <br>
+						<% if pass.pass_set.reservation_time_periods == true %>
+							Time of Reservation:<br>
+						<% end %>
 	  					# of Guests: <br>
 	  					Name on Purchase: <br>
 	  					Confirmation Number:
 					</div>
 					<div class="pull-left dd">
 	  					<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
-	  					<%= pass.entries%> <br>
+	  					<% if pass.pass_set.reservation_time_periods == true %>
+							<%= pass.reservation_time %> <br>
+						<% end %>
+						<%= pass.entries%> <br>
 	  					<%= pass.name %> <br>
 	  					<%= pass.confirmation %>
 					</div>
@@ -39,6 +45,9 @@
       				<p class="title"><%= pass.pass_set.bar.name %></p>
 					<div class="pull-left dt">
 		  				Date of Reservation: <br>
+						<% if pass.pass_set.reservation_time_periods == true %>
+							Time of Reservation:<br>
+						<% end %>
 		  				# of Guests: <br>
 		  				Name on Purchase: <br>
 		  				Confirmation Number: <br>
@@ -46,6 +55,9 @@
 					</div>
 					<div class="pull-left dd">
 		  				<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+						<% if pass.pass_set.reservation_time_periods == true %>
+							<%= pass.reservation_time %> <br>
+						<% end %>
 		  				<%= pass.entries%> <br>
 		  				<%= pass.name %> <br>
 		  				<%= pass.confirmation %> <br>
@@ -56,5 +68,4 @@
 		<% end %>
 		<%= will_paginate @past_res, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_res_page' %>
 	</div>
-	
 </div>

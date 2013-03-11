@@ -1,0 +1,8 @@
+*.gem
+.bundle
+/.idea
+Gemfile.lock
+pkg/*
+.DS_Store
+**/*.swp
+reference_pdfs

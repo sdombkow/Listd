@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130224213151) do
+ActiveRecord::Schema.define(:version => 20130306001743) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -63,12 +63,13 @@ ActiveRecord::Schema.define(:version => 20130224213151) do
     t.integer  "total_released_passes"
     t.integer  "sold_passes"
     t.integer  "unsold_passes"
-    t.decimal  "price",                 :precision => 10, :scale => 2
-    t.datetime "created_at",                                                            :null => false
-    t.datetime "updated_at",                                                            :null => false
+    t.decimal  "price",                    :precision => 10, :scale => 2
+    t.datetime "created_at",                                                               :null => false
+    t.datetime "updated_at",                                                               :null => false
     t.boolean  "selling_passes"
-    t.decimal  "revenue_total",         :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "revenue_total",            :precision => 10, :scale => 2, :default => 0.0
     t.text     "description"
+    t.boolean  "reservation_time_periods"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -78,11 +79,12 @@ ActiveRecord::Schema.define(:version => 20130224213151) do
     t.integer  "purchase_id"
     t.string   "name"
     t.boolean  "redeemed"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
-    t.integer  "entries",      :default => 0
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+    t.integer  "entries",          :default => 0
     t.integer  "price"
     t.string   "confirmation"
+    t.string   "reservation_time"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"
@@ -99,6 +101,62 @@ ActiveRecord::Schema.define(:version => 20130224213151) do
   end
 
   add_index "purchases", ["user_id"], :name => "index_purchases_on_user_id"
+
+  create_table "time_periods", :force => true do |t|
+    t.boolean  "ten_am_available"
+    t.integer  "ten_am_tables"
+    t.boolean  "ten_thirty_am_available"
+    t.integer  "ten_thirty_am_tables"
+    t.boolean  "eleven_am_available"
+    t.integer  "eleven_am_tables"
+    t.boolean  "eleven_thirty_am_available"
+    t.integer  "eleven_thirty_am_tables"
+    t.boolean  "twelve_pm_available"
+    t.integer  "twelve_pm_tables"
+    t.boolean  "twelve_thirty_pm_available"
+    t.integer  "twelve_thirty_pm_tables"
+    t.boolean  "one_pm_available"
+    t.integer  "one_pm_tables"
+    t.boolean  "one_thirty_pm_available"
+    t.integer  "one_thirty_pm_tables"
+    t.boolean  "two_pm_available"
+    t.integer  "two_pm_tables"
+    t.boolean  "two_thirty_pm_available"
+    t.integer  "two_thirty_pm_tables"
+    t.boolean  "three_pm_available"
+    t.integer  "three_pm_tables"
+    t.boolean  "three_thirty_pm_available"
+    t.integer  "three_thirty_pm_tables"
+    t.boolean  "four_pm_available"
+    t.integer  "four_pm_tables"
+    t.boolean  "four_thirty_pm_available"
+    t.integer  "four_thirty_pm_tables"
+    t.boolean  "five_pm_available"
+    t.integer  "five_pm_tables"
+    t.boolean  "five_thirty_pm_available"
+    t.integer  "five_thirty_pm_tables"
+    t.boolean  "six_pm_available"
+    t.integer  "six_pm_tables"
+    t.boolean  "six_thirty_pm_available"
+    t.integer  "six_thirty_pm_tables"
+    t.boolean  "seven_pm_available"
+    t.integer  "seven_pm_tables"
+    t.boolean  "seven_thirty_pm_available"
+    t.integer  "seven_thirty_pm_tables"
+    t.boolean  "eight_pm_available"
+    t.integer  "eight_pm_tables"
+    t.boolean  "eight_thirty_pm_available"
+    t.integer  "eight_thirty_pm_tables"
+    t.boolean  "nine_pm_available"
+    t.integer  "nine_pm_tables"
+    t.boolean  "nine_thirty_pm_available"
+    t.integer  "nine_thirty_pm_tables"
+    t.boolean  "ten_pm_available"
+    t.integer  "ten_pm_tables"
+    t.integer  "pass_set_id"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "",    :null => false

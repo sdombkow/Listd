@@ -117,7 +117,7 @@ hr.ns-rule {
 
 /* Landscape phones and down */
 @media (max-width: 767px) {
-  body.passes.index .vertical-rule {
+  body.passes .vertical-rule {
 	border-left: none;
 	margin-left: 0%;
 	padding-left: 0%;

@@ -66,7 +66,7 @@ class BarsController < ApplicationController
   # POST /bars.json
   def create
     @bar = Bar.new(params[:bar])
-	@bar.address = @bar.street_address + " , " + @bar.city + " , " + @bar.state + " , " + @bar.zip_code
+	@bar.address = @bar.street_address + ", " + @bar.city + ", " + @bar.state + ", " + @bar.zip_code
 	@user = User.find(params[:os])
 	@bar.user = @user
 	@bar.user_id= @user.id

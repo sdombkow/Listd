@@ -12,8 +12,8 @@ class PassesController < ApplicationController
   def reservation_archive
     @user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
-  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:past_res_page], :per_page => 5)
+  	@valid_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').paginate(:page => params[:valid_res_page], :per_page => 5)
+  	@past_res = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date < ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').paginate(:page => params[:past_res_page], :per_page => 5)
   end 
   
   def show
@@ -25,9 +25,10 @@ class PassesController < ApplicationController
       @card_four = @customer_card.card.last4
     end
 		logger.error "Purchase #: #{@pass.purchase}"
-		logger.error "User #: #{@pass.purchase.user}"
+		logger.error "Pass User #: #{@pass.purchase.user}"
+		logger.error "Real User #: #{@user}"
 		if(@user != @pass.purchase.user)
-		  if(!@user.partner?)
+		  if(!@user.partner? && !@user.admin?)
 		    redirect_to:root
 		    flash[:notice] = "Opps! You went somewhere you're not supposed to."
 		  end
@@ -61,9 +62,14 @@ class PassesController < ApplicationController
 
       pdf.font "Courier"
       pdf.grid([0,0], [4,3]).bounding_box do
-      	pdf.image "#{Rails.root}/app/assets/images/pass_watermark_bg.png", :width => 240, :position => :center, :vposition => :center
+      	pdf.image "#{Rails.root}/app/assets/images/pass_reserv_bg.png", :width => 240, :position => :center, :vposition => :center
       	pdf.text_box "<color rgb='888888'>#{@pass.pass_set.bar.name}</color>",:inline_format => true, :at => [38,295], :height => 90, :width => 200, :size => 21
-      	pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [35,185], :height => 90, :width => 210, :size => 42
+      	if @pass.reservation_time == nil
+      		pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [35,185], :height => 90, :width => 210, :size => 42
+      	else
+      		pdf.text_box "<color rgb='888888'>#{@pass.reservation_time}</color>",:inline_format => true, :at => [80,205], :height => 90, :width => 210, :size => 24
+      		pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [50,170], :height => 90, :width => 210, :size => 36
+      	end
       	pdf.text_box "<color rgb='888888'>#{@pass.entries}</color>",:inline_format => true, :at => [115,136], :height => 25, :width => 123, :size => 24
       	pdf.text_box "<color rgb='888888'>#{@pass.name}</color>",:inline_format => true, :at => [38,108], :height => 55, :width => 195, :size => 18, :align => :center, :valign => :center
       end
@@ -89,6 +95,12 @@ class PassesController < ApplicationController
       else
       	pdf.font "Helvetica"
       	pdf.text "Reservation Instructions", :size => 20, :align => :center
+      	pdf.move_down 20
+      	pdf.text "1. Arrive at designated time and date, inform the location of your reservation."
+      	pdf.move_down 10
+      	pdf.text "2. If needed, show your LISTD confirmation."
+      	pdf.move_down 10
+      	pdf.text "3. Enjoy your meal!"
       end
       
       pdf.encrypt_document(:permissions => { :print_document => true,
