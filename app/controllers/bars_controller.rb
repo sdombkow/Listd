@@ -1,6 +1,6 @@
 class BarsController < ApplicationController
-  before_filter :authenticate_user!, :except => [:show, :search]
-  before_filter :elevated_privilege_P? , :except => [:search,:show]
+  before_filter :authenticate_user!, :except => [:show, :search,:index]
+  before_filter :elevated_privilege_P? , :except => [:search,:show,:index]
   before_filter :ownsBar?, :only => [:edit,:update, :destroy]
 
   # Check if current user owns the bar
@@ -16,8 +16,7 @@ class BarsController < ApplicationController
   # GET /bars
   # GET /bars.json
   def index
-    @user=current_user
-	@bars = @user.bars
+	@bars = Bar.all
 	
     respond_to do |format|
       format.html # index.html.erb
