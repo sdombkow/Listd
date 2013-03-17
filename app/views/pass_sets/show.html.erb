@@ -298,7 +298,7 @@
 			</br>
 			<% if @pass_set.selling_passes == true && @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available passes for <%= @pass_set.date.strftime("%m/%d/%y")%>.</h1>
-			<% elsif @pass_set.unsold_passes == 0 %>
+			<% elsif @pass_set.selling_passes == false && @pass_set.unsold_passes == 0 %>
 				<h1>Sorry, there are no available reservations for <%=@pass_set.date.strftime("%m/%d/%y")%>.</h1>
 			<% end %>
 		</div>
