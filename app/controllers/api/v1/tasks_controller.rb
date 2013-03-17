@@ -3,7 +3,7 @@ class Api::V1::TasksController < ApplicationController
                      :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Just skip the authentication for now
-  # before_filter :authenticate_user!
+  before_filter :authenticate_user!
 
   respond_to :json
 
@@ -16,4 +16,17 @@ class Api::V1::TasksController < ApplicationController
          }
 }'
   end
+  
+    def search
+	print(params)
+    @search = params[:search]
+    render :text => '{
+  "success":true,
+  "info":"ok",
+  "data":{
+          "bars":'+  Bar.search(@search).to_json + '
+         }
+}'
+  end
+  
 end

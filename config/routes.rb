@@ -69,6 +69,7 @@ namespace :api do
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
     get 'tasks' => 'tasks#index', :as => 'tasks'
+	  post 'search' => 'tasks#search', :as => 'search'
   end
 end
 
