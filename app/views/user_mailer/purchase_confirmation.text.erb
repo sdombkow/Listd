@@ -1,7 +1,9 @@
-Thank you for using LISTD and purchasing a pass to <%= @pass.pass_set.bar.name %>!
+<% if @pass.pass_set.selling_passes == true %>
 
+Thank you for using LISTD and purchasing a pass to <%= @pass.pass_set.bar.name %>!
+	
 Pass Information
-Bar Name: <%= @pass.pass_set.bar.name %>
+Location: <%= @pass.pass_set.bar.name %>
 Date: <%= @pass.pass_set.date.strftime("%m/%d/%Y") %>
 Number of Entrants: <%= @pass.entries %>
 Name on ID: <%= @pass.name %>
@@ -11,3 +13,39 @@ Link to Pass: <%= pass_url(@pass)%>
 
 Thanks Again,
 LISTD Staff
+
+<% elsif @pass.pass_set.reservation_time_periods == true %>
+
+Thank you for using LISTD and purchasing a reservation to <%= @pass.pass_set.bar.name %>!
+	
+Reservation Information
+Location: <%= @pass.pass_set.bar.name %>
+Date: <%= @pass.pass_set.date.strftime("%m/%d/%Y") %> at <%= @pass.reservation_time %>
+Party Size: <%= @pass.entries %>
+Name on Reservation: <%= @pass.name %>
+Reservation Description: <%= @pass.pass_set.description %>
+Confirmation Number: <%= @pass.confirmation %>
+
+Link to Reservation: <%= pass_url(@pass)%>
+
+Thanks Again,
+LISTD Staff
+
+<% else %>
+
+Thank you for using LISTD and purchasing a reservation to <%= @pass.pass_set.bar.name %>!
+	
+Reservation Information
+Location: <%= @pass.pass_set.bar.name %>
+Date: <%= @pass.pass_set.date.strftime("%m/%d/%Y") %>
+Party Size: <%= @pass.entries %>
+Name on Reservation: <%= @pass.name %>
+Reservation Description: <%= @pass.pass_set.description %>
+Confirmation Number: <%= @pass.confirmation %>
+
+Link to Reservation: <%= pass_url(@pass)%>
+
+Thanks Again,
+LISTD Staff
+
+<% end %>
