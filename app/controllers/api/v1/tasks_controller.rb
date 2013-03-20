@@ -12,7 +12,7 @@ class Api::V1::TasksController < ApplicationController
   "success":true,
   "info":"ok",
   "data":{
-          "bars":'+ Bar.all.to_json + '
+          "bars":'+Bar.all.as_json(include: [:pass_sets]).to_json + '
          }
 }'
   end
@@ -24,7 +24,7 @@ class Api::V1::TasksController < ApplicationController
   "success":true,
   "info":"ok",
   "data":{
-          "bars":'+  Bar.search(@search).to_json + '
+          "bars":'+  Bar.search(@search).as_json(include: [:pass_sets]).to_json + '
          }
 }'
   end
