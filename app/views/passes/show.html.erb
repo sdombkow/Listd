@@ -15,7 +15,7 @@
 	  			Total Passes: <br>
 	  			Subtotal: <br>
 	  			<% if @pass.purchase.stripe_charge_token != nil %>
-					<%= @card_type %> Card:
+					<%= @card_type %> Card (Last 4):
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
@@ -27,7 +27,7 @@
 	  			<%= @pass.entries%> <br>
 	  			<%= number_to_currency(@pass.pass_set.price * @pass.entries) %> <br>
 	  			<% if @pass.purchase.stripe_charge_token != nil %>
-					XXXX-XXXX-XXXX-<%= @card_four %>
+					<%= @card_four %>
 	  			<% end %>
 			</div>
 			<br>
