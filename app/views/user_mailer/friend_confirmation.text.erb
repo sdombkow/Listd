@@ -1,0 +1,11 @@
+Your friend has purchased you a pass to <%= @pass.pass_set.bar.name %>!
+	
+Purchase Information
+Location: <%= @pass.pass_set.bar.name %>
+Date: <%= @pass.pass_set.date.strftime("%m/%d/%Y") %>
+Number of Entrants: <%= @pass.entries %>
+Name on Purchase: <%= @pass.name %>
+Confirmation Number: <%= @pass.confirmation %>
+
+Thanks Again,
+LISTD Staff

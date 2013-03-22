@@ -224,7 +224,7 @@ class PurchasesController < ApplicationController
                         pf.email = fe
                         pf.pass_id = pass.id
                         pf.save
-                        UserMailer.friend_confirmation(fn,fe).deliver
+                        UserMailer.friend_confirmation(fn,fe,pass).deliver
                         counter += 1
                       end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
@@ -396,7 +396,7 @@ class PurchasesController < ApplicationController
                         pf.email = fe
                         pf.pass_id = pass.id
                         pf.save
-                        UserMailer.friend_confirmation(fn,fe).deliver
+                        UserMailer.friend_confirmation(fn,fe,pass).deliver
                         counter += 1
                       end
               redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
@@ -569,7 +569,7 @@ class PurchasesController < ApplicationController
                         pf.email = fe
                         pf.pass_id = pass.id
                         pf.save
-                        UserMailer.friend_confirmation(fn,fe).deliver
+                        UserMailer.friend_confirmation(fn,fe,pass).deliver
                         counter += 1
                       end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
@@ -745,7 +745,7 @@ class PurchasesController < ApplicationController
             pf.pass_id = pass.id
             pf.save
             counter += 1
-            UserMailer.friend_confirmation(fn,fe).deliver
+            UserMailer.friend_confirmation(fn,fe,pass).deliver
           end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
@@ -919,7 +919,7 @@ class PurchasesController < ApplicationController
             pf.email = fe
             pf.pass_id = pass.id
             pf.save
-            UserMailer.friend_confirmation(fn,fe).deliver
+            UserMailer.friend_confirmation(fn,fe,pass).deliver
             counter += 1
           end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."

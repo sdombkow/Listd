@@ -111,6 +111,7 @@
           nameDiv.append(nameInput);
           containerDiv.append(nameLabel);
           containerDiv.append(nameDiv);
+		  containerDiv.append("<br>");
           containerDiv.append(emailLabel);
           containerDiv.append(emailDiv);
           $("#passFriends").append(containerDiv);
@@ -362,7 +363,7 @@
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
       						</div>
-      						<div class="control-group">
+      						<div class="control-group" id = "passName">
         						<%= f.label :name, "Full Name", class: "control-label" %>
         						<div class="controls">
           							<%= f.text_field :name %> 
@@ -370,6 +371,7 @@
 									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
+							<div id = "passFriends"></div>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
@@ -393,8 +395,7 @@
 									</br>
 									<small>(Name on Reservation)</small>
         						</div>
-      						</div>
-                            <div id = "passFriends"></div>
+      						</div>    
 						<% end %>
       					<div class = "controls">
 							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
@@ -478,7 +479,7 @@
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
 	      					</div>
-	      					<div class="control-group">
+	      					<div class="control-group" id = "passName">
 	        					<%= f.label :name, "Full Name", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.text_field :name %> 
@@ -486,6 +487,7 @@
 									<small>(Must Match Valid ID)</small>
 	        					</div>
 	      					</div>
+							<div id = "passFriends"></div>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
@@ -502,7 +504,7 @@
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
 	      					</div>
-	      					<div class="control-group">
+	      					<div class="control-group" id ="passName">
 	        					<%= f.label :name, "Name", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.text_field :name %> 
