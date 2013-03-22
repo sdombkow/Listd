@@ -65,6 +65,10 @@ class UserMailer < ActionMailer::Base
    mail(:to => user.email, :subject => "Purchased Confirmed!")
   end
   
+  def friend_confirmation(name,email)
+    mail(:to => email, :subject => "Purchase Confirmed!")
+  end
+  
   def send_feedback(user)
    @user=user
    mail(:to => user.email, :subject => "Send Feedback!")
