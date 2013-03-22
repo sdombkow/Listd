@@ -16,6 +16,10 @@ class PurchasesController < ApplicationController
 			redirect_to [@bar,@pass_set]
 			return
 		end
+        friend_names = params[:purchase][:friend_names]
+        friend_emails = params[:purchase][:friend_emails]
+        params[:purchase].delete("friend_names")
+        params[:purchase].delete("friend_emails")
 		@purchase = Purchase.new(params[:purchase])
 		@purchase.user_id = @user.id
 		@purchase.date = params[:purchase][:date]
@@ -211,6 +215,18 @@ class PurchasesController < ApplicationController
 				        pass.confirmation=SecureRandom.hex(4)
 			          pass.save
 			          UserMailer.purchase_confirmation(@user,pass).deliver
+                      counter = 0
+                      while friend_names.nil? == false and counter < friend_names.length
+                        fn = friend_names[counter]
+                        fe = friend_emails[counter]
+                        pf = PassFriend.new
+                        pf.name = fn
+                        pf.email = fe
+                        pf.pass_id = pass.id
+                        pf.save
+                        UserMailer.friend_confirmation(fn,fe).deliver
+                        counter += 1
+                      end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
         		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
@@ -371,6 +387,18 @@ class PurchasesController < ApplicationController
     				  pass.confirmation=SecureRandom.hex(4)
     			    pass.save
     		      UserMailer.purchase_confirmation(@user,pass).deliver
+                  counter = 0
+                      while friend_names.nil? == false and counter < friend_names.length
+                        fn = friend_names[counter]
+                        fe = friend_emails[counter]
+                        pf = PassFriend.new
+                        pf.name = fn
+                        pf.email = fe
+                        pf.pass_id = pass.id
+                        pf.save
+                        UserMailer.friend_confirmation(fn,fe).deliver
+                        counter += 1
+                      end
               redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     		  else
     		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
@@ -532,6 +560,18 @@ class PurchasesController < ApplicationController
 		            pass.confirmation=SecureRandom.hex(4)
 			          pass.save
 			          UserMailer.purchase_confirmation(@user,pass).deliver
+                      counter = 0
+                      while friend_names.nil? == false and counter < friend_names.length
+                        fn = friend_names[counter]
+                        fe = friend_emails[counter]
+                        pf = PassFriend.new
+                        pf.name = fn
+                        pf.email = fe
+                        pf.pass_id = pass.id
+                        pf.save
+                        UserMailer.friend_confirmation(fn,fe).deliver
+                        counter += 1
+                      end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
         		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
@@ -695,6 +735,18 @@ class PurchasesController < ApplicationController
 			      pass.save
 		      #end
 		UserMailer.purchase_confirmation(@user,pass).deliver
+       counter = 0
+          while friend_names.nil? == false and counter < friend_names.length
+            fn = friend_names[counter]
+            fe = friend_emails[counter]
+            pf = PassFriend.new
+            pf.name = fn
+            pf.email = fe
+            pf.pass_id = pass.id
+            pf.save
+            counter += 1
+            UserMailer.friend_confirmation(fn,fe).deliver
+          end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
 		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
@@ -858,6 +910,18 @@ class PurchasesController < ApplicationController
 			      pass.save
 		      #end
 		  UserMailer.purchase_confirmation(@user,pass).deliver
+          counter = 0
+          while friend_names.nil? == false and counter < friend_names.length
+            fn = friend_names[counter]
+            fe = friend_emails[counter]
+            pf = PassFriend.new
+            pf.name = fn
+            pf.email = fe
+            pf.pass_id = pass.id
+            pf.save
+            UserMailer.friend_confirmation(fn,fe).deliver
+            counter += 1
+          end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
 		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'

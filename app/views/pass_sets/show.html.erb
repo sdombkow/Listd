@@ -27,6 +27,20 @@
                     }else{
                         $("#purchase_name").parents("div.control-group").removeClass("error");
                     }
+                    // Check Guest Names
+                    var nameCheck = true;
+                    $(".friendName").each(function(ele){
+                        var currName = $(this).val();
+                        if (currName.length <= 0 || currName.match(nameRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    if(nameCheck == false){
+                        return false;
+                    }
                 	$("#makePurchase").fadeOut(500,function(){
                     	$("#purchaseInformation").fadeIn();
 						$('#BackToFirst').fadeIn();
@@ -73,9 +87,36 @@
                 e.preventDefault();
                 return false;
             });
+            $("#purchase_num_passes").change(function(e){
+                var numpasses = $("#purchase_num_passes").val();
+                if(numpasses > 1){
+                    createFriendInputs(numpasses);
+                }
+            });
         }
         attachPurchaseListeners();
     });
+
+    function createFriendInputs(passes){
+      $("#passFriends").html("");
+      for (var i = 1; i < passes; i++){
+          var containerDiv = $("<div class = 'control-group'/>");
+          var nameInput = $("<input type = 'text' class = 'friendName' name = 'purchase[friend_names][]'/>");
+          var nameLabel = $("<label class = 'control-label'>Guest #" + i + " Name</label>");
+          var emailInput = $("<input type = 'text' class = 'friendEmail' name = 'purchase[friend_emails][]'/>");
+          var emailLabel = $("<label class = 'control-label'>Guest #" + i + " Email</label>");
+          var nameDiv = $("<div class = 'controls' />");
+          var emailDiv = $("<div class = 'controls' />");
+          emailDiv.append(emailInput);
+          nameDiv.append(nameInput);
+          containerDiv.append(nameLabel);
+          containerDiv.append(nameDiv);
+          containerDiv.append(emailLabel);
+          containerDiv.append(emailDiv);
+          $("#passFriends").append(containerDiv);
+      } 
+    }
+
     function getlistd()
         {
           FB.getLoginStatus() 
@@ -345,7 +386,7 @@
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
       						</div>
-      						<div class="control-group">
+      						<div class="control-group" id = "passName">
         						<%= f.label :name, "Name", class: "control-label" %>
         						<div class="controls">
           							<%= f.text_field :name %> 
@@ -353,6 +394,7 @@
 									<small>(Name on Reservation)</small>
         						</div>
       						</div>
+                            <div id = "passFriends"></div>
 						<% end %>
       					<div class = "controls">
 							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />

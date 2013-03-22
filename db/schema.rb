@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306001743) do
+ActiveRecord::Schema.define(:version => 20130322200111) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -56,6 +56,14 @@ ActiveRecord::Schema.define(:version => 20130306001743) do
   end
 
   add_index "bars", ["user_id"], :name => "index_bars_on_user_id"
+
+  create_table "pass_friends", :force => true do |t|
+    t.integer  "pass_id"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "pass_sets", :force => true do |t|
     t.integer  "bar_id"
