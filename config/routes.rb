@@ -70,6 +70,7 @@ namespace :api do
     end
     get 'tasks' => 'tasks#index', :as => 'tasks'
 	  post 'search' => 'tasks#search', :as => 'search'
+    get 'check_mobile_login' => 'tasks#check_mobile_login', :as => 'check_mobile_login'
   end
 end
 

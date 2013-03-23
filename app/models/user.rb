@@ -27,6 +27,18 @@ before_save :ensure_authentication_token
     user
   end
 
+  def self.find_or_create(fb_user)
+    user = User.find_by_uid(fb_user.identifier)
+    unless user
+       user = User.create(name:fb_user.name,
+                           provider:"facebook",
+                           uid:fb_user.identifier,
+                           email:fb_user.email,
+                           password:Devise.friendly_token[0,20])
+    end
+    user
+  end
+
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]

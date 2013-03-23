@@ -3,7 +3,7 @@ class Api::V1::TasksController < ApplicationController
                      :if => Proc.new { |c| c.request.format == 'application/json' }
 
   # Just skip the authentication for now
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [:check_mobile_login]
 
   respond_to :json
 
@@ -29,4 +29,18 @@ class Api::V1::TasksController < ApplicationController
 }'
   end
   
+  def check_mobile_login
+        token = params[:token]
+
+        user = FbGraph::User.me(token)
+        user = user.fetch
+
+        logged = User.find_or_create(user)
+
+        respond_to do |format|
+            format.html # index.html.erb
+            format.json { render :json => logged.authentication_token }
+        end
+    end
+
 end
