@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130322200111) do
+ActiveRecord::Schema.define(:version => 20130325200904) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20130322200111) do
     t.decimal  "revenue_total",            :precision => 10, :scale => 2, :default => 0.0
     t.text     "description"
     t.boolean  "reservation_time_periods"
+    t.boolean  "friend_check"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"

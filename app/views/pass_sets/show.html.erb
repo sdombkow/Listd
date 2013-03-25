@@ -390,7 +390,9 @@
 									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
-							<div id = "passFriends"></div>
+							<% if @pass_set.friend_check == true %>
+								<div id = "passFriends"></div>
+							<% end %>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
@@ -506,7 +508,9 @@
 									<small>(Must Match Valid ID)</small>
 	        					</div>
 	      					</div>
-							<div id = "passFriends"></div>
+							<% if @pass_set.friend_check == true %>
+								<div id = "passFriends"></div>
+							<% end %>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
