@@ -21,6 +21,7 @@
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
                     var nameRegex = /(\w+\s)(\w+-?.?\w?\s?)+/;
+                    var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
                     if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
@@ -32,6 +33,15 @@
                     $(".friendName").each(function(ele){
                         var currName = $(this).val();
                         if (currName.length <= 0 || currName.match(nameRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    $(".friendEmail").each(function(ele){
+                        var currEmail = $(this).val();
+                        if (currEmail.length <= 0 || currEmail.match(emailRegex) == null){
                             $(this).parents("div.control-group").addClass("error");
                             nameCheck = false;
                         }else{
@@ -94,6 +104,15 @@
                 }
             });
         }
+
+        function loadPassFriends(){
+            var numpasses = $("#purchase_num_passes").val();
+            if(numpasses > 1){
+                createFriendInputs(numpasses);
+            }
+        }
+
+        loadPassFriends();
         attachPurchaseListeners();
     });
 
