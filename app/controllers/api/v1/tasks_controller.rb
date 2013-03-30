@@ -8,10 +8,12 @@ class Api::V1::TasksController < ApplicationController
   respond_to :json
 
   def index
+  @user=current_user
     render :text => '{
   "success":true,
   "info":"ok",
   "data":{
+		  "user":'+@user.to_json + '
           "bars":'+Bar.all.as_json(include: [:pass_sets]).to_json + '
          }
 }'
@@ -28,5 +30,4 @@ class Api::V1::TasksController < ApplicationController
          }
 }'
   end
-  
 end
