@@ -70,6 +70,9 @@ namespace :api do
     end
     get 'tasks' => 'tasks#index', :as => 'tasks'
 	  post 'search' => 'tasks#search', :as => 'search'
+	  post 'passset' => 'tasks#passset', :as => 'passset'
+	  	  post 'purchase' => 'tasks#purchase', :as => 'purchase'
+		  	  	  get 'passes' => 'tasks#passes', :as => 'passes'
   end
 end
 
