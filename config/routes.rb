@@ -71,6 +71,9 @@ namespace :api do
     get 'tasks' => 'tasks#index', :as => 'tasks'
 	  post 'search' => 'tasks#search', :as => 'search'
     get 'check_mobile_login' => 'tasks#check_mobile_login', :as => 'check_mobile_login'
+	  post 'passset' => 'tasks#passset', :as => 'passset'
+	  	  post 'purchase' => 'tasks#purchase', :as => 'purchase'
+		  	  	  get 'passes' => 'tasks#passes', :as => 'passes'
   end
 end
 
