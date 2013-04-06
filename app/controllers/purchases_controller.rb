@@ -229,7 +229,7 @@ class PurchasesController < ApplicationController
                       end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
-        		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
+        		    redirect_to [@bar,@pass_set], notice: current_user.error_message
 			      end
 		    elsif params[:credit_card_save] == "1"
 		      logger.error "Here in 1"
@@ -401,10 +401,10 @@ class PurchasesController < ApplicationController
                       end
               redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     		  else
-    		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
+    		      redirect_to [@bar,@pass_set], notice: current_user.error_message
     		  end
 		    else
-		        if @purchase.payment
+		        if @purchase.payment(current_user)
 		            logger.error "Here in 2"
 		            if @pass_set.selling_passes == true
 		                @pass_set.sold_passes+=num_passes
@@ -574,7 +574,7 @@ class PurchasesController < ApplicationController
                       end
                 redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
         		else
-        		    redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
+        		    redirect_to [@bar,@pass_set], notice: current_user.error_message 
 		        end
 		    end
 		elsif params[:credit_card_save] == "1"
@@ -749,12 +749,12 @@ class PurchasesController < ApplicationController
           end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
-		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
+		      redirect_to [@bar,@pass_set], notice: current_user.error_message
 		  end
 		else
-          logger.error "Purchase: #{@purchase.inspect}"
+      logger.error "Purchase: #{@purchase.inspect}"
 		  logger.error "Here in nothing"
-		  if @purchase.payment
+		  if @purchase.payment(current_user)
 		      if @pass_set.selling_passes == true
               @pass_set.sold_passes+=num_passes
               @pass_set.unsold_passes-=num_passes
@@ -924,7 +924,7 @@ class PurchasesController < ApplicationController
           end
           redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
 		  else
-		      redirect_to [@bar,@pass_set], notice: 'Sorry, your transaction has not occured.'
+		      redirect_to [@bar,@pass_set], notice: current_user.error_message
 		  end
  		end   
 	end
