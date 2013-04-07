@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Fecha:</b>
+  <%= @reservation_set.fecha_id %>
+</p>
+
+<p>
+  <b>Total released reservations:</b>
+  <%= @reservation_set.total_released_reservations %>
+</p>
+
+<p>
+  <b>Sold reservations:</b>
+  <%= @reservation_set.sold_reservations %>
+</p>
+
+<p>
+  <b>Unsold reservations:</b>
+  <%= @reservation_set.unsold_reservations %>
+</p>
+
+<p>
+  <b>Revenue total:</b>
+  <%= @reservation_set.revenue_total %>
+</p>
+
+<p>
+  <b>Revenue percentage:</b>
+  <%= @reservation_set.revenue_percentage %>
+</p>
+
+
+<%= link_to 'Edit', edit_reservation_set_path(@reservation_set) %> |
+<%= link_to 'Back', reservation_sets_path %>

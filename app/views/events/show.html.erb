@@ -1,0 +1,95 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>User:</b>
+  <%= @event.user_id %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @event.name %>
+</p>
+
+<p>
+  <b>Phone number:</b>
+  <%= @event.phone_number %>
+</p>
+
+<p>
+  <b>Address:</b>
+  <%= @event.address %>
+</p>
+
+<p>
+  <b>Intro paragraph:</b>
+  <%= @event.intro_paragraph %>
+</p>
+
+<p>
+  <b>Date of event:</b>
+  <%= @event.date_of_event %>
+</p>
+
+<p>
+  <b>Time of event:</b>
+  <%= @event.time_of_event %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @event.latitude %>
+</p>
+
+<p>
+  <b>Longtitude:</b>
+  <%= @event.longtitude %>
+</p>
+
+<p>
+  <b>Logo:</b>
+  <%= @event.logo %>
+</p>
+
+<p>
+  <b>Website url:</b>
+  <%= @event.website_url %>
+</p>
+
+<p>
+  <b>Facebook url:</b>
+  <%= @event.facebook_url %>
+</p>
+
+<p>
+  <b>Twitter url:</b>
+  <%= @event.twitter_url %>
+</p>
+
+<p>
+  <b>Street address:</b>
+  <%= @event.street_address %>
+</p>
+
+<p>
+  <b>City:</b>
+  <%= @event.city %>
+</p>
+
+<p>
+  <b>Zip code:</b>
+  <%= @event.zip_code %>
+</p>
+
+<p>
+  <b>State:</b>
+  <%= @event.state %>
+</p>
+
+<p>
+  <b>Slug:</b>
+  <%= @event.slug %>
+</p>
+
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

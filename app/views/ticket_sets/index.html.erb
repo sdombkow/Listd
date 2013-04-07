@@ -1,0 +1,33 @@
+<h1>Listing ticket_sets</h1>
+
+<table>
+  <tr>
+    <th>Fecha</th>
+    <th>Total released tickets</th>
+    <th>Sold tickets</th>
+    <th>Unsold tickets</th>
+    <th>Revenue total</th>
+    <th>Revenue percentage</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @ticket_sets.each do |ticket_set| %>
+  <tr>
+    <td><%= ticket_set.fecha_id %></td>
+    <td><%= ticket_set.total_released_tickets %></td>
+    <td><%= ticket_set.sold_tickets %></td>
+    <td><%= ticket_set.unsold_tickets %></td>
+    <td><%= ticket_set.revenue_total %></td>
+    <td><%= ticket_set.revenue_percentage %></td>
+    <td><%= link_to 'Show', ticket_set %></td>
+    <td><%= link_to 'Edit', edit_ticket_set_path(ticket_set) %></td>
+    <td><%= link_to 'Destroy', ticket_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Ticket set', new_ticket_set_path %>

@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Fecha:</b>
+  <%= @ticket_set.fecha_id %>
+</p>
+
+<p>
+  <b>Total released tickets:</b>
+  <%= @ticket_set.total_released_tickets %>
+</p>
+
+<p>
+  <b>Sold tickets:</b>
+  <%= @ticket_set.sold_tickets %>
+</p>
+
+<p>
+  <b>Unsold tickets:</b>
+  <%= @ticket_set.unsold_tickets %>
+</p>
+
+<p>
+  <b>Revenue total:</b>
+  <%= @ticket_set.revenue_total %>
+</p>
+
+<p>
+  <b>Revenue percentage:</b>
+  <%= @ticket_set.revenue_percentage %>
+</p>
+
+
+<%= link_to 'Edit', edit_ticket_set_path(@ticket_set) %> |
+<%= link_to 'Back', ticket_sets_path %>

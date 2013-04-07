@@ -1,0 +1,26 @@
+<%= simple_form_for(@location) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :user_id %>
+    <%= f.input :name %>
+    <%= f.input :phone_number %>
+    <%= f.input :street_address %>
+    <%= f.input :intro_paragraph %>
+    <%= f.input :latitude %>
+    <%= f.input :longtitude %>
+    <%= f.input :logo %>
+    <%= f.input :website_url %>
+    <%= f.input :facebook_url %>
+    <%= f.input :twitter_url %>
+    <%= f.input :full_address %>
+    <%= f.input :city %>
+    <%= f.input :zip_code %>
+    <%= f.input :state %>
+    <%= f.input :slug %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Location:</b>
+  <%= @fecha.location_id %>
+</p>
+
+<p>
+  <b>Selling passes:</b>
+  <%= @fecha.selling_passes %>
+</p>
+
+<p>
+  <b>Selling reservations:</b>
+  <%= @fecha.selling_reservations %>
+</p>
+
+<p>
+  <b>Selling tickets:</b>
+  <%= @fecha.selling_tickets %>
+</p>
+
+<p>
+  <b>Selling deals:</b>
+  <%= @fecha.selling_deals %>
+</p>
+
+
+<%= link_to 'Edit', edit_fecha_path(@fecha) %> |
+<%= link_to 'Back', fechas_path %>

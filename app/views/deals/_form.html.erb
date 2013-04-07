@@ -1,0 +1,17 @@
+<%= simple_form_for(@deal) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :deal_set_id %>
+    <%= f.input :purchase_id %>
+    <%= f.input :name %>
+    <%= f.input :redeemed %>
+    <%= f.input :entries %>
+    <%= f.input :price %>
+    <%= f.input :confirmation %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

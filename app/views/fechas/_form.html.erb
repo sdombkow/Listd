@@ -1,0 +1,15 @@
+<%= simple_form_for(@fecha) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :location_id %>
+    <%= f.input :selling_passes %>
+    <%= f.input :selling_reservations %>
+    <%= f.input :selling_tickets %>
+    <%= f.input :selling_deals %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

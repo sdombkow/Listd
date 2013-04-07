@@ -1,0 +1,16 @@
+<%= simple_form_for(@ticket_set) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :fecha_id %>
+    <%= f.input :total_released_tickets %>
+    <%= f.input :sold_tickets %>
+    <%= f.input :unsold_tickets %>
+    <%= f.input :revenue_total %>
+    <%= f.input :revenue_percentage %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

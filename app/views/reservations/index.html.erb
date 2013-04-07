@@ -1,0 +1,37 @@
+<h1>Listing reservations</h1>
+
+<table>
+  <tr>
+    <th>Reservation set</th>
+    <th>Purchase</th>
+    <th>Name</th>
+    <th>Redeemed</th>
+    <th>Entries</th>
+    <th>Price</th>
+    <th>Confirmation</th>
+    <th>Reservation time</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @reservations.each do |reservation| %>
+  <tr>
+    <td><%= reservation.reservation_set_id %></td>
+    <td><%= reservation.purchase_id %></td>
+    <td><%= reservation.name %></td>
+    <td><%= reservation.redeemed %></td>
+    <td><%= reservation.entries %></td>
+    <td><%= reservation.price %></td>
+    <td><%= reservation.confirmation %></td>
+    <td><%= reservation.reservation_time %></td>
+    <td><%= link_to 'Show', reservation %></td>
+    <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
+    <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Reservation', new_reservation_path %>

@@ -1,0 +1,33 @@
+<h1>Listing deal_sets</h1>
+
+<table>
+  <tr>
+    <th>Fecha</th>
+    <th>Total released deals</th>
+    <th>Sold deals</th>
+    <th>Unsold deals</th>
+    <th>Revenue total</th>
+    <th>Revenue percentage</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @deal_sets.each do |deal_set| %>
+  <tr>
+    <td><%= deal_set.fecha_id %></td>
+    <td><%= deal_set.total_released_deals %></td>
+    <td><%= deal_set.sold_deals %></td>
+    <td><%= deal_set.unsold_deals %></td>
+    <td><%= deal_set.revenue_total %></td>
+    <td><%= deal_set.revenue_percentage %></td>
+    <td><%= link_to 'Show', deal_set %></td>
+    <td><%= link_to 'Edit', edit_deal_set_path(deal_set) %></td>
+    <td><%= link_to 'Destroy', deal_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Deal set', new_deal_set_path %>

@@ -1,0 +1,31 @@
+<h1>Listing fechas</h1>
+
+<table>
+  <tr>
+    <th>Location</th>
+    <th>Selling passes</th>
+    <th>Selling reservations</th>
+    <th>Selling tickets</th>
+    <th>Selling deals</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @fechas.each do |fecha| %>
+  <tr>
+    <td><%= fecha.location_id %></td>
+    <td><%= fecha.selling_passes %></td>
+    <td><%= fecha.selling_reservations %></td>
+    <td><%= fecha.selling_tickets %></td>
+    <td><%= fecha.selling_deals %></td>
+    <td><%= link_to 'Show', fecha %></td>
+    <td><%= link_to 'Edit', edit_fecha_path(fecha) %></td>
+    <td><%= link_to 'Destroy', fecha, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Fecha', new_fecha_path %>

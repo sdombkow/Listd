@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Fecha:</b>
+  <%= @deal_set.fecha_id %>
+</p>
+
+<p>
+  <b>Total released deals:</b>
+  <%= @deal_set.total_released_deals %>
+</p>
+
+<p>
+  <b>Sold deals:</b>
+  <%= @deal_set.sold_deals %>
+</p>
+
+<p>
+  <b>Unsold deals:</b>
+  <%= @deal_set.unsold_deals %>
+</p>
+
+<p>
+  <b>Revenue total:</b>
+  <%= @deal_set.revenue_total %>
+</p>
+
+<p>
+  <b>Revenue percentage:</b>
+  <%= @deal_set.revenue_percentage %>
+</p>
+
+
+<%= link_to 'Edit', edit_deal_set_path(@deal_set) %> |
+<%= link_to 'Back', deal_sets_path %>

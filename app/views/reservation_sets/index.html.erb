@@ -1,0 +1,33 @@
+<h1>Listing reservation_sets</h1>
+
+<table>
+  <tr>
+    <th>Fecha</th>
+    <th>Total released reservations</th>
+    <th>Sold reservations</th>
+    <th>Unsold reservations</th>
+    <th>Revenue total</th>
+    <th>Revenue percentage</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @reservation_sets.each do |reservation_set| %>
+  <tr>
+    <td><%= reservation_set.fecha_id %></td>
+    <td><%= reservation_set.total_released_reservations %></td>
+    <td><%= reservation_set.sold_reservations %></td>
+    <td><%= reservation_set.unsold_reservations %></td>
+    <td><%= reservation_set.revenue_total %></td>
+    <td><%= reservation_set.revenue_percentage %></td>
+    <td><%= link_to 'Show', reservation_set %></td>
+    <td><%= link_to 'Edit', edit_reservation_set_path(reservation_set) %></td>
+    <td><%= link_to 'Destroy', reservation_set, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Reservation set', new_reservation_set_path %>

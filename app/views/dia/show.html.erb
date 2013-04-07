@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Location:</b>
+  <%= @dium.location_id %>
+</p>
+
+<p>
+  <b>Selling passes:</b>
+  <%= @dium.selling_passes %>
+</p>
+
+<p>
+  <b>Selling reservations:</b>
+  <%= @dium.selling_reservations %>
+</p>
+
+<p>
+  <b>Selling tickets:</b>
+  <%= @dium.selling_tickets %>
+</p>
+
+<p>
+  <b>Selling deals:</b>
+  <%= @dium.selling_deals %>
+</p>
+
+
+<%= link_to 'Edit', edit_dium_path(@dium) %> |
+<%= link_to 'Back', dia_path %>

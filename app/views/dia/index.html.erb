@@ -1,0 +1,31 @@
+<h1>Listing dia</h1>
+
+<table>
+  <tr>
+    <th>Location</th>
+    <th>Selling passes</th>
+    <th>Selling reservations</th>
+    <th>Selling tickets</th>
+    <th>Selling deals</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @dia.each do |dium| %>
+  <tr>
+    <td><%= dium.location_id %></td>
+    <td><%= dium.selling_passes %></td>
+    <td><%= dium.selling_reservations %></td>
+    <td><%= dium.selling_tickets %></td>
+    <td><%= dium.selling_deals %></td>
+    <td><%= link_to 'Show', dium %></td>
+    <td><%= link_to 'Edit', edit_dium_path(dium) %></td>
+    <td><%= link_to 'Destroy', dium, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Dium', new_dium_path %>

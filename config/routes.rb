@@ -1,4 +1,34 @@
 ListdApp::Application.routes.draw do
+  resources :events
+
+
+  resources :tickets
+
+
+  resources :reservations
+
+
+  resources :deals
+
+
+  resources :ticket_sets
+
+
+  resources :reservation_sets
+
+
+  resources :deal_sets
+
+
+  resources :fechas
+
+
+  resources :dia
+
+
+  resources :locations
+
+
   get "current_user/update"
   match "current_user/delete_stripe_token" => 'current_user#delete_stripe_token'
   match '/activity_feed' => 'pages#facebook_activity'

@@ -1,0 +1,57 @@
+<h1>Listing events</h1>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Name</th>
+    <th>Phone number</th>
+    <th>Address</th>
+    <th>Intro paragraph</th>
+    <th>Date of event</th>
+    <th>Time of event</th>
+    <th>Latitude</th>
+    <th>Longtitude</th>
+    <th>Logo</th>
+    <th>Website url</th>
+    <th>Facebook url</th>
+    <th>Twitter url</th>
+    <th>Street address</th>
+    <th>City</th>
+    <th>Zip code</th>
+    <th>State</th>
+    <th>Slug</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @events.each do |event| %>
+  <tr>
+    <td><%= event.user_id %></td>
+    <td><%= event.name %></td>
+    <td><%= event.phone_number %></td>
+    <td><%= event.address %></td>
+    <td><%= event.intro_paragraph %></td>
+    <td><%= event.date_of_event %></td>
+    <td><%= event.time_of_event %></td>
+    <td><%= event.latitude %></td>
+    <td><%= event.longtitude %></td>
+    <td><%= event.logo %></td>
+    <td><%= event.website_url %></td>
+    <td><%= event.facebook_url %></td>
+    <td><%= event.twitter_url %></td>
+    <td><%= event.street_address %></td>
+    <td><%= event.city %></td>
+    <td><%= event.zip_code %></td>
+    <td><%= event.state %></td>
+    <td><%= event.slug %></td>
+    <td><%= link_to 'Show', event %></td>
+    <td><%= link_to 'Edit', edit_event_path(event) %></td>
+    <td><%= link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Event', new_event_path %>
