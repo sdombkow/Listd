@@ -9,6 +9,7 @@ class CurrentUserController < ApplicationController
   
   def update
     logger.error "Current User: #{current_user}"
+    logger.error "Customer Token: #{current_user.stripe_customer_token}"
     if current_user.stripe_customer_token != nil
       @user = current_user
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
