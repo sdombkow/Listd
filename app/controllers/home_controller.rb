@@ -13,28 +13,23 @@ class HomeController < ApplicationController
     
     #acquires users ip address for geolocating
     
-    #@user_info = request.location.city
-    #@user_info = "98.122.189.233"
+    #@user_info = request.ip
+    @user_info = "71.118.168.149"
     
     #acquires all the needed information based on the users ip address
     
-    #@user_information = Geocoder.search(@user_info)
-    #while @user_information.empty?
-    #@user_information = Geocoder.search(@user_info)
-    #end
-    
-    #THIS WHILE LOOP FIXES THE NIL:CLASS CASE BUT IS PROBABLY NOT THE BEST WAY TO GO ABOUT IT
+    @user_information = Geocoder.search(@user_info)
   
     #finds all local venues within 10 miles of that users location, orders them based
     #on distance from the user
     
-    #@localvenues = Bar.near(@user_information[0].coordinates, 30, :order => :distance).take(5)
-    #if @localvenues.size < 5
-    #  @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(5)
-    #end
-
-    @venues = Bar.all
-    @localvenues = Bar.all
+    @venues = Bar.near(@user_information[0].coordinates, 30, :order => :distance).take(3)
+    if @venues.size < 3
+      @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(3)
+    end
+    
+    #@venues = Bar.all.take(3)
+    #@localvenues = Bar.all
     
     #if someone has searched for venues and there are locatons within 20 miles of that
     #location displays them, if their are no local then it displays all bars, if their are

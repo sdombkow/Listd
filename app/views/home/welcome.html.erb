@@ -1,7 +1,7 @@
 <div class="row">
 <div class="span8">
 <div class="section-container">
-  <% if(@localvenues.empty?) %>
+  <% if(@venues.empty?) %>
 	<div class="title-bar">
 	  <h5> Available Locations</h5>
 	</div> <!-- end of .title-bar -->
@@ -34,7 +34,7 @@
     <div class="title-bar">
 	  <h5> Available Locations</h5>
 	</div>
-	<% for location in @localvenues %>
+	<% for location in @venues %>
 	  <div class="content-box">
 		<div class="vertical-line">
 		  <h6><%= link_to location.name, location %></h6>

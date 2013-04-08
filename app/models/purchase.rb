@@ -9,7 +9,7 @@ class Purchase < ActiveRecord::Base
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   
   
-  def payment
+  def payment(user)
     if valid?
       logger.error "Stripe Card Token: #{name} and #{stripe_card_token} and #{price}"
       charge = Stripe::Charge.create(
@@ -21,12 +21,26 @@ class Purchase < ActiveRecord::Base
       self.stripe_charge_token = charge.id
       save!
     end
+    rescue Stripe::CardError => e
+        logger.error "Stripe error while creating customer: #{e.message}"
+        user.error_message = "Purchase not succesful. #{e.message}."
+        false
     rescue Stripe::InvalidRequestError => e
         logger.error "Stripe error while creating customer: #{e.message}"
-        logger.error "========"
-        errors.add :base, "There was a problem with your credit card."
+        user.error_message = "Your purchase was not succesful due to invalid parameters. Please try again later."
         false
-    end
+    rescue Stripe::AuthenticationError => e
+        logger.error "Stripe error while creating customer: #{e.message}"
+        user.error_message = "Your purchase was not succesful. Please try again later."
+        false
+    rescue Stripe::APIConnectionError => e
+        logger.error "Stripe error while creating customer: #{e.message}"
+        user.error_message =  "Sorry, there was a problem with our server. Please try again."
+        false
+    rescue => e
+        user.error_message = "Your purchase was not succesful. Please try again later."
+        false
+  end
     
     def payment_return_customer(user)
       if valid?
@@ -39,11 +53,26 @@ class Purchase < ActiveRecord::Base
         self.stripe_charge_token = charge.id
         save!
       end
+      rescue Stripe::CardError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Purchase not succesful. #{e.message}."
+          false
       rescue Stripe::InvalidRequestError => e
           logger.error "Stripe error while creating customer: #{e.message}"
-          errors.add :base, "There was a problem with your credit card."
+          user.error_message = "Your purchase was not succesful due to invalid parameters. Please try again later."
           false
-      end
+      rescue Stripe::AuthenticationError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Your purchase was not succesful. Please try again later."
+          false
+      rescue Stripe::APIConnectionError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message =  "Sorry, there was a problem with our server. Please try again."
+          false
+      rescue => e
+          user.error_message = "Your purchase was not succesful. Please try again later."
+          false
+    end
     
     def save_with_payment(user)
       if valid?
@@ -62,11 +91,26 @@ class Purchase < ActiveRecord::Base
         self.stripe_charge_token = charge.id
         save!
       end
+      rescue Stripe::CardError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Purchase not succesful. #{e.message}."
+          false
       rescue Stripe::InvalidRequestError => e
           logger.error "Stripe error while creating customer: #{e.message}"
-          errors.add :base, "There was a problem with your credit card."
+          user.error_message = "Your purchase was not succesful due to invalid parameters. Please try again later."
           false
-      end
+      rescue Stripe::AuthenticationError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Your purchase was not succesful. Please try again later."
+          false
+      rescue Stripe::APIConnectionError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message =  "Sorry, there was a problem with our server. Please try again."
+          false
+      rescue => e
+          user.error_message = "Your purchase was not succesful. Please try again later."
+          false
+    end
     
     def return_customer_save_payment(user)
       if valid?
@@ -81,9 +125,24 @@ class Purchase < ActiveRecord::Base
           self.stripe_charge_token = charge.id
           save!
       end
+      rescue Stripe::CardError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Purchase not succesful. #{e.message}."
+          false
       rescue Stripe::InvalidRequestError => e
           logger.error "Stripe error while creating customer: #{e.message}"
-          errors.add :base, "There was a problem with your credit card."
+          user.error_message = "Your purchase was not succesful due to invalid parameters. Please try again later."
+          false
+      rescue Stripe::AuthenticationError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message = "Your purchase was not succesful. Please try again later."
+          false
+      rescue Stripe::APIConnectionError => e
+          logger.error "Stripe error while creating customer: #{e.message}"
+          user.error_message =  "Sorry, there was a problem with our server. Please try again."
+          false
+      rescue => e
+          user.error_message = "Your purchase was not succesful. Please try again later."
           false
       end
       

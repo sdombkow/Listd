@@ -34,6 +34,10 @@
   		<%= f.text_area :description, :rows => "10", :class => "input-xlarge"  %>
   	</div>
 	<div class="field">
+		<%= f.label :friend_check %><br/>
+		<%= f.check_box :friend_check %>
+  	</div>
+	<div class="field">
 		<%= f.label :reservation_time_periods %><br/> 
 		<%= f.check_box :reservation_time_periods %>
   	</div>

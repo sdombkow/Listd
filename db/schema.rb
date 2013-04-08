@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130306001743) do
+ActiveRecord::Schema.define(:version => 20130406221222) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -57,6 +57,14 @@ ActiveRecord::Schema.define(:version => 20130306001743) do
 
   add_index "bars", ["user_id"], :name => "index_bars_on_user_id"
 
+  create_table "pass_friends", :force => true do |t|
+    t.integer  "pass_id"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "pass_sets", :force => true do |t|
     t.integer  "bar_id"
     t.date     "date"
@@ -70,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20130306001743) do
     t.decimal  "revenue_total",            :precision => 10, :scale => 2, :default => 0.0
     t.text     "description"
     t.boolean  "reservation_time_periods"
+    t.boolean  "friend_check"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -179,6 +188,7 @@ ActiveRecord::Schema.define(:version => 20130306001743) do
     t.string   "stripe_customer_token"
     t.string   "stripe_card_token"
     t.string   "authentication_token"
+    t.string   "error_message"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

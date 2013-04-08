@@ -21,11 +21,35 @@
                     // Check if there is a name provided
                     var cardName = $("#purchase_name").val();
                     var nameRegex = /(\w+\s)(\w+-?.?\w?\s?)+/;
+                    var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
                     if (cardName.length <= 0 || cardName.match(nameRegex) == null){
                         $("#purchase_name").parents("div.control-group").addClass("error");
                         return false;
                     }else{
                         $("#purchase_name").parents("div.control-group").removeClass("error");
+                    }
+                    // Check Guest Names
+                    var nameCheck = true;
+                    $(".friendName").each(function(ele){
+                        var currName = $(this).val();
+                        if (currName.length <= 0 || currName.match(nameRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    $(".friendEmail").each(function(ele){
+                        var currEmail = $(this).val();
+                        if (currEmail.length <= 0 || currEmail.match(emailRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    if(nameCheck == false){
+                        return false;
                     }
                 	$("#makePurchase").fadeOut(500,function(){
                     	$("#purchaseInformation").fadeIn();
@@ -74,10 +98,48 @@
                 return false;
             });
 			// Popover appears on click
-		    $(".po").popover({ html : true });
+		    $(".po").popover({ html: true });
+
+            $("#purchase_num_passes").change(function(e){
+                var numpasses = $("#purchase_num_passes").val();
+                if(numpasses > 1){
+                    createFriendInputs(numpasses);
+                }
+            });
         }
+
+        function loadPassFriends(){
+            var numpasses = $("#purchase_num_passes").val();
+            if(numpasses > 1){
+                createFriendInputs(numpasses);
+            }
+        }
+
+        loadPassFriends();
         attachPurchaseListeners();
     });
+
+    function createFriendInputs(passes){
+      $("#passFriends").html("");
+      for (var i = 1; i < passes; i++){
+          var containerDiv = $("<div class = 'control-group'/>");
+          var nameInput = $("<input type = 'text' class = 'friendName' name = 'purchase[friend_names][]'/>");
+          var nameLabel = $("<label class = 'control-label'>Guest #" + i + " Name</label>");
+          var emailInput = $("<input type = 'text' class = 'friendEmail' name = 'purchase[friend_emails][]'/>");
+          var emailLabel = $("<label class = 'control-label'>Guest #" + i + " Email</label>");
+          var nameDiv = $("<div class = 'controls' />");
+          var emailDiv = $("<div class = 'controls' />");
+          emailDiv.append(emailInput);
+          nameDiv.append(nameInput);
+          containerDiv.append(nameLabel);
+          containerDiv.append(nameDiv);
+		  containerDiv.append("<br>");
+          containerDiv.append(emailLabel);
+          containerDiv.append(emailDiv);
+          $("#passFriends").append(containerDiv);
+      } 
+    }
+
     function getlistd()
         {
           FB.getLoginStatus() 
@@ -323,7 +385,7 @@
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
       						</div>
-      						<div class="control-group">
+      						<div class="control-group" id = "passName">
         						<%= f.label :name, "Full Name", class: "control-label" %>
         						<div class="controls">
           							<%= f.text_field :name %> 
@@ -331,6 +393,9 @@
 									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
+							<% if @pass_set.friend_check == true %>
+								<div id = "passFriends"></div>
+							<% end %>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
@@ -347,14 +412,14 @@
           							<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
         						</div>
       						</div>
-      						<div class="control-group">
+      						<div class="control-group" id = "passName">
         						<%= f.label :name, "Name", class: "control-label" %>
         						<div class="controls">
           							<%= f.text_field :name %> 
 									</br>
 									<small>(Name on Reservation)</small>
         						</div>
-      						</div>
+      						</div>    
 						<% end %>
       					<div class = "controls">
 							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
@@ -438,7 +503,7 @@
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
 	      					</div>
-	      					<div class="control-group">
+	      					<div class="control-group" id = "passName">
 	        					<%= f.label :name, "Full Name", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.text_field :name %> 
@@ -446,6 +511,9 @@
 									<small>(Must Match Valid ID)</small>
 	        					</div>
 	      					</div>
+							<% if @pass_set.friend_check == true %>
+								<div id = "passFriends"></div>
+							<% end %>
 						<% else %>
 							<% if @pass_set.reservation_time_periods == true %>
 								<div class="control-group">
@@ -462,7 +530,7 @@
 	          						<%= f.hidden_field :pass_set,:value =>  @pass_set.id %>
 	        					</div>
 	      					</div>
-	      					<div class="control-group">
+	      					<div class="control-group" id ="passName">
 	        					<%= f.label :name, "Name", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.text_field :name %> 
@@ -504,7 +572,7 @@
 						<div class="field control-group">
 							<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
 							<div class="controls">
-								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>								
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVC)</small>								
 							</div> 
 						</div> 
 						<div class="field control-group">
