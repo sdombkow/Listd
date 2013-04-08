@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130407181607) do
+ActiveRecord::Schema.define(:version => 20130408000221) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -221,6 +221,7 @@ ActiveRecord::Schema.define(:version => 20130407181607) do
     t.integer  "price"
     t.string   "confirmation"
     t.string   "reservation_time"
+    t.decimal  "total_price"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"

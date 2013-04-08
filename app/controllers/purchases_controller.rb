@@ -52,28 +52,33 @@ class PurchasesController < ApplicationController
     			        end
               else
               		redirect_to [@bar,@pass_set], notice: current_user.error_message
+              		return
             	end
           elsif params[:credit_card_save] == "1"
     			    if @purchase.return_customer_save_payment(current_user)
     			    else
         		      redirect_to [@bar,@pass_set], notice: current_user.error_message
+        		      return
         		  end
     			else
     		      if @purchase.payment(current_user)
     		      else
-          		    redirect_to [@bar,@pass_set], notice: current_user.error_message 
+          		    redirect_to [@bar,@pass_set], notice: current_user.error_message
+          		    return
   		        end
   		    end    
     	elsif params[:credit_card_save] == "1"	
     	    if @purchase.save_with_payment(current_user)
     	    else
     		      redirect_to [@bar,@pass_set], notice: current_user.error_message
+    		      return
     		  end
     	else
           logger.error "Purchase: #{@purchase.inspect}"
     		  if @purchase.payment(current_user)
     			else
      		      redirect_to [@bar,@pass_set], notice: current_user.error_message
+     		      return
      		  end
       end   
     			    
@@ -219,7 +224,7 @@ class PurchasesController < ApplicationController
       end
     			    
     	@pass_set.revenue_total = @purchase.price + @pass_set.revenue_total
-	    @pass_set.save
+	    @pass_set.save 
 	    
 	    # for i in 0..num_passes-1
 		  pass = Pass.new
@@ -228,6 +233,10 @@ class PurchasesController < ApplicationController
 		  pass.pass_set_id = @pass_set.id
 		  pass.redeemed = false
 		  pass.price = @pass_set.price
+		  pass.total_price = @pass_set.price * num_passes
+		  logger.error "#{@pass_set.price}"
+		  logger.error "#{pass.price}"
+		  logger.error "#{pass.total_price}"
 		  if @pass_set.reservation_time_periods == true
 		      pass.reservation_time = params[:purchase][:reservation_time]
 		  end
