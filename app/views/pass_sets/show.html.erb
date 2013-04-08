@@ -73,6 +73,8 @@
                 e.preventDefault();
                 return false;
             });
+			// Popover appears on click
+		    $(".po").popover({ html : true });
         }
         attachPurchaseListeners();
     });
@@ -371,7 +373,7 @@
 						<div class="field control-group">
 	  						<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
 	  						<div class="controls">
-								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVV)</small>
+								<%= text_field_tag :card_code, nil, name: nil %> <small><%= link_to('(CVV)', '#', :class => "po", :title => "What is a card security code?", "data-content" => "#{image_tag("cvv.png", :alt => "CVV")}") %></small>
 	  						</div> 
 						</div> 
 						<div class="field control-group">
