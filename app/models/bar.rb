@@ -22,19 +22,18 @@ class Bar < ActiveRecord::Base
   :hourclose_sunday,:open_friday,:hourclose_monday,:houropen_sunday, :street_address, :city, :state, :zip_code
 
 	has_many :pass_sets, :dependent => :destroy
+	belongs_to :user
+	
 	accepts_nested_attributes_for :pass_sets, :allow_destroy => true
 	
 	geocoded_by :address
 	after_validation :geocode, :if => :address_changed?
 
 	def self.search(search)
-	  search_condition = "%" + search + "%"
-	  @list1 = find(:all, :conditions => ['upper(name) LIKE ?', search_condition.upcase])
-	  @list2 = find(:all, :conditions => ['upper(city) LIKE ?', search_condition.upcase])
-	  @list1|@list2
+	    search_condition = "%" + search + "%"
+	    @list1 = find(:all, :conditions => ['upper(name) LIKE ?', search_condition.upcase])
+	    @list2 = find(:all, :conditions => ['upper(city) LIKE ?', search_condition.upcase])
+	    @list1|@list2
 	end
 
-	
-
-	belongs_to :user
 end

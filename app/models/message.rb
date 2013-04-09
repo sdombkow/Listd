@@ -10,13 +10,13 @@ class Message
   validates :email, :format => { :with => %r{.+@.+\..+} }, :allow_blank => true
   
   def initialize(attributes = {})
-    attributes.each do |name, value|
-      send("#{name}=", value)
-    end
+      attributes.each do |name, value|
+          send("#{name}=", value)
+      end
   end
 
   def persisted?
-    false
+      false
   end
 
 end
