@@ -1,7 +1,5 @@
 class Purchase < ActiveRecord::Base
   
-  belongs_to :user
-  has_many :passes
   attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time
   attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time
   
@@ -9,6 +7,8 @@ class Purchase < ActiveRecord::Base
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   validates :num_passes, :numericality => { :greater_than => 0 }
   
+  belongs_to :user
+  has_many :passes
   
   def payment(user)
       if valid?
@@ -150,5 +150,4 @@ class Purchase < ActiveRecord::Base
       total = total*Integer(num_passes)
       return total
   end
-
 end
