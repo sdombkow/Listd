@@ -1,0 +1,17 @@
+<div class="pass-preview">
+	<p class="title">
+		Name: <%= ticket.name %>	|	<%= link_to 'Toggle Redeem', tickets_toggleRedeem_path(ticket,:id => ticket.id), :method=>:post %>
+	</p>
+	<div class="pull-left dt">
+		# of Tickets:</br>
+        Purchased on:</br>
+		Tickets Redeemed?:</br>
+		Confirmation Number:
+	</div>
+	<div class="pull-left dd">
+ 		<%= ticket.entries %></br>
+		<%= ticket.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+		<%= ticket.redeemed %></br>
+		<%= link_to ticket.confirmation, ticket %>
+	</div>
+</div>

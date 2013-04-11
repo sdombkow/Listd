@@ -1,4 +1,8 @@
 class ReservationSetsController < ApplicationController
+  before_filter :authenticate_user!
+  before_filter :elevated_privilege_P? , :except => [:show]
+  before_filter :ownsReservationSet, :only => [:edit,:update,:new,:delete,:create]
+  
   # GET /reservation_sets
   # GET /reservation_sets.json
   def index

@@ -1,7 +1,9 @@
 class TimePeriod < ActiveRecord::Base
+  
   attr_accessible :eight_pm_available, :eight_pm_tables, :eight_thirty_pm_available, :eight_thirty_pm_tables, :eleven_am_available, :eleven_am_tables, :eleven_thirty_am_available, :eleven_thirty_am_tables, :five_pm_available, :five_pm_tables, :five_thirty_pm_available, :five_thirty_pm_tables, :four_pm_available, :four_pm_tables, :four_thirty_pm_available, :four_thirty_pm_tables, :nine_pm_available, :nine_pm_tables, :nine_thirty_pm_available, :nine_thirty_pm_tables, :one_pm_available, :one_pm_tables, :one_thirty_pm_available, :one_thirty_pm_tables, :pass_set_id, :seven_pm_available, :seven_pm_tables, :seven_thirty_pm_available, :seven_thirty_pm_tables, :six_pm_available, :six_pm_tables, :six_thirty_pm_available, :six_thirty_pm_tables, :ten_am_available, :ten_am_tables, :ten_pm_available, :ten_pm_tables, :ten_thirty_am_available, :ten_thirty_am_tables, :three_pm_available, :three_pm_tables, :three_thirty_pm_available, :three_thirty_pm_tables, :twelve_pm_available, :twelve_pm_tables, :twelve_thirty_pm_available, :twelve_thirty_pm_tables, :two_pm_available, :two_pm_tables, :two_thirty_pm_available, :two_thirty_pm_tables 
   
   belongs_to :pass_set
   
   TIME_LIST = [['10:00 AM','ten_am'],['10:30 AM','ten_thirty_am'],['11:00 AM','eleven_am'],['11:30 AM','eleven_thirty_am'],['12:00 PM','twelve_pm'],['12:30 PM','twelve_thirty_pm'],['1:00 PM','one_pm'],['1:30 PM','one_thirty_pm'],['2:00 PM','two_pm'],['2:30 PM','two_thirty_pm'],['3:00 PM','three_pm'],['3:30 PM','three_thirty_pm'],['4:00 PM','four_pm'],['4:30 PM','four_thirty_pm'],['5:00 PM','five_pm'],['5:30 PM','five_thirty_pm'],['6:00 PM','six_pm'],['6:30 PM','six_thirty_pm'],['7:00 PM','seven_pm'],['7:30 PM','seven_thirty_pm'],['8:00 PM','eight_pm'],['8:30 PM','eight_thirty_pm'],['9:00 PM','nine_pm'],['9:30 PM','nine_thirty_pm'],['10:00 PM','ten_pm']]
+  
 end

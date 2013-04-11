@@ -1,6 +1,4 @@
-class PassSetsController < ApplicationController
-  # GET /pass_sets
-  # GET /pass_sets.json
+class PassSetsController < ApplicationController  
   before_filter :authenticate_user!
   before_filter :elevated_privilege_P? , :except => [:show]
   before_filter :ownsPassSet, :only => [:edit,:update,:new,:delete,:create]
@@ -16,6 +14,8 @@ class PassSetsController < ApplicationController
       return
   end
 
+  # GET /pass_sets
+  # GET /pass_sets.json
   def index
       @passes = Pass.where("pass_set_id = ? and created_at > ?", params[:pass_set_id], Time.at(params[:after].to_i + 1))
   end

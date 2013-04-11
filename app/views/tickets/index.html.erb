@@ -1,35 +1,58 @@
-<h1>Listing tickets</h1>
+<% content_for :title, "Listd - My Tickets" %>
+	<h2>My Tickets</h2>
 
-<table>
-  <tr>
-    <th>Ticket set</th>
-    <th>Purchase</th>
-    <th>Name</th>
-    <th>Redeemed</th>
-    <th>Entries</th>
-    <th>Price</th>
-    <th>Confirmation</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+	<div class="row footer-cushion">
+  		<div class="span7">
+			<h4 class="index-type">Current</h4>
+			<% for ticket in @valid_tickets %>
+				<div class="pass-preview">
+					<small>
+      					<p class="title"><%= ticket.ticket_set.bar.name %></p>
+						<div class="pull-left dt">
+		  						Date of Ticket: <br>
+		  						# of Tickets: <br>
+		  						Name on Purchase: <br> 
+		  						Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+		  					<%= ticket.ticket_set.date.strftime("%m/%d/%Y") %> <br>
+		  					<%= ticket.entries%> <br>
+		  					<%= ticket.name %> <br>
+		  					<%= ticket.confirmation %>
+						</div>
+						<div class="pull-right dd">
+		  					<%= link_to raw("View Ticket &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), ticket_path(ticket, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => ticket.id), :class => "btn title links-confirmation" %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @valid_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
+  		</div>
 
-<% @tickets.each do |ticket| %>
-  <tr>
-    <td><%= ticket.ticket_set_id %></td>
-    <td><%= ticket.purchase_id %></td>
-    <td><%= ticket.name %></td>
-    <td><%= ticket.redeemed %></td>
-    <td><%= ticket.entries %></td>
-    <td><%= ticket.price %></td>
-    <td><%= ticket.confirmation %></td>
-    <td><%= link_to 'Show', ticket %></td>
-    <td><%= link_to 'Edit', edit_ticket_path(ticket) %></td>
-    <td><%= link_to 'Destroy', ticket, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Ticket', new_ticket_path %>
+  		<div class="span4 vertical-rule">
+			<h4 class="index-type">Past</h4>
+			<% for ticket in @past_tickets %>
+				<div class="pass-history-preview">
+    				<small>
+	      				<p class="title"><%= ticket.ticket_set.bar.name %></p>
+						<div class="pull-left dt">
+			  				Date of Ticket: <br>
+			  				# of Tickets: <br>
+			  				Name on Purchase: <br>
+			  				Confirmation Number: <br>
+			  				Redeemed:
+						</div>
+						<div class="pull-left dd">
+			  				<%= ticket.ticket_set.date.strftime("%m/%d/%Y") %> <br>
+			  				<%= ticket.entries%> <br>
+			  				<%= ticket.name %> <br>
+			  				<%= ticket.confirmation %> <br>
+			  				<%= ticker.redeemed %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @past_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
+  		</div>
+	</div>

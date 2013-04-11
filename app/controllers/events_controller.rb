@@ -1,8 +1,23 @@
 class EventsController < ApplicationController
+  before_filter :authenticate_user!, :except => [:show, :search]
+  before_filter :elevated_privilege_P? , :except => [:search,:show]
+  before_filter :ownsEvent?, :only => [:edit,:update, :destroy]
+
+  # Check if current user owns the location
+  def ownsEvent?
+      @event = Event.find(params[:id])
+      if current_user.partner?
+          if @event.user_id != current_user.id
+              redirect_to @event
+          end
+      end
+  end
+  
   # GET /events
   # GET /events.json
   def index
-    @events = Event.all
+    @user=current_user
+    @events = @user.events
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +29,12 @@ class EventsController < ApplicationController
   # GET /events/1.json
   def show
     @event = Event.find(params[:id])
+    @user = @event.user
+    @full_path = "http://#{request.host+request.fullpath}"
+    @pass_sets = @event.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
+    @reservation_sets = @event.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
+    @expired_sets= @event.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
+    @expired_reservation_sets= @event.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,6 +46,9 @@ class EventsController < ApplicationController
   # GET /events/new.json
   def new
     @event = Event.new
+    @user = User.find(params[:id])
+    @event.user = @user
+    @event.user_id= @user.id
 
     respond_to do |format|
       format.html # new.html.erb
@@ -35,12 +59,17 @@ class EventsController < ApplicationController
   # GET /events/1/edit
   def edit
     @event = Event.find(params[:id])
+    @user = @event.user
   end
 
   # POST /events
   # POST /events.json
   def create
     @event = Event.new(params[:event])
+    @event.address = @event.street_address + ", " + @event.city + ", " + @event.state + ", " + @event.zip_code
+    @user = User.find(params[:os])
+    @event.user = @user
+    @event.user_id= @user.id
 
     respond_to do |format|
       if @event.save
@@ -57,22 +86,40 @@ class EventsController < ApplicationController
   # PUT /events/1.json
   def update
     @event = Event.find(params[:id])
-
-    respond_to do |format|
-      if @event.update_attributes(params[:event])
-        format.html { redirect_to @event, notice: 'Event was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @event.errors, status: :unprocessable_entity }
-      end
-    end
+    @user = User.find(params[:os])
+    @pass_set = @event.pass_sets.first
+    
+    if(current_user.admin?)
+        respond_to do |format|
+            if @event.update_attributes(params[:event])
+                format.html { redirect_to user_event_path(@event.user,@event), notice: 'Event was successfully updated.' }
+                format.json { head :no_content }
+            else
+                format.html { render action: "edit" }
+                format.json { render json: @event.errors, status: :unprocessable_entity }
+            end
+        end
+    else
+        respond_to do |format|
+            if @event.update_attributes(params[:event])
+                format.html { redirect_to event_path(@event), notice: 'Event was successfully updated.' }
+                format.json { head :no_content }
+            else
+                format.html { render action: "edit" }
+                format.json { render json: @event.errors, status: :unprocessable_entity }
+            end
+        end
+    end		
+	  
+	  @event.address = @event.street_address + " , " + @event.city + " , " + @event.state + " , " + @event.zip_code
+    @event.save
   end
 
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
     @event = Event.find(params[:id])
+    @user = @event.user
     @event.destroy
 
     respond_to do |format|
@@ -80,4 +127,14 @@ class EventsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def search
+      @search = params[:search]
+      @events = Event.search(@search)
+      if @events.empty?
+          redirect_to :controller=>'home', :action=>'welcome'
+          flash[:notice] = "Your query did not match any of our partner bars or nightclubs."
+      end
+  end
+
 end

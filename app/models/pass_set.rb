@@ -1,6 +1,6 @@
 class PassSet < ActiveRecord::Base
   
-  validates_presence_of :date, :total_released_passes, :price
+  validates :date, :total_released_passes, :price, :presence => true
   validates_numericality_of :price, :greater_than_or_equal_to =>0, :message => " Invalid Price"
   validates :bar, :presence => true
   
@@ -10,4 +10,5 @@ class PassSet < ActiveRecord::Base
   has_many :time_periods, :dependent => :destroy 
   
   accepts_nested_attributes_for :time_periods
+
 end
