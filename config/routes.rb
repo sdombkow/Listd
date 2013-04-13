@@ -50,13 +50,21 @@ ListdApp::Application.routes.draw do
   match '/pdfversion' => 'passes#pdfversion'
 
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
-match 'contact' => 'contact#create', :as => 'contact', :via => :post
+  match 'contact' => 'contact#create', :as => 'contact', :via => :post
+	
 	resources :bars do
   	resources :pass_sets
     collection do
       post 'search'
-			end
 		end
+	end
+	
+  resources :locations do
+    resources :ticket_sets
+    collection do
+    end
+  end
+  
   resources :admin
   resources :passes
   match '/mypasses' => 'passes#index'
@@ -71,8 +79,10 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   authenticated :user do
     root :to => 'home#welcome'
   end
+  
   root :to => "home#index"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  
   resources :users do
 	  resources :bars do
   	  resources :pass_sets
@@ -90,17 +100,43 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
 		end
 	end
 	
-resources :tokens,:only => [:create, :destroy]
+	resources :users do
+	  resources :locations do
+	    resources :ticket_sets do
+	      get 'close_set'
+	    end
+	    resources :fecha do
+	    end
+	  end
+	end
+	
+	resources :users do
+	  resources :bars do
+  	  resources :ticket_sets do
+          get 'close_set'
+      end
+		end
+	end
+	
+	resources :users do
+	  resources :bars do
+  	  resources :fechas do
+          get 'close_set'
+      end
+		end
+	end
+	
+  resources :tokens,:only => [:create, :destroy]
 
-namespace :api do
-  namespace :v1 do
-    devise_scope :user do
-      post 'registrations' => 'registrations#create', :as => 'register'
-      post 'sessions' => 'sessions#create', :as => 'login'
-      delete 'sessions' => 'sessions#destroy', :as => 'logout'
+  namespace :api do
+    namespace :v1 do
+      devise_scope :user do
+        post 'registrations' => 'registrations#create', :as => 'register'
+        post 'sessions' => 'sessions#create', :as => 'login'
+        delete 'sessions' => 'sessions#destroy', :as => 'logout'
+      end
+      get 'tasks' => 'tasks#index', :as => 'tasks'
     end
-    get 'tasks' => 'tasks#index', :as => 'tasks'
   end
-end
 
 end

@@ -1,4 +1,7 @@
 class FechasController < ApplicationController
+  before_filter :authenticate_user!
+  before_filter :elevated_privilege_P? , :except => [:show]
+  
   # GET /fechas
   # GET /fechas.json
   def index
@@ -41,6 +44,8 @@ class FechasController < ApplicationController
   # POST /fechas.json
   def create
     @fecha = Fecha.new(params[:fecha])
+    @fecha.location_id = 1
+    logger.error "#{@fecha.location}"
 
     respond_to do |format|
       if @fecha.save

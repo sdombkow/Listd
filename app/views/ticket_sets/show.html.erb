@@ -163,12 +163,12 @@
 	</div>
 
 	<div id = "availableSummary">
-  		<legend><%= @ticket_set.bar.name %> Tickets (<%= @ticket_set.date.strftime("%m/%d/%y") %>)</legend>
+  		<legend><%= @ticket_set.location.name %> Tickets (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
   		<dl class="dl-horizontal">
     		<dt>Bar</dt>
-    		<dd><%= @ticket_set.bar.name %></dd>
+    		<dd><%= @ticket_set.location.name %></dd>
 			<dt>Ticket Date</dt>
-			<dd><%= @ticket_set.date.strftime("%m/%d/%Y") %></dd>
+			<dd><%= @ticket_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Unsold Tickets</dt>
 			<dd id = "unsold"><%= @ticket_set.unsold_tickets %></dd>
 			<dt>Ticket Price</dt>

@@ -13,19 +13,16 @@ class Location < ActiveRecord::Base
                     :allow_blank => true, 
                     :allow_nil => true
                     
-	has_many :pass_sets, :dependent => :destroy
+	has_many :fechas, :dependent => :destroy
 	has_many :ticket_sets, :dependent => :destroy
-	has_many :reservation_sets, :dependent => :destroy
-	has_many :deal_sets, :dependent => :destroy
+	
+	has_many :location_hours, :dependent => :destroy
 	belongs_to :user
 	
-	accepts_nested_attributes_for :pass_sets, :allow_destroy => true
-	accepts_nested_attributes_for :ticket_sets, :allow_destroy => true
-	accepts_nested_attributes_for :deal_sets, :allow_destroy => true
-	accepts_nested_attributes_for :reservation_sets, :allow_destroy => true
+	accepts_nested_attributes_for :location_hours, :allow_destroy => true
 	
-	geocoded_by :address
-	after_validation :geocode, :if => :address_changed?
+	geocoded_by :full_address
+	after_validation :geocode, :if => :full_address_changed?
 
 	def self.search(search)
 	  search_condition = "%" + search + "%"

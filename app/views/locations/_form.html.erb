@@ -1,26 +1,65 @@
-<%= simple_form_for(@location) do |f| %>
-  <%= f.error_notification %>
+<%= form_for([@location.user,@location]) do |f| %>
+  <% if @location.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@location.errors.count, "error") %> prohibited this bar from being saved:</h2>
 
-  <div class="form-inputs">
-    <%= f.input :user_id %>
-    <%= f.input :name %>
-    <%= f.input :phone_number %>
-    <%= f.input :street_address %>
-    <%= f.input :intro_paragraph %>
-    <%= f.input :latitude %>
-    <%= f.input :longtitude %>
-    <%= f.input :logo %>
-    <%= f.input :website_url %>
-    <%= f.input :facebook_url %>
-    <%= f.input :twitter_url %>
-    <%= f.input :full_address %>
-    <%= f.input :city %>
-    <%= f.input :zip_code %>
-    <%= f.input :state %>
-    <%= f.input :slug %>
+      <ul>
+      <% @location.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= hidden_field_tag :os,@user.id %>
+  
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :phone_number %><br />
+    <%= f.number_field :phone_number %>
+  </div>
+  <div class="field">
+  	<%= f.label :street_address %><br />
+  	<%= f.text_field :street_address %>
+  </div>
+  <div class="field">
+ 	<%= f.label :city %><br />
+  	<%= f.text_field :city %>
+  </div>
+  <div class="field">
+  	<%= f.label :state %><br />
+  	<%= f.select :state, options_for_select(us_states, :selected => @location.state) %>
+  </div>
+  <div class="field">
+  	<%= f.label :zip_code %><br />
+  	<%= f.text_field :zip_code %>
+  </div>
+  <div class="field">
+    <%= f.label :intro_paragraph %><br />
+    <%= f.text_area :intro_paragraph %>
+  </div>
+  <div class="field">
+    <%= f.label :logo %><br />
+    <%= f.text_field :logo %>
+  </div>
+  <div class="field">
+    <%= f.label :website_url %><br />
+    <%= f.text_field :website_url %>
+  </div>
+  <div class="field">
+    <%= f.label :facebook_url %><br />
+    <%= f.text_field :facebook_url %>
+  </div>
+  <div class="field">
+    <%= f.label :twitter_url %><br />
+    <%= f.text_field :twitter_url %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="actions">
+    <%= f.submit %>
   </div>
+
 <% end %>

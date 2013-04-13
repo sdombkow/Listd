@@ -17,6 +17,7 @@ class Bar < ActiveRecord::Base
                     :allow_nil => true
                     
 	has_many :pass_sets, :dependent => :destroy
+	has_many :ticket_sets
 	belongs_to :user
 	
 	accepts_nested_attributes_for :pass_sets, :allow_destroy => true

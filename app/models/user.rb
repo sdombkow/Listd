@@ -10,8 +10,10 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :remember_me,:provider, :uid, :stripe_card_token, :stripe_customer_token
 
   has_many :bars, :dependent => :destroy
+  has_many :locations, :dependent => :destroy
   has_many :purchases
   has_many :passes, :through => :purchases
+  has_many :tickets, :through => :purchases
 
   validates :name, :email, :presence => true
 

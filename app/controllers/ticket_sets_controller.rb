@@ -5,11 +5,11 @@ class TicketSetsController < ApplicationController
   
   # Ensure that the user owns the bar for this pass set
   def ownsTicketSet
-      @bar = Bar.find(params[:bar_id])
+      @location = Location.find(params[:location_id])
       if current_user.partner? == false and current_user.admin? == false
-          redirect_to @bar
-      elsif current_user.partner? == true and @bar.user_id != current_user.id
-          redirect_to @bar
+          redirect_to @location
+      elsif current_user.partner? == true and @location.user_id != current_user.id
+          redirect_to @location
       end
       return
   end
@@ -23,7 +23,7 @@ class TicketSetsController < ApplicationController
   # GET /ticket_sets/1
   # GET /ticket_sets/1.json
   def show
-    @bar = Bar.find(params[:bar_id])
+    @location = Location.find(params[:location_id])
     @ticket_set = TicketSet.find(params[:id])
     @used_tickets = @ticket_set.tickets.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:used_tickets_page], :per_page => 5)
     @unused_tickets = @ticket_set.tickets.order("name DESC").where('redeemed = ?', false).paginate(:page => params[:unused_tickets_page], :per_page => 5)
@@ -36,7 +36,7 @@ class TicketSetsController < ApplicationController
             @end_year = @customer_card.active_card.exp_year
         end
     end
-    @full_bar_path = "http://#{request.host}" + (bar_path @ticket_set.bar).to_s
+    @full_location_path = "http://#{request.host}" + (location_path @ticket_set.location).to_s
     @open_graph = false
     if flash[:notice] == 'Purchase created'
         @open_graph = true
@@ -52,11 +52,11 @@ class TicketSetsController < ApplicationController
   # GET /ticket_sets/new.json
   def new
     @ticket_set = TicketSet.new
-    @ticket_set.sold_passes = 0
+    @ticket_set.sold_tickets = 0
     @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
-    @bar = Bar.find(params[:bar_id])
-    @bar_label = "Bar ID for "<<@bar.name
-    @ticket_set.bar = @bar
+    @location = Location.find(params[:location_id])
+    @location_label = "Location ID for "<< @location.name
+    #@ticket_set.bar = @bar
   
     respond_to do |format|
         format.html # new.html.erb
@@ -73,24 +73,33 @@ class TicketSetsController < ApplicationController
   # POST /ticket_sets
   # POST /ticket_sets.json
   def create
-    @ticket_set = TicketSet.new(params[:pass_set])
-    @ticket_set.sold_passes = 0
-	  @ticket_set.unsold_passes = @ticket_set.total_released_passes
-    @bar = Bar.find(params[:bar_id])
-    @ticket_set.bar = @bar
-    @existing_set = @bar.ticket_sets.where("date = ?", @ticket_set.date).first
+    @ticket_set = TicketSet.new(params[:ticket_set])
+    @location_fechas = @location.fechas.where("date = ?", Date.today)
+    logger.error "Fechas: #{@location_fechas.empty?}"
+    #if @location_fechas.empty?
+        @fecha = Fecha.new
+        @fecha.location = @location
+        @fecha.ticket_set = @ticket_set
+        @fecha.date = Date.today
+        @fecha.selling_tickets = true
+        logger.error "Fecha Values: #{@fecha.inspect}"
+    #end
+    
+    @ticket_set.sold_tickets = 0
+	  @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
+	  @ticket_set.revenue_percentage = 0.7
+	  @ticket_set.revenue_total = 0
+	  @ticket_set.location = @location
     
     respond_to do |format|
-	      if @ticket_set.date < Date.today
-	          flash[:notice] = 'Error: You are trying to create a ticket for a date that has already passed!'
-            format.html { render action: "new"  }
-            format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
-        elsif @existing_set
-			      flash[:notice] = 'Error: Please use edit to change existing ticket'
-			      format.html { redirect_to edit_user_bar_ticket_set_path(@bar.user, @bar, @existing_set) }
-			      format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
-        elsif @ticket_set.save
-            format.html { redirect_to [@bar.user, @bar], notice: 'Ticket set was successfully created.' }
+        if @ticket_set.save
+            logger.error "In Here"
+            logger.error "Fecha Values: #{@fecha.inspect}"
+            @fecha.ticket_set = @ticket_set
+            @fecha.save!
+            logger.error "Fecha Values: #{@fecha.inspect}"
+            logger.error "Ticket Set Values: #{@ticket_set.inspect}"
+            format.html { redirect_to [@location.user, @location], notice: 'Ticket set was successfully created.' }
             format.json { render json: @ticket_set, status: :created, location: @ticket_set }
         else
             format.html { render action: "new" }

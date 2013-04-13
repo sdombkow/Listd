@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408000221) do
+ActiveRecord::Schema.define(:version => 20130413003511) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -125,12 +125,14 @@ ActiveRecord::Schema.define(:version => 20130408000221) do
 
   create_table "fechas", :force => true do |t|
     t.integer  "location_id"
-    t.boolean  "selling_passes"
-    t.boolean  "selling_reservations"
-    t.boolean  "selling_tickets"
-    t.boolean  "selling_deals"
-    t.datetime "created_at",           :null => false
-    t.datetime "updated_at",           :null => false
+    t.boolean  "selling_passes",       :default => false
+    t.boolean  "selling_reservations", :default => false
+    t.boolean  "selling_tickets",      :default => false
+    t.boolean  "selling_deals",        :default => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "ticket_set_id"
+    t.date     "date"
   end
 
   create_table "friend_purchases", :force => true do |t|
@@ -161,7 +163,6 @@ ActiveRecord::Schema.define(:version => 20130408000221) do
     t.string   "street_address"
     t.text     "intro_paragraph"
     t.float    "latitude"
-    t.float    "longtitude"
     t.string   "logo"
     t.string   "website_url"
     t.string   "facebook_url"
@@ -173,6 +174,7 @@ ActiveRecord::Schema.define(:version => 20130408000221) do
     t.string   "slug"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.float    "longitude"
   end
 
   create_table "menu_items", :force => true do |t|
@@ -305,6 +307,7 @@ ActiveRecord::Schema.define(:version => 20130408000221) do
     t.decimal  "revenue_percentage"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+    t.integer  "location_id"
   end
 
   create_table "tickets", :force => true do |t|

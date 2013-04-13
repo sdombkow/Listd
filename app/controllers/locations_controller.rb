@@ -31,10 +31,10 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     @user = @location.user
     @full_path = "http://#{request.host+request.fullpath}"
-    @pass_sets = @location.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
-    @reservation_sets = @location.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
-    @expired_sets= @location.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
-    @expired_reservation_sets= @location.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)
+    logger.error "Ticket Sets #{@location.ticket_sets}"
+    
+    @ticket_sets = @location.ticket_sets.joins(:fecha).where("date >= ?", Date.today).order(:date)
+    @expired_ticket_sets= @location.ticket_sets.joins(:fecha).where("date< ?", Date.today).order(:date)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -66,7 +66,7 @@ class LocationsController < ApplicationController
   # POST /locations.json
   def create
     @location = Location.new(params[:location])
-    @location.address = @location.street_address + ", " + @location.city + ", " + @location.state + ", " + @location.zip_code
+    @location.full_address = @location.street_address + ", " + @location.city + ", " + @location.state + ", " + @location.zip_code
     @user = User.find(params[:os])
     @location.user = @user
     @location.user_id= @user.id

@@ -9,6 +9,7 @@ class UsersController < ApplicationController
       @user = User.find(params[:id])
 		  @passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
 	    @bars = @user.bars
+	    @locations = @user.locations
   end
   
   def setPartner 

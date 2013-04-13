@@ -299,8 +299,8 @@
 				<% @expired_sets.each do |pass_set| %>
   					<tr>
     					<td data-title="Date"><%= pass_set.date %></td>
-                <td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
-                <td data-title="Sold"><%= pass_set.sold_passes %></td>
+                		<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+                		<td data-title="Sold"><%= pass_set.sold_passes %></td>
     					<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
     					<td data-title="Price"><%= pass_set.price %></td>
 						<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
@@ -322,7 +322,9 @@
 		<% end %>
 </div>
 </br>
-<%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |
+<%= link_to 'New Pass Set', new_user_bar_pass_set_path(@user,@bar) %> |
+<%= link_to 'New Ticket Set', new_user_bar_ticket_set_path(@user,@bar) %> |
+<%= link_to 'New Product', new_user_bar_fecha_path(@user,@bar) %> |
 <%= link_to 'Edit Bar Information', edit_user_bar_path(@user,@bar) %> |
 <%= link_to 'Delete Bar Location', [@user,@bar], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>
