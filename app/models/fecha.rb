@@ -1,8 +1,8 @@
 class Fecha < ActiveRecord::Base
   
-  attr_accessible :location_id, :selling_deals, :selling_passes, :selling_reservations, :selling_tickets, :ticket_set_id
+  attr_accessible :location_id, :selling_deals, :selling_passes, :selling_reservations, :selling_tickets, :ticket_set_id, :date
   
-  validates :location_id, :ticket_set_id, :presence => true
+  validates :date, :presence => true
   
   belongs_to :location
   belongs_to :ticket_set

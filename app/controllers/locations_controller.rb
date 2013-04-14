@@ -31,7 +31,6 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     @user = @location.user
     @full_path = "http://#{request.host+request.fullpath}"
-    logger.error "Ticket Sets #{@location.ticket_sets}"
     
     @ticket_sets = @location.ticket_sets.joins(:fecha).where("date >= ?", Date.today).order(:date)
     @expired_ticket_sets= @location.ticket_sets.joins(:fecha).where("date< ?", Date.today).order(:date)

@@ -165,32 +165,32 @@
 	<div id = "availableSummary">
   		<legend><%= @ticket_set.location.name %> Tickets (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
   		<dl class="dl-horizontal">
-    		<dt>Bar</dt>
+    		<dt>Location</dt>
     		<dd><%= @ticket_set.location.name %></dd>
 			<dt>Ticket Date</dt>
 			<dd><%= @ticket_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Unsold Tickets</dt>
 			<dd id = "unsold"><%= @ticket_set.unsold_tickets %></dd>
 			<dt>Ticket Price</dt>
-			<dd id = "ticketPrice"><%= number_to_currency(@ticket_set.price) %></dd>
+			<dd id = "ticketPrice"><%= number_to_currency(@ticket_set.price_point.price) %></dd>
 			<dt>Description</dt>
-			<dd><%= @ticket_set.description %></dd>
+			<dd><%= @ticket_set.price_point.description %></dd>
   		</dl>
 	</div>
 
 	<div id = "purchaseSummary" style = "display:none;">
 		<legend>Summary of Your Purchase</legend>
   		<dl class="dl-horizontal">
-    		<dt>Bar</dt>
-   			<dd><%= @ticket_set.bar.name %></dd>
+    		<dt>Location</dt>
+   			<dd><%= @ticket_set.location.name %></dd>
 			<dt>Date</dt>
-			<dd><%= @ticket_set.date.strftime("%m/%d/%Y") %></dd>
-			<dt>Passes Purchased</dt>
+			<dd><%= @ticket_set.fecha.date.strftime("%m/%d/%Y") %></dd>
+			<dt>Tickets Purchased</dt>
 			<dd id = "ticketsPurchased"></dd>
 			<dt>Total Amount</dt>
 			<dd id = "totalAmount"></dd>
 			<dt>Description</dt>
-			<dd>The purchase of this LISTD pass provides immediate entry to <%= @ticket_set.bar.name %> on <%= @pass_set.date.strftime("%m/%d/%y") %>.</dd>
+			<dd>The purchase of this LISTD pass provides immediate entry to <%= @ticket_set.location.name %> on <%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
   		</dl>
 	</div>
 
@@ -256,7 +256,9 @@
 	<% else %>
 		<div id="sold_out">
 			</br>
-			<h1>Sorry, there are no available tickets for <%= @ticket_set.date.strftime("%m/%d/%y")%>.</h1>
+			<% if @ticket_set.unsold_tickets == 0 %>
+				<h1>Sorry, there are no available tickets for <%= @ticket_set.fecha.date.strftime("%m/%d/%y")%>. </h1>
+			<% end %>
 		</div>
 	
 		<% if current_user.stripe_customer_token == nil || @customer_card.active_card == nil %>
@@ -265,13 +267,13 @@
 					<div id = "makePurchase">
       					<legend>Make a Purchase</legend>
       					<%= f.hidden_field :stripe_card_token %>
-      					<%= f.hidden_field :date,:value => @ticket_set.date %>
-      					<%= f.hidden_field :bar,:value =>  @bar.id %>
+      					<%= f.hidden_field :date,:value => @ticket_set.fecha.date %>
+      					<%= f.hidden_field :location,:value =>  @location.id %>
 
       						<div class="control-group">
         						<%= f.label :num_passes, "Number of Tickets", class: "control-label" %>
         						<div class="controls">
-          							<%= f.select :num_passes, (1..@ticket_set.unsold_passes) %>
+          							<%= f.select :num_passes, (1..@ticket_set.unsold_tickets) %>
 									</br>
 		  							<small>(You can purchase tickets for your friends)</small>
           							<%= f.hidden_field :ticket_set,:value =>  @ticket_set.id %>
@@ -285,9 +287,7 @@
 									<small>(Must Match Valid ID)</small>
         						</div>
       						</div>
-							<% if @ticket_set.friend_check == true %>
-								<div id = "passFriends"></div>
-							<% end %>
+
       					<div class = "controls">
 							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
 						</div>
@@ -358,12 +358,12 @@
 					<div id = "makePurchase">
 		      			<legend>Make a Purchase</legend>
 		      			<%= f.hidden_field :stripe_card_token %>
-		      			<%= f.hidden_field :date,:value => @ticket_set.date %>
-		      			<%= f.hidden_field :bar,:value =>  @bar.id %>
+		      			<%= f.hidden_field :date,:value => @ticket_set.fecha.date %>
+		      			<%= f.hidden_field :location,:value =>  @location.id %>
 	      					<div class="control-group">
 	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
 	        					<div class="controls">
-	          						<%= f.select :num_passes, (1..@ticket_set.unsold_passes) %>
+	          						<%= f.select :num_passes, (1..@ticket_set.unsold_tickets) %>
 									</br>
 			  						<small>(You can purchase passes for your friends)</small>
 	          						<%= f.hidden_field :ticket_set,:value =>  @ticket_set.id %>

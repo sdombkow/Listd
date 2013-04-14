@@ -213,6 +213,11 @@
     						<td data-title="Released Passes"><%= ticket_set.total_released_tickets %></td>
     						<td data-title="Sold"><%= ticket_set.sold_tickets %></td>
     						<td data-title="Unsold"><%= ticket_set.unsold_tickets %></td>
+							<% if ticket_set.price_point != nil %>
+								<td data-title="Price"><%= number_to_currency(ticket_set.price_point.price) %></td>
+							<% else %>
+								<td data-title="Price"> 0 </td>
+							<% end %>
 							<td data-title="Revenue"><%= number_to_currency(ticket_set.revenue_total) %></td>
 
 							<%if(user_signed_in? && current_user.admin?) %>

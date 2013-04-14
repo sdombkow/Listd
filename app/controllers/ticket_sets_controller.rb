@@ -52,8 +52,8 @@ class TicketSetsController < ApplicationController
   # GET /ticket_sets/new.json
   def new
     @ticket_set = TicketSet.new
-    @ticket_set.sold_tickets = 0
-    @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
+    @ticket_set.build_fecha
+    @ticket_set.build_price_point
     @location = Location.find(params[:location_id])
     @location_label = "Location ID for "<< @location.name
     #@ticket_set.bar = @bar
@@ -66,39 +66,56 @@ class TicketSetsController < ApplicationController
 
   # GET /ticket_sets/1/edit
   def edit
-    @bar = Bar.find(params[:bar_id])
+    @location = Location.find(params[:location_id])
     @ticket_set = TicketSet.find(params[:id])
+    logger.error "Ticket Set Price: #{@ticket_set.price_point.price}"
   end
 
   # POST /ticket_sets
   # POST /ticket_sets.json
   def create
     @ticket_set = TicketSet.new(params[:ticket_set])
-    @location_fechas = @location.fechas.where("date = ?", Date.today)
+    @fecha = Fecha.new(params[:ticket_set][:fecha_attributes])
+    @price_point = PricePoint.new(params[:ticket_set][:price_point_attributes])
+    logger.error "Ticket Set Values: #{@ticket_set.inspect}"
+    logger.error "Fecha Values: #{@fecha.inspect}"
+    logger.error "Price Point Values: #{@price_point.inspect}"
+    @location_fechas = @location.fechas.where("date = ?", @fecha.date)
     logger.error "Fechas: #{@location_fechas.empty?}"
-    #if @location_fechas.empty?
-        @fecha = Fecha.new
+    if @location_fechas.empty?
         @fecha.location = @location
         @fecha.ticket_set = @ticket_set
-        @fecha.date = Date.today
         @fecha.selling_tickets = true
-        logger.error "Fecha Values: #{@fecha.inspect}"
-    #end
-    
-    @ticket_set.sold_tickets = 0
-	  @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
-	  @ticket_set.revenue_percentage = 0.7
-	  @ticket_set.revenue_total = 0
-	  @ticket_set.location = @location
+        @ticket_set.sold_tickets = 0
+    	  @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
+    	  @ticket_set.revenue_percentage = 0.7
+    	  @ticket_set.revenue_total = 0
+    	  @ticket_set.location = @location
+    	  @ticket_set.fecha = @fecha
+    	  @price_point.num_released = @ticket_set.total_released_tickets
+    	  @price_point.num_sold = 0
+    	  @price_point.num_unsold = 0
+    	  @existing_set = @location_fechas
+    else
+        @existing_set = @location_fechas
+    end  
     
     respond_to do |format|
-        if @ticket_set.save
-            logger.error "In Here"
-            logger.error "Fecha Values: #{@fecha.inspect}"
+        if @fecha.date < Date.today
+	          flash[:notice] = 'Error: You are trying to create a ticket set for a date that has already passed!'
+            format.html { render action: "new"  }
+            format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
+        elsif @existing_set.empty? == false
+            logger.error "Here"
+				    flash[:notice] = 'Error: Please use edit to change existing tickets'
+				    format.html { redirect_to edit_user_location_ticket_set_path(@location.user, @location, @ticket_set) }
+				    format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
+        elsif @ticket_set.save
             @fecha.ticket_set = @ticket_set
             @fecha.save!
-            logger.error "Fecha Values: #{@fecha.inspect}"
-            logger.error "Ticket Set Values: #{@ticket_set.inspect}"
+            @price_point.ticket_set_id = @ticket_set.id
+            @price_point.save!
+            logger.error "Ticket Set Associated with Price Point #{@price_point.ticket_set.inspect}"
             format.html { redirect_to [@location.user, @location], notice: 'Ticket set was successfully created.' }
             format.json { render json: @ticket_set, status: :created, location: @ticket_set }
         else
@@ -111,18 +128,22 @@ class TicketSetsController < ApplicationController
   # PUT /ticket_sets/1
   # PUT /ticket_sets/1.json
   def update
-    @bar = Bar.find(params[:bar_id])
+    @location = Location.find(params[:location_id])
     @ticket_set = TicketSet.find(params[:id])
-    @date = Date.new(params[:ticket_set]["date(1i)"].to_i,params[:ticket_set]["date(2i)"].to_i,params[:ticket_set]["date(3i)"].to_i)
-    @existing_set = @bar.ticket_sets.where("date = ?", @date).first
+    @date = Date.new(params[:ticket_set][:fecha_attributes]["date(1i)"].to_i,params[:ticket_set][:fecha_attributes]["date(2i)"].to_i,params[:ticket_set][:fecha_attributes]["date(3i)"].to_i)
+    @existing_set = @location.fechas.where("date = ?", @date).first.ticket_set
+    logger.error "Ticket Set: #{@existing_set.inspect}"
     if @existing_set.nil?
         logger.error "Nil Existing Set"
         flash[:notice] = "Error: You cannot change the date of this ticket set. Please create a new one"
         redirect_to :action => "index", :controller => "bars"
         return
     end
-    @ticket_set.unsold_passes = Integer(params[:ticket_set]["total_released_passes"]) - @ticket_set.sold_passes
-    @existing_sets = @bar.ticket_sets.where("date = ?", @date).length
+    @ticket_set.unsold_tickets = Integer(params[:ticket_set]["total_released_tickets"]) - @ticket_set.sold_tickets
+    @existing_sets = @location.fechas.where("date = ? and selling_tickets = ?", @date, true).length
+    logger.error "Price: #{params[:ticket_set][:price_point_attributes]}"
+    @ticket_set.price_point.price = params[:ticket_set][:price_point_attributes]["price"]
+    logger.error "Ticket Set Price: #{@ticket_set.price_point.price}"
       
     respond_to do |format|
         if @date < Date.today
@@ -135,7 +156,7 @@ class TicketSetsController < ApplicationController
             format.html { render action: "edit" }
             format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
         elsif @ticket_set.update_attributes(params[:ticket_set])
-            format.html { redirect_to [@bar.user, @bar], notice: 'Ticket set was successfully updated.' }
+            format.html { redirect_to [@location.user, @location], notice: 'Ticket set was successfully updated.' }
             format.json { head :no_content }
         else
             format.html { render action: "edit" }

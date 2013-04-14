@@ -13,10 +13,24 @@
     </div>
   <% end %>
 
+	<%= f.fields_for :fecha do |builder| %>
+		<div class="field">
+			<%= builder.label :date %><br />
+	    	<%= builder.date_select :date %>
+		</div>
+	<% end %>
+
   	<div class="field">
     	<%= f.label :total_released_tickets %><br />
     	<%= f.number_field :total_released_tickets %>
   	</div>
+
+	<%= f.fields_for :price_point do |builder| %>
+		<div class="field">
+			<%= builder.label :price %><br />
+	    	<%= builder.text_field :price %>
+		</div>
+	<% end %>
 
   	<div class="actions">
     	<%= f.submit %>

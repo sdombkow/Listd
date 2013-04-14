@@ -1,14 +1,15 @@
 class Purchase < ActiveRecord::Base
   
-  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time
-  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time
+  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time, :location, :ticket_set
+  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time, :location, :ticket_set
   
-  validates :name, :bar, :pass_set, :price, :num_passes, :date, :presence => true
+  validates :name, :price, :num_passes, :date, :presence => true
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   validates :num_passes, :numericality => { :greater_than => 0 }
   
   belongs_to :user
   has_many :passes
+  has_many :tickets
   
   def payment(user)
       if valid?

@@ -1,8 +1,8 @@
-<%= form_for([@bar.user,@bar,@ticket_set]) do |f| %>
-  
-  <% if @ticket_set.errors.any? %>
+<%= form_for([@location.user,@location,@ticket_set]) do |f| %>
+   
+ <% if @ticket_set.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@ticket_set.errors.count, "error") %> prohibited this bar from being saved:</h2>
+      <h2><%= pluralize(@ticket_set.errors.count, "error") %> prohibited this pass set from being saved:</h2>
       <ul>
       <% @ticket_set.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -11,19 +11,29 @@
     </div>
   <% end %>
 
+	<%= f.fields_for :fecha do |builder| %>
+		<div class="field">
+			<%= builder.label :date %><br />
+	    	<%= builder.date_select :date %>
+		</div>
+	<% end %>
+
   	<div class="field">
     	<%= f.label :total_released_tickets %><br />
     	<%= f.number_field :total_released_tickets %>
   	</div>
-  	<div class="field">
-		<%= f.label :selling_tickets %><br/>
-		<%= f.check_box :selling_tickets %>
-  	</div>
-  	<div>
-  		<%= f.label :description %>
-  		<%= f.text_area :description, :rows => "10", :class => "input-xlarge"  %>
-  	</div>
+
+	<%= f.fields_for :price_point do |builder| %>
+		<div class="field">
+			<%= builder.label :price %><br />
+	    	<%= builder.text_field :price %>
+		</div>
+	<% end %>
+
   	<div class="actions">
     	<%= f.submit %>
   	</div>
+
 <% end %>
+
+<%= link_to 'Back', user_location_path(@location.user,@location) %>
