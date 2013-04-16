@@ -178,4 +178,17 @@ class TicketSetsController < ApplicationController
     end
   end
   
+  def close_set
+      @ticket_set = TicketSet.find(params[:ticket_set_id])
+      @location = @ticket_set.location
+      @ticket_set.total_released_tickets = @ticket_set.sold_tickets
+      @ticket_set.unsold_tickets = 0
+      @ticket_set.save
+    
+      respond_to do |format|
+          format.html { redirect_to [@location], notice: 'Ticket set was successfully closed.' }
+          format.json { head :no_content }
+      end
+  end
+  
 end

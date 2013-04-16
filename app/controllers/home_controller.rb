@@ -35,7 +35,7 @@ class HomeController < ApplicationController
       #end
 
       @venues = Bar.all
-      @localvenues = Bar.all
+      @localvenues = Location.all
     
       #if someone has searched for venues and there are locatons within 20 miles of that
       #location displays them, if their are no local then it displays all bars, if their are
@@ -51,6 +51,8 @@ class HomeController < ApplicationController
           # Eager loading pass sets
    	      @passes = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').limit(3)
    	      @reservations = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').limit(3)
+   	      logger.error "Fecha Date: #{@user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3).inspect}"
+   	      @tickets = @user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
    	  end
   end
 end

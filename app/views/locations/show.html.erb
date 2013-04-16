@@ -168,13 +168,36 @@
 			<div class="span11" id="passes-avail">
 	  			<div class="div-header">
         			<h5>Available Tickets</h5>
-					<small>A LISTD pass provides immediate entry to <%= @location.name %>.</small>
+					<small>A LISTD ticket provides immediate entry to <%= @location.name %>.</small>
 	  			</div>
 	  			<% @ticket_sets.each do |ticket_set| %>
 					<div class="date-box span1 center-text">
 	      				<p class="lead"><%= link_to ticket_set.fecha.date.strftime("%d"), [@location, ticket_set] %></p>
 		  				<div>
 							<%= link_to ticket_set.fecha.date.strftime("%a"), [@location, ticket_set] %>
+						</div>
+					</div>
+	  			<% end %>
+			</div>
+		<% end %>
+		
+		<% if @pass_sets.empty? %>
+			<div class="shadow span11 center-text" id="passes-none">
+  				<h2>Sorry, there are no available pass at this time</h2>
+			</div>
+		<% end %>
+		
+  		<% if @pass_sets.empty? == false %>
+			<div class="span11" id="passes-avail">
+	  			<div class="div-header">
+        			<h5>Available Passes</h5>
+					<small>A LISTD pass provides immediate entry to <%= @location.name %>.</small>
+	  			</div>
+	  			<% @pass_sets.each do |pass_set| %>
+					<div class="date-box span1 center-text">
+	      				<p class="lead"><%= link_to pass_set.fecha.date.strftime("%d"), [@location, pass_set] %></p>
+		  				<div>
+							<%= link_to pass_set.fecha.date.strftime("%a"), [@location, pass_set] %>
 						</div>
 					</div>
 	  			<% end %>
@@ -234,12 +257,64 @@
 					<% end %>
                 </tbody>
 				</table>
-        </div>
+			</div>
 		<% end %>
+		
+		<%if @pass_sets.empty? %>
+			<h5>No Active Pass Sets</h5>
+		<% else %>
+			<h5>Active Pass Sets</h5>
+            <div class = "passSetTable">
+				<table cellpadding="10">
+                <thead>
+  					<tr>
+    					<th>Date</th>
+    					<th>Released Passes</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
+    					<th>Price</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
+                </thead>
+                <tbody>
+					<% @pass_sets.each do |pass_set| %>
+  						<tr>
+    						<td data-title="Date"><%= pass_set.fecha.date %></td>
+    						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    						<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+							<% if pass_set.price_point != nil %>
+								<td data-title="Price"><%= number_to_currency(pass_set.price_point.price) %></td>
+							<% else %>
+								<td data-title="Price"> 0 </td>
+							<% end %>
+							<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
+
+							<%if(user_signed_in? && current_user.admin?) %>
+    							<td><%= link_to 'Show Purchased Passes', [@location.user, @location, pass_set] %></td>
+								<td><%= link_to 'Edit', edit_user_location_pass_set_path(@location.user, @location, pass_set) %></td>
+								<td><%= link_to 'Close Out', user_location_pass_set_close_set_path(@location.user, @location, pass_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Delete', [@location.user, @location, pass_set], :confirm => 'Are you sure?', :method => :delete %> </td>
+			   				<%elsif (current_user.partner?)%>
+			      				<td><%= link_to 'Show Purchased Passes', [@location, pass_set] %></td>
+				   			<%else %>
+			    				<td><%= link_to 'Purchase a Pass', [@location, pass_set] %></td>   
+			   				<%end%>
+  						</tr>
+					<% end %>
+                </tbody>
+				</table>
+			</div>
+		<% end %>
+	</div>
 </br>
 
 <%= link_to 'New Ticket Set', new_user_location_ticket_set_path(@user,@location) %> |
-<%= link_to 'New Product', new_user_location_fecha_path(@user,@location) %> |
+<%= link_to 'New Pass Set', new_user_location_pass_set_path(@user,@location) %> |
 <%= link_to 'Edit Bar Information', edit_user_location_path(@user,@location) %> |
 <%= link_to 'Delete Bar Location', [@user,@location], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>

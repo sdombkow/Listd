@@ -264,7 +264,7 @@ class PurchasesController < ApplicationController
 		  @ticket_set = TicketSet.find(params[:purchase][:ticket_set])
 		  num_passes = params[:purchase][:num_passes].to_i
 	    
-	    if num_passes > @ticket_set.unsold_tickets && @ticket_set.selling_tickets == true
+	    if num_passes > @ticket_set.unsold_tickets
 			    flash[:error] = 'Not enough tickets left'
 			    redirect_to [@location,@ticket_set]
 			    return
@@ -283,7 +283,7 @@ class PurchasesController < ApplicationController
       
 		  @purchase = Purchase.new(params[:purchase])
 		  @purchase.user_id = @user.id
-		  @purchase.date = params[:purchase][:date]	  
+		  @purchase.date = params[:purchase][:date]	
 		  if String(@ticket_set.price_point.price).split(".").last.length == 1
 	        @decimals = String(@ticket_set.price_point.price).split(".").last + "0"
 	    else 
@@ -343,24 +343,26 @@ class PurchasesController < ApplicationController
       @ticket_set.sold_tickets+=num_passes
       @ticket_set.unsold_tickets-=num_passes
     			    
-    	@ticket_set.revenue_total = @purchase.price + @ticket_set.revenue_total
+    	@ticket_set.revenue_total += @ticket_set.price_point.price * num_passes
 	    @ticket_set.save 
 	    
 	    # for i in 0..num_passes-1
-		  pass = Pass.new
-		  pass.name = params[:purchase][:name]
-		  pass.purchase_id = @purchase.id
-		  pass.pass_set_id = @ticket_set.id
-		  pass.redeemed = false
-		  pass.price = @ticket_set.price_point.price
-		  pass.total_price = @ticket_set.price_point.price * num_passes
+		  ticket = Ticket.new
+		  ticket.name = params[:purchase][:name]
+		  ticket.purchase_id = @purchase.id
+		  ticket.ticket_set_id = @ticket_set.id
+		  ticket.redeemed = false
+		  ticket.price = @ticket_set.price_point.price
+		  ticket.total_price = @ticket_set.price_point.price * num_passes
 		  logger.error "#{@ticket_set.price_point.price}"
-		  logger.error "#{pass.price}"
-		  logger.error "#{pass.total_price}"
-			pass.entries = num_passes
-			pass.confirmation = SecureRandom.hex(4)
-		  pass.save
-		  UserMailer.purchase_confirmation(@user,pass).deliver
+		  logger.error "#{ticket.price}"
+		  logger.error "#{ticket.total_price}"
+			ticket.entries = num_passes
+			ticket.confirmation = SecureRandom.hex(4)
+			logger.error "Ticket: #{ticket.inspect}"
+		  ticket.save!
+		  logger.error "Ticket: #{ticket.inspect}"
+		  UserMailer.purchase_confirmation(@user,ticket).deliver
       counter = 0
       while friend_names.nil? == false and counter < friend_names.length
           fn = friend_names[counter]
@@ -373,7 +375,7 @@ class PurchasesController < ApplicationController
           UserMailer.friend_confirmation(fn,fe,pass).deliver
           counter += 1
       end
-      redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
+      redirect_to [ticket], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
     end
 	end
 

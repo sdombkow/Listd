@@ -7,7 +7,7 @@
 			<% for ticket in @valid_tickets %>
 				<div class="pass-preview">
 					<small>
-      					<p class="title"><%= ticket.ticket_set.bar.name %></p>
+      					<p class="title"><%= ticket.ticket_set.location.name %></p>
 						<div class="pull-left dt">
 		  						Date of Ticket: <br>
 		  						# of Tickets: <br>
@@ -15,19 +15,19 @@
 		  						Confirmation Number:
 						</div>
 						<div class="pull-left dd">
-		  					<%= ticket.ticket_set.date.strftime("%m/%d/%Y") %> <br>
+		  					<%= ticket.ticket_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 		  					<%= ticket.entries%> <br>
 		  					<%= ticket.name %> <br>
 		  					<%= ticket.confirmation %>
 						</div>
 						<div class="pull-right dd">
 		  					<%= link_to raw("View Ticket &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), ticket_path(ticket, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
-				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => ticket.id), :class => "btn title links-confirmation" %>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfticketversion_path(:id => ticket.id), :class => "btn title links-confirmation" %>
 						</div>
 					</small>
 				</div> <!-- end of .pass-preview -->
 			<% end %>
-			<%= will_paginate @valid_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
+			<%= will_paginate @valid_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_tickets_page' %>
   		</div>
 
   		<div class="span4 vertical-rule">
@@ -35,7 +35,7 @@
 			<% for ticket in @past_tickets %>
 				<div class="pass-history-preview">
     				<small>
-	      				<p class="title"><%= ticket.ticket_set.bar.name %></p>
+	      				<p class="title"><%= ticket.ticket_set.location.name %></p>
 						<div class="pull-left dt">
 			  				Date of Ticket: <br>
 			  				# of Tickets: <br>
@@ -44,7 +44,7 @@
 			  				Redeemed:
 						</div>
 						<div class="pull-left dd">
-			  				<%= ticket.ticket_set.date.strftime("%m/%d/%Y") %> <br>
+			  				<%= ticket.ticket_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 			  				<%= ticket.entries%> <br>
 			  				<%= ticket.name %> <br>
 			  				<%= ticket.confirmation %> <br>
@@ -53,6 +53,6 @@
 					</small>
 				</div> <!-- end of .pass-preview -->
 			<% end %>
-			<%= will_paginate @past_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
+			<%= will_paginate @past_tickets, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_tickets_page' %>
   		</div>
 	</div>

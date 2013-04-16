@@ -37,6 +37,7 @@ ListdApp::Application.routes.draw do
   match 'welcome' => 'home#welcome'
   post "users/unsetPartner"
   post "passes/toggleRedeem"
+  post "tickets/toggleRedeem"
   get "admin/customers"
   get "admin/partners"
   get "pages/terms_of_service"
@@ -48,6 +49,7 @@ ListdApp::Application.routes.draw do
   match "purchases/purchase_history" => 'purchases#purchase_history'
   match '/businesspdf' => 'pages#download'
   match '/pdfversion' => 'passes#pdfversion'
+  match '/pdfticketversion' => 'tickets#pdfversion'
 
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
   match 'contact' => 'contact#create', :as => 'contact', :via => :post
@@ -63,12 +65,16 @@ ListdApp::Application.routes.draw do
     resources :ticket_sets
     collection do
     end
+    resources :pass_sets
+    collection do
+    end
   end
   
   resources :admin
   resources :passes
   match '/mypasses' => 'passes#index'
   match '/myreservations' => 'passes#reservation_archive'
+  match '/mytickets' => 'tickets#index'
   
   resources :purchases do
   	collection do
@@ -106,6 +112,9 @@ ListdApp::Application.routes.draw do
 	      get 'close_set'
 	    end
 	    resources :fecha do
+	    end
+	    resources :pass_sets do
+	      get 'close_set'
 	    end
 	  end
 	end

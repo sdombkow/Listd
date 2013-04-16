@@ -4,8 +4,8 @@ pdf.define_grid(:columns => 8, :rows => 8, :gutter => 0)
 pdf.font "Courier"
 pdf.grid([0,0], [4,3]).bounding_box do
 	pdf.image "#{Rails.root}/app/assets/images/pass_reserv_bg.png", :width => 240, :position => :center, :vposition => :center
-	pdf.text_box "<color rgb='888888'>#{@ticket.ticket_set.bar.name}</color>",:inline_format => true, :at => [38,295], :height => 90, :width => 200, :size => 21
-		pdf.text_box "<color rgb='888888'>#{@ticket.ticket_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [35,185], :height => 90, :width => 210, :size => 42
+	pdf.text_box "<color rgb='888888'>#{@ticket.ticket_set.location.name}</color>",:inline_format => true, :at => [38,295], :height => 90, :width => 200, :size => 21
+		pdf.text_box "<color rgb='888888'>#{@ticket.ticket_set.fecha.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [35,185], :height => 90, :width => 210, :size => 42
 	pdf.text_box "<color rgb='888888'>#{@ticket.entries}</color>",:inline_format => true, :at => [115,136], :height => 25, :width => 123, :size => 24
 	pdf.text_box "<color rgb='888888'>#{@ticket.name}</color>",:inline_format => true, :at => [38,108], :height => 55, :width => 195, :size => 18, :align => :center, :valign => :center
 end

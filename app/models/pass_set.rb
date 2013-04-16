@@ -1,14 +1,19 @@
 class PassSet < ActiveRecord::Base
   
-  validates :date, :total_released_passes, :price, :presence => true
-  validates_numericality_of :price, :greater_than_or_equal_to =>0, :message => " Invalid Price"
-  validates :bar, :presence => true
+  validates :total_released_passes, :presence => true
   
   belongs_to :bar
   has_many :passes , :dependent => :delete_all
   has_many :users, :through => :passes
-  has_many :time_periods, :dependent => :destroy 
+  has_many :time_periods, :dependent => :destroy
+  
+  belongs_to :location
+  has_one :fecha, :dependent => :destroy
+  has_one :price_point, :dependent => :destroy
   
   accepts_nested_attributes_for :time_periods
+  
+  accepts_nested_attributes_for :fecha
+  accepts_nested_attributes_for :price_point
 
 end

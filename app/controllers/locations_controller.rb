@@ -33,7 +33,8 @@ class LocationsController < ApplicationController
     @full_path = "http://#{request.host+request.fullpath}"
     
     @ticket_sets = @location.ticket_sets.joins(:fecha).where("date >= ?", Date.today).order(:date)
-    @expired_ticket_sets= @location.ticket_sets.joins(:fecha).where("date< ?", Date.today).order(:date)
+    @expired_ticket_sets = @location.ticket_sets.joins(:fecha).where("date < ?", Date.today).order(:date)
+    @pass_sets = @location.pass_sets.joins(:fecha).where("fechas.date >= ?", Date.today).order(:date)
 
     respond_to do |format|
       format.html # show.html.erb

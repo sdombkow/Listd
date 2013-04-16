@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130413003511) do
+ActiveRecord::Schema.define(:version => 20130416223629) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20130413003511) do
     t.datetime "updated_at",                              :null => false
     t.integer  "ticket_set_id"
     t.date     "date"
+    t.integer  "pass_set_id"
   end
 
   create_table "friend_purchases", :force => true do |t|
@@ -208,6 +209,9 @@ ActiveRecord::Schema.define(:version => 20130413003511) do
     t.text     "description"
     t.boolean  "reservation_time_periods"
     t.boolean  "friend_check"
+    t.integer  "location_id"
+    t.integer  "fecha_id"
+    t.decimal  "revenue_percentage"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -320,6 +324,7 @@ ActiveRecord::Schema.define(:version => 20130413003511) do
     t.string   "confirmation"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.decimal  "total_price"
   end
 
   create_table "time_periods", :force => true do |t|
