@@ -155,6 +155,13 @@
         $("#submitSaved").hide();
 		$('.cancelBtn').hide();
         $("#purchaseLoading").show();
+		FB.getLoginStatus() 
+          FB.api(
+            '/me/listdnow:get_listd_for',
+            'post',
+            { bar: "<%= @full_bar_path %>" },
+            function(response) {
+            });
     }
 </script>
 <% end %>
@@ -553,7 +560,7 @@
 						</br>
 						</br>
 		
-	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary cancelBtn", :onclick => "getlistd(); return removeStripeListener();" %>
+	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary cancelBtn", :onclick => "return removeStripeListener();" %>
       					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
 						<hr class = "cancelBtn">
 						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn cancelBtn" />
