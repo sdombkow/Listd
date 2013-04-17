@@ -199,7 +199,7 @@ class PurchasesController < ApplicationController
 		                    @pass_set.unsold_passes-=1
 		                end
 		            end
-		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
+		            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -372,7 +372,7 @@ class PurchasesController < ApplicationController
 	                    @pass_set.unsold_passes-=1
 	                end
 	            end
-	            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
+	            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
     		      @pass_set.save
     			    pass = Pass.new
     			    pass.name = params[:purchase][:name]
@@ -544,7 +544,7 @@ class PurchasesController < ApplicationController
 		                    @pass_set.unsold_passes-=1
 		                end
 		            end
-		            @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
+		            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -718,7 +718,7 @@ class PurchasesController < ApplicationController
                   @pass_set.unsold_passes-=1
               end
           end
-          @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
+          @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -893,7 +893,7 @@ class PurchasesController < ApplicationController
                   @pass_set.unsold_passes-=1
               end
           end
-          @pass_set.revenue_total = @pass_set.price + @pass_set.revenue_total
+          @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
