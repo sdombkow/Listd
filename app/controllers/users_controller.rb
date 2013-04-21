@@ -8,7 +8,9 @@ class UsersController < ApplicationController
   def show
       @user = User.find(params[:id])
 		  @passes = @user.passes.includes(:pass_set).order('updated_at DESC').paginate(:page => params[:page], :per_page => 5)
+	    logger.error "#{@bars.inspect}"
 	    @bars = @user.bars
+	    logger.error "#{@locations.inspect}"
 	    @locations = @user.locations
   end
   

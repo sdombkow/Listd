@@ -64,9 +64,11 @@ ListdApp::Application.routes.draw do
   resources :locations do
     resources :ticket_sets
     collection do
+      post 'search'
     end
     resources :pass_sets
     collection do
+      post 'search'
     end
   end
   

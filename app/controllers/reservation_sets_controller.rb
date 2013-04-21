@@ -13,6 +13,22 @@ class ReservationSetsController < ApplicationController
       format.json { render json: @reservation_sets }
     end
   end
+  
+  if @pass_set.reservation_time_periods == true && @pass_set.selling_passes == false
+      @available_times = @pass_set.time_periods.first
+      @reservations_times = Array.new
+      time_columns = @available_times.attributes.values
+      # Remove fields that aren't times
+      3.times do
+          time_columns.delete_at(time_columns.length-1)
+      end
+      time_columns.delete_at(0)
+      for x in 0..TimePeriod::TIME_LIST.length-1
+          if time_columns[x*2]
+              @reservations_times.push(TimePeriod::TIME_LIST[x].first)
+          end
+      end
+  end
 
   # GET /reservation_sets/1
   # GET /reservation_sets/1.json

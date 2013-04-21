@@ -43,3 +43,54 @@
 
 <%= link_to 'Edit', edit_reservation_path(@reservation) %> |
 <%= link_to 'Back', reservations_path %>
+
+<% else %>
+	<h3>Thank you for making a purchase</h3>
+	<p>You will receive a confirmation email with a copy of your reservation and instruction on how to use it.</p>
+	<div class="pass-preview">
+		<small>
+  			<h5 class="title title-confirmation">Purchase Summary on <%= @pass.created_at.strftime("%m/%d/%Y") %></h5>
+			<div class="pull-left dt">
+	  			Location: <br>
+	  			Date of Reservation: <br>
+				<% if @pass.pass_set.reservation_time_periods ==  true %>
+					Time of Reservation: <br>
+				<% end %>
+	  			Name on Purchase: <br>
+	  			Confirmation Number: <br>
+	  			<hr class="ns-rule">
+	  			# of Guests: <br>
+	  			Subtotal: <br>
+	  			<% if @pass.purchase.stripe_charge_token != nil %>
+					<%= @card_type %> Card:
+	  			<% end %>
+			</div>
+			<div class="pull-left dd">
+	  			<%= @pass.pass_set.bar.name %> <br>
+	  			<%= @pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+				<% if @pass.pass_set.reservation_time_periods ==  true %>
+					<%= @pass.reservation_time %> <br>
+				<% end %>
+	  			<%= @pass.name %> <br>
+	  			<%= @pass.confirmation %> <br>
+	  			<hr class="ns-rule">
+	  			<%= @pass.entries%> <br>
+	  			<%= number_to_currency(@pass.total_price) %> <br>
+	  			<% if @pass.purchase.stripe_charge_token != nil %>
+					XXXX-XXXX-XXXX-<%= @card_four %>
+	  			<% end %>
+			</div>
+			<br>
+			<div class="pull-right dd">
+	  			<%= link_to raw("View Reservation &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), pass_path(@pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => @pass.id), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("All Reservations <i class=\"icon-circle-arrow-right\"></i>"), '/myreservations', :class => "btn title links-confirmation" %>
+			</div>
+		</small>
+	</div> <!-- end of .pass-preview -->
+<% end %>
+
+else
+	pdf.text_box "<color rgb='888888'>#{@pass.reservation_time}</color>",:inline_format => true, :at => [80,205], :height => 90, :width => 210, :size => 24
+	pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [50,170], :height => 90, :width => 210, :size => 36
+end

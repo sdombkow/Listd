@@ -1,4 +1,6 @@
 class PassSet < ActiveRecord::Base
+
+  attr_accessible :revenue_percentage, :fecha_attributes, :price_point_attributes, :total_released_passes
   
   validates :total_released_passes, :presence => true
   

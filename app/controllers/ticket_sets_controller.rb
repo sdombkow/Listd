@@ -136,7 +136,7 @@ class TicketSetsController < ApplicationController
     if @existing_set.nil?
         logger.error "Nil Existing Set"
         flash[:notice] = "Error: You cannot change the date of this ticket set. Please create a new one"
-        redirect_to :action => "index", :controller => "bars"
+        redirect_to :action => "index", :controller => "location"
         return
     end
     @ticket_set.unsold_tickets = Integer(params[:ticket_set]["total_released_tickets"]) - @ticket_set.sold_tickets

@@ -1,0 +1,66 @@
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Google Maps JavaScript API v3 Example: Street View Layer</title>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    <script>
+      function initialize() {
+		var markerBounds = new google.maps.LatLngBounds();
+		var barlocation = new google.maps.LatLng(<%= @locations.first.latitude%>,<%=@locations.first.longitude%>);
+        var mapOptions = {
+          center: barlocation,
+          zoom: 14,
+          mapTypeId: google.maps.MapTypeId.ROADMAP,
+		  scrollwheel: false,
+		  mapTypeControl: true,
+			mapTypeControlOptions: {
+				position: google.maps.ControlPosition.TOP_RIGHT
+				  },
+		  panControl: true,
+		    panControlOptions: {
+		        position: google.maps.ControlPosition.TOP_RIGHT
+		    },
+		  zoomControl: true,
+			zoomControlOptions: {
+			    style: google.maps.ZoomControlStyle.LARGE,
+			    position: google.maps.ControlPosition.TOP_RIGHT
+			}
+        };
+        var map = new google.maps.Map(document.getElementById('map_canvas'), mapOptions);
+		<% for location in @locations %>
+			var barlocation = new google.maps.LatLng(<%= location.latitude %>,<%= location.longitude %>);	
+			var image = '/assets/marker-blue.png';
+			var marker = new google.maps.Marker({
+		        position: barlocation,
+		        map: map,
+				icon: image,
+				title: $("<span/>").html("<%=location.name%>").text()
+			});
+			markerBounds.extend(new google.maps.LatLng(<%= location.latitude %>,<%= location.longitude %>)); 
+		<% end %>
+		markerBounds.extend(new google.maps.LatLng(<%= location.latitude %> + 0.005,<%= location.longitude %> + 0.005));
+		markerBounds.extend(new google.maps.LatLng(<%= location.latitude %> - 0.005 ,<%= location.longitude %> - 0.005));
+		markerBounds.extend(new google.maps.LatLng(<%= location.latitude %>,<%= location.longitude %> - 0.0125 ));
+		map.fitBounds(markerBounds);
+		}
+    </script>
+</head>
+
+<% content_for :title, "Listd - Search Results" %>
+<body onload="initialize()">
+  	<div id="map_canvas" class="map_bg"></div>
+</body>
+<div id="map_overlay" class="span5">
+  	<div id="search-query" class="shadow">
+		<% if @search.empty? %>
+	  		Listing all locations
+		<% else %>
+      		Results for <span><%= @search %></span><br>
+	  		<small>Best Match</small>
+		<% end %>
+  	</div>
+	<div id="search-results">
+    	<%= render 'locations/search_results' %>
+  	</div>
+  	</br>
+</div>

@@ -7,7 +7,7 @@
 			<% for pass in @valid_passes %>
 				<div class="pass-preview">
 					<small>
-      					<p class="title"><%= pass.pass_set.bar.name %></p>
+      					<p class="title"><%= pass.pass_set.location.name %></p>
 						<div class="pull-left dt">
 		  						Date of Pass: <br>
 		  						# of Passes: <br>
@@ -15,7 +15,7 @@
 		  						Confirmation Number:
 						</div>
 						<div class="pull-left dd">
-		  					<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+		  					<%= pass.pass_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 		  					<%= pass.entries%> <br>
 		  					<%= pass.name %> <br>
 		  					<%= pass.confirmation %>
@@ -35,7 +35,7 @@
 			<% for pass in @past_passes %>
 				<div class="pass-history-preview">
     				<small>
-	      				<p class="title"><%= pass.pass_set.bar.name %></p>
+	      				<p class="title"><%= pass.pass_set.location.name %></p>
 						<div class="pull-left dt">
 			  				Date of Pass: <br>
 			  				# of Passes: <br>
@@ -44,7 +44,7 @@
 			  				Redeemed:
 						</div>
 						<div class="pull-left dd">
-			  				<%= pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
+			  				<%= pass.pass_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 			  				<%= pass.entries%> <br>
 			  				<%= pass.name %> <br>
 			  				<%= pass.confirmation %> <br>
