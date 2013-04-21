@@ -4,7 +4,7 @@ class Deal < ActiveRecord::Base
   
   attr_accessible :confirmation, :deal_set_id, :entries, :name, :price, :purchase_id, :redeemed
   
-  validates :confirmation, :deal_set_id, :entries, :name, :price, :purchase_id, :redeemed, :presence => true
+  validates :confirmation, :deal_set_id, :entries, :name, :price, :purchase_id, :presence => true
   validates :confirmation, :uniqueness => true
 
   belongs_to :deal_set

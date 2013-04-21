@@ -1,35 +1,58 @@
-<h1>Listing deals</h1>
+<% content_for :title, "Listd - My Deals" %>
+	<h2>My Deals</h2>
 
-<table>
-  <tr>
-    <th>Deal set</th>
-    <th>Purchase</th>
-    <th>Name</th>
-    <th>Redeemed</th>
-    <th>Entries</th>
-    <th>Price</th>
-    <th>Confirmation</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+	<div class="row footer-cushion">
+ 		<div class="span7">
+			<h4 class="index-type">Current</h4>
+			<% for deal in @valid_deals %>
+				<div class="pass-preview">
+					<small>
+     					<p class="title"><%= deal.deal_set.location.name %></p>
+						<div class="pull-left dt">
+		  						Date of Deal: <br>
+		  						# of Deals: <br>
+		  						Name on Purchase: <br> 
+		  						Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+		  					<%= deal.deal_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+		  					<%= deal.entries%> <br>
+		  					<%= deal.name %> <br>
+		  					<%= deal.confirmation %>
+						</div>
+						<div class="pull-right dd">
+		  					<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), deal_path(deal, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfdealversion_path(:id => deal.id), :class => "btn title links-confirmation" %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @valid_deals, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_deals_page' %>
+ 		</div>
 
-<% @deals.each do |deal| %>
-  <tr>
-    <td><%= deal.deal_set_id %></td>
-    <td><%= deal.purchase_id %></td>
-    <td><%= deal.name %></td>
-    <td><%= deal.redeemed %></td>
-    <td><%= deal.entries %></td>
-    <td><%= deal.price %></td>
-    <td><%= deal.confirmation %></td>
-    <td><%= link_to 'Show', deal %></td>
-    <td><%= link_to 'Edit', edit_deal_path(deal) %></td>
-    <td><%= link_to 'Destroy', deal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Deal', new_deal_path %>
+ 		<div class="span4 vertical-rule">
+			<h4 class="index-type">Past</h4>
+			<% for pass in @past_deals %>
+				<div class="pass-history-preview">
+   				<small>
+	      				<p class="title"><%= deal.deal_set.location.name %></p>
+						<div class="pull-left dt">
+			  				Date of Deal: <br>
+			  				# of Deals: <br>
+			  				Name on Purchase: <br>
+			  				Confirmation Number: <br>
+			  				Redeemed:
+						</div>
+						<div class="pull-left dd">
+			  				<%= deal.deal_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+			  				<%= deal.entries%> <br>
+			  				<%= deal.name %> <br>
+			  				<%= deal.confirmation %> <br>
+			  				<%= deal.redeemed %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @past_deals, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_deals_page' %>
+ 		</div>
+	</div>

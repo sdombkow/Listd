@@ -1,0 +1,17 @@
+<div class="pass-preview">
+	<p class="title">
+		Name: <%= deal.name %>	|	<%= link_to 'Toggle Redeem', deals_toggleRedeem_path(deal,:id => deal.id), :method=>:post %>
+	</p>
+	<div class="pull-left dt">
+		# of Deals:</br>
+        Purchased on:</br>
+		Deals Redeemed?:</br>
+		Confirmation Number:
+	</div>
+	<div class="pull-left dd">
+ 		<%= deal.entries %></br>
+		<%= deal.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+		<%= deal.redeemed %></br>
+		<%= link_to deal.confirmation, deal %>
+	</div>
+</div>

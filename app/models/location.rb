@@ -16,6 +16,7 @@ class Location < ActiveRecord::Base
 	has_many :fechas, :dependent => :destroy
 	has_many :ticket_sets, :dependent => :destroy
 	has_many :pass_sets, :dependent => :destroy
+	has_many :deal_sets, :dependent => :destroy
 	
 	has_many :location_hours, :dependent => :destroy
 	belongs_to :user

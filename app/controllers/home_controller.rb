@@ -53,6 +53,7 @@ class HomeController < ApplicationController
    	      @reservations = @user.passes.where('redeemed = ?', false).joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', false, Time.now.to_date).order('pass_sets.date ASC, passes.reservation_time ASC').limit(3)
    	      logger.error "Fecha Date: #{@user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3).inspect}"
    	      @tickets = @user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
+   	      @deals = @user.deals.where('redeemed = ?', false).joins(:deal_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
    	  end
   end
 end

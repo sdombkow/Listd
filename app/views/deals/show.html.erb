@@ -1,40 +1,43 @@
-<p id="notice"><%= notice %></p>
+<% content_for :title, "Listd - Purchase Confirmation" %>
 
-<p>
-  <b>Deal set:</b>
-  <%= @deal.deal_set_id %>
-</p>
-
-<p>
-  <b>Purchase:</b>
-  <%= @deal.purchase_id %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%= @deal.name %>
-</p>
-
-<p>
-  <b>Redeemed:</b>
-  <%= @deal.redeemed %>
-</p>
-
-<p>
-  <b>Entries:</b>
-  <%= @deal.entries %>
-</p>
-
-<p>
-  <b>Price:</b>
-  <%= @deal.price %>
-</p>
-
-<p>
-  <b>Confirmation:</b>
-  <%= @deal.confirmation %>
-</p>
-
-
-<%= link_to 'Edit', edit_deal_path(@deal) %> |
-<%= link_to 'Back', deals_path %>
+	<h3>Thank you for making a purchase</h3>
+	<p>You will receive a confirmation email with a copy of your pass and instruction on how to use it.</p>
+	<div class="pass-preview">
+		<small>
+  			<h5 class="title title-confirmation">Purchase Summary on <%= @deal.created_at.strftime("%m/%d/%Y") %></h5>
+			<div class="pull-left dt">
+	  			Location Name: <br>
+	  			Date of Deal: <br>
+	  			Name on Purchase: <br>
+	  			Confirmation Number: <br>
+	  			<hr class="ns-rule">
+	  			Total Deals: <br>
+	  			Subtotal: <br>
+	  			<% if @deal.purchase.stripe_charge_token != nil %>
+					<%= @card_type %> Card (Last 4):
+	  			<% end %>
+			</div>
+			<div class="pull-left dd">
+	  			<%= @deal.deal_set.location.name %> <br>
+	  			<%= @deal.deal_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+	  			<%= @deal.name %> <br>
+	  			<%= @deal.confirmation %> <br>
+	  			<hr class="ns-rule">
+	  			<%= @deal.entries%> <br>
+	  			<%= number_to_currency(@deal.total_price) %> <br>
+	  			<% if @deal.purchase.stripe_charge_token != nil %>
+					<%= @card_four %>
+	  			<% end %>
+			</div>
+			<br>
+			<div class="pull-right dd">
+	  			<%= link_to raw("View Deal &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), deal_path(@deal, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfdealversion_path(:id => @deal.id), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("All Deals <i class=\"icon-circle-arrow-right\"></i>"), '/mydeals', :class => "btn title links-confirmation" %>
+			</div>
+		</small>
+	</div> <!-- end of .pass-preview -->
+<hr>
+<div class="help-confirmation">
+  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact us at <%= mail_to("contactus@listdnow.com")%>.</small></p>
+</div>

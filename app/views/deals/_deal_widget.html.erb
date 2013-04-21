@@ -1,0 +1,18 @@
+<% if current_user != nil %>
+	<div class="title-bar">
+  		<h5>Upcoming Deals</h5>
+	</div>
+
+	<div class="content-box">
+  		<% @deals.each do |deal| %>
+			<% if (!deal.redeemed) %>
+				<div class = "row-fluid">
+      				<div class="pass-item">
+						<span><%= link_to deal.deal_set.location.name, deal %></span>
+						<span class="offset2"><%= deal.deal_set.fecha.date.strftime("%m/%d/%Y") %></span>
+  	  				</div> <!-- end of .pass-item -->
+				</div>
+			<% end %>
+  		<% end %>
+	</div>
+<% end %>

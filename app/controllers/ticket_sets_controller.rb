@@ -68,7 +68,6 @@ class TicketSetsController < ApplicationController
   def edit
     @location = Location.find(params[:location_id])
     @ticket_set = TicketSet.find(params[:id])
-    logger.error "Ticket Set Price: #{@ticket_set.price_point.price}"
   end
 
   # POST /ticket_sets
@@ -80,7 +79,9 @@ class TicketSetsController < ApplicationController
     logger.error "Ticket Set Values: #{@ticket_set.inspect}"
     logger.error "Fecha Values: #{@fecha.inspect}"
     logger.error "Price Point Values: #{@price_point.inspect}"
+    no_change = false
     @location_fechas = @location.fechas.where("date = ?", @fecha.date)
+    @existing_set = @location_fechas.first
     logger.error "Fechas: #{@location_fechas.empty?}"
     if @location_fechas.empty?
         @fecha.location = @location
@@ -95,9 +96,23 @@ class TicketSetsController < ApplicationController
     	  @price_point.num_released = @ticket_set.total_released_tickets
     	  @price_point.num_sold = 0
     	  @price_point.num_unsold = 0
-    	  @existing_set = @location_fechas
-    else
-        @existing_set = @location_fechas
+    	  @existing_set = @location_fechas.first
+    elsif @existing_set.selling_tickets == false
+        logger.error "In Existing Set"
+        @fecha = @existing_set
+        @fecha.ticket_set = @ticket_set
+        @fecha.selling_tickets = true
+        @ticket_set.sold_tickets = 0
+        @ticket_set.unsold_tickets = @ticket_set.total_released_tickets
+      	@ticket_set.revenue_percentage = 0.7
+      	@ticket_set.revenue_total = 0
+      	@ticket_set.location = @location
+      	@ticket_set.fecha = @fecha
+      	@price_point.num_released = @ticket_set.total_released_tickets
+      	@price_point.num_sold = 0
+      	@price_point.num_unsold = 0
+    else       
+        no_change = true
     end  
     
     respond_to do |format|
@@ -105,14 +120,15 @@ class TicketSetsController < ApplicationController
 	          flash[:notice] = 'Error: You are trying to create a ticket set for a date that has already passed!'
             format.html { render action: "new"  }
             format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
-        elsif @existing_set.empty? == false
+        elsif no_change == true
             logger.error "Here"
 				    flash[:notice] = 'Error: Please use edit to change existing tickets'
-				    format.html { redirect_to edit_user_location_ticket_set_path(@location.user, @location, @ticket_set) }
+				    format.html { redirect_to edit_user_location_ticket_set_path(@location.user, @location, @existing_set.ticket_set) }
 				    format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
         elsif @ticket_set.save
             @fecha.ticket_set = @ticket_set
             @fecha.save!
+            logger.error "Fecha: #{@fecha.inspect}"
             @price_point.ticket_set_id = @ticket_set.id
             @price_point.save!
             logger.error "Ticket Set Associated with Price Point #{@price_point.ticket_set.inspect}"

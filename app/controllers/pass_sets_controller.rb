@@ -124,7 +124,7 @@ class PassSetsController < ApplicationController
           elsif no_change == true
               logger.error "Here"
   				    flash[:notice] = 'Error: Please use edit to change existing passes'
-  				    format.html { redirect_to edit_user_location_pass_set_path(@location.user, @location, @pass_set) }
+  				    format.html { redirect_to edit_user_location_pass_set_path(@location.user, @location, @existing_set.pass_set) }
   				    format.json { render json: @pass_set.errors, status: :unprocessable_entity }
           elsif @pass_set.save
               @fecha.pass_set = @pass_set

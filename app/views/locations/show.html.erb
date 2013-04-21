@@ -204,6 +204,29 @@
 			</div>
 		<% end %>
 		
+		<% if @deal_sets.empty? %>
+			<div class="shadow span11 center-text" id="passes-none">
+  				<h2>Sorry, there are no available deals at this time.</h2>
+			</div>
+		<% end %>
+		
+  		<% if @deal_sets.empty? == false %>
+			<div class="span11" id="passes-avail">
+	  			<div class="div-header">
+        			<h5>Available Deals</h5>
+					<small>A LISTD deal provides immediate entry to <%= @location.name %>.</small>
+	  			</div>
+	  			<% @deal_sets.each do |deal_set| %>
+					<div class="date-box span1 center-text">
+	      				<p class="lead"><%= link_to deal_set.fecha.date.strftime("%d"), [@location, deal_set] %></p>
+		  				<div>
+							<%= link_to deal_set.fecha.date.strftime("%a"), [@location, deal_set] %>
+						</div>
+					</div>
+	  			<% end %>
+			</div>
+		<% end %>
+		
 	</div>
 </div>
 
@@ -310,11 +333,62 @@
 				</table>
 			</div>
 		<% end %>
+		<%if @deal_sets.empty? %>
+			<h5>No Active Deal Sets</h5>
+		<% else %>
+			<h5>Active Deal Sets</h5>
+            <div class = "passSetTable">
+				<table cellpadding="10">
+                <thead>
+  					<tr>
+    					<th>Date</th>
+    					<th>Released Deals</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
+    					<th>Price</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
+                </thead>
+                <tbody>
+					<% @deal_sets.each do |deal_set| %>
+  						<tr>
+    						<td data-title="Date"><%= deal_set.fecha.date %></td>
+    						<td data-title="Released Passes"><%= deal_set.total_released_deals %></td>
+    						<td data-title="Sold"><%= deal_set.sold_deals %></td>
+    						<td data-title="Unsold"><%= deal_set.unsold_deals %></td>
+							<% if deal_set.price_point != nil %>
+								<td data-title="Price"><%= number_to_currency(deal_set.price_point.price) %></td>
+							<% else %>
+								<td data-title="Price"> 0 </td>
+							<% end %>
+							<td data-title="Revenue"><%= number_to_currency(deal_set.revenue_total) %></td>
+
+							<%if(user_signed_in? && current_user.admin?) %>
+    							<td><%= link_to 'Show Purchased Deals', [@location.user, @location, deal_set] %></td>
+								<td><%= link_to 'Edit', edit_user_location_deal_set_path(@location.user, @location, deal_set) %></td>
+								<td><%= link_to 'Close Out', user_location_deal_set_close_set_path(@location.user, @location, deal_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Delete', [@location.user, @location, deal_set], :confirm => 'Are you sure?', :method => :delete %> </td>
+			   				<%elsif (current_user.partner?)%>
+			      				<td><%= link_to 'Show Purchased Deals', [@location, deal_set] %></td>
+				   			<%else %>
+			    				<td><%= link_to 'Purchase a Deal', [@location, deal_set] %></td>   
+			   				<%end%>
+  						</tr>
+					<% end %>
+                </tbody>
+				</table>
+			</div>
+		<% end %>
 	</div>
 </br>
 
 <%= link_to 'New Ticket Set', new_user_location_ticket_set_path(@user,@location) %> |
 <%= link_to 'New Pass Set', new_user_location_pass_set_path(@user,@location) %> |
+<%= link_to 'New Deal Set', new_user_location_deal_set_path(@user,@location) %> |
 <%= link_to 'Edit Bar Information', edit_user_location_path(@user,@location) %> |
 <%= link_to 'Delete Bar Location', [@user,@location], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>

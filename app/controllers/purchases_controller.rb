@@ -494,6 +494,123 @@ class PurchasesController < ApplicationController
           counter += 1
         end
         redirect_to [pass], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
+      elsif params[:purchase][:deal_set] != nil
+        @deal_set = DealSet.find(params[:purchase][:deal_set])
+	      num_passes = params[:purchase][:num_passes].to_i
+    
+        if num_passes > @deal_set.unsold_deals
+		        flash[:error] = 'Not enough deals left'
+		        redirect_to [@location,@deal_set]
+		        return
+	      end
+	
+	      if @deal_set.unsold_deals == 0
+	          flash[:error] = 'Not enough deals left'
+		        redirect_to [@location,@deal_set]
+		        return
+	      end
+	  
+	      friend_names = params[:purchase][:friend_names]
+        friend_emails = params[:purchase][:friend_emails]
+        params[:purchase].delete("friend_names")
+        params[:purchase].delete("friend_emails")
+    
+	      @purchase = Purchase.new(params[:purchase])
+	      logger.error "#{current_user.id}"
+	      @purchase.user_id = @user.id
+	      @purchase.date = params[:purchase][:date]	
+	      if String(@deal_set.price_point.price).split(".").last.length == 1
+            @decimals = String(@deal_set.price_point.price).split(".").last + "0"
+        else 
+            @decimals = String(@deal_set.price_point.price).split(".").last
+        end
+        @purchase.price = (String(@deal_set.price_point.price).split(".").first + @decimals)
+	      @purchase.price = Integer(@purchase.price)*num_passes
+
+	      if @user.stripe_customer_token != nil
+	        if @purchase.stripe_card_token == ""
+	          if @purchase.payment_return_customer(current_user)
+      		      @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+      		      if @customer_card.active_card != nil
+                    @end_month = @customer_card.active_card.exp_month
+                    @end_year = @customer_card.active_card.exp_year
+                end
+	              if @end_month < Time.now.month && @end_year < Time.now.year
+	                  cu = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+                    cu.delete
+                    current_user.update_attribute(:stripe_customer_token,nil)
+                    current_user.save!
+  		              redirect_to [@bar,@deal_set], notice: 'Sorry, your transaction has not occured. Your previous saved card has expired and is no longer valid.'
+  				          return
+  			        end
+            else
+            		redirect_to [@bar,@deal_set], notice: current_user.error_message
+            		return
+          	end
+          elsif params[:credit_card_save] == "1"
+  			    if @purchase.return_customer_save_payment(current_user)
+  			    else
+      		      redirect_to [@bar,@deal_set], notice: current_user.error_message
+      		      return
+      		  end
+  			  else
+  		      if @purchase.payment(current_user)
+  		      else
+        		    redirect_to [@bar,@deal_set], notice: current_user.error_message
+        		    return
+		        end
+		      end    
+  	    elsif params[:credit_card_save] == "1"	
+  	      if @purchase.save_with_payment(current_user)
+  	      else
+  		      redirect_to [@bar,@deal_set], notice: current_user.error_message
+  		      return
+  		    end
+  	    else
+          logger.error "Purchase: #{@purchase.inspect}"
+  		    if @purchase.payment(current_user)
+  			  else
+   		      redirect_to [@bar,@deal_set], notice: current_user.error_message
+   		      return
+   		    end
+        end   
+  		
+        @deal_set.sold_deals+=num_passes
+        @deal_set.unsold_deals-=num_passes
+  			    
+  	    @deal_set.revenue_total += @deal_set.price_point.price * num_passes
+        @deal_set.save 
+    
+        # for i in 0..num_passes-1
+	      deal = Deal.new
+	      deal.name = params[:purchase][:name]
+	      deal.purchase_id = @purchase.id
+	      deal.deal_set_id = @deal_set.id
+	      deal.redeemed = false
+	      deal.price = @deal_set.price_point.price
+	      deal.total_price = @deal_set.price_point.price * num_passes
+	      logger.error "#{@deal_set.price_point.price}"
+	      logger.error "#{deal.price}"
+	      logger.error "#{deal.total_price}"
+		    deal.entries = num_passes
+		    deal.confirmation = SecureRandom.hex(4)
+		    logger.error "Deal: #{deal.inspect}"
+	      deal.save!
+	      logger.error "Pass: #{deal.inspect}"
+	      UserMailer.purchase_confirmation_deal(@user,deal).deliver
+        counter = 0
+        while friend_names.nil? == false and counter < friend_names.length
+          fn = friend_names[counter]
+          fe = friend_emails[counter]
+          pf = PassFriend.new
+          pf.name = fn
+          pf.email = fe
+          pf.pass_id = pass.id
+          pf.save
+          UserMailer.friend_confirmation(fn,fe,pass).deliver
+          counter += 1
+        end
+        redirect_to [deal], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
       end
     end
 	end

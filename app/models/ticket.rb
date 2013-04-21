@@ -7,7 +7,6 @@ class Ticket < ActiveRecord::Base
   validates :confirmation, :entries, :name, :price, :purchase_id, :ticket_set_id, :presence => true
   validates :confirmation, :uniqueness => true
 
-  belongs_to :pass_set
   belongs_to :ticket_set
   belongs_to :purchase
   has_many :pass_friends

@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :purchases
   has_many :passes, :through => :purchases
   has_many :tickets, :through => :purchases
+  has_many :deals, :through => :purchases
 
   validates :name, :email, :presence => true
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130416223629) do
+ActiveRecord::Schema.define(:version => 20130421230028) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -76,6 +76,7 @@ ActiveRecord::Schema.define(:version => 20130416223629) do
     t.decimal  "revenue_percentage"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.integer  "location_id"
   end
 
   create_table "deals", :force => true do |t|
@@ -88,6 +89,7 @@ ActiveRecord::Schema.define(:version => 20130416223629) do
     t.string   "confirmation"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.decimal  "total_price"
   end
 
   create_table "dia", :force => true do |t|
@@ -134,6 +136,8 @@ ActiveRecord::Schema.define(:version => 20130416223629) do
     t.integer  "ticket_set_id"
     t.date     "date"
     t.integer  "pass_set_id"
+    t.integer  "deal_set_id"
+    t.integer  "reservation_set_id"
   end
 
   create_table "friend_purchases", :force => true do |t|
@@ -253,6 +257,7 @@ ActiveRecord::Schema.define(:version => 20130416223629) do
     t.text     "description"
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
+    t.integer  "deal_set_id"
   end
 
   create_table "purchases", :force => true do |t|

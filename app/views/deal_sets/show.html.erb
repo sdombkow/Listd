@@ -1,35 +1,463 @@
-<p id="notice"><%= notice %></p>
+<% content_for :head do %>
+	<script type="text/javascript">
+    	$(document).ready(function(){
+        	function attachPurchaseListeners(){
+            	var enterPress = false;
+            	$("input[type='submit']").attr("disabled",false);
+            	$("#purchaseInformation").hide();
+				$("#newInformation").hide();
+				$('#BackToFirst').hide();
+				$("#reservation_sold").hide();
+				$("#sold_num").hide();
+				if ($("#unsold").html() == 0) {
+					$("#makePurchase").hide();
+					$("#cancelView").hide();
+				}
+				if ($("#sold_num").html() == "No") {
+					$("#makePurchase").hide();
+					$("#cancelView").hide();
+				}		
+            	$("#nextPurchase").click(function(){
+                    // Check if there is a name provided
+                    var cardName = $("#purchase_name").val();
+                    var nameRegex = /(\w+\s)(\w+-?.?\w?\s?)+/;
+                    var emailRegex = /^[^@]+@[^@]+\.[^@]+$/;
+                    if (cardName.length <= 0 || cardName.match(nameRegex) == null){
+                        $("#purchase_name").parents("div.control-group").addClass("error");
+                        return false;
+                    }else{
+                        $("#purchase_name").parents("div.control-group").removeClass("error");
+                    }
+                    // Check Guest Names
+                    var nameCheck = true;
+                    $(".friendName").each(function(ele){
+                        var currName = $(this).val();
+                        if (currName.length <= 0 || currName.match(nameRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    $(".friendEmail").each(function(ele){
+                        var currEmail = $(this).val();
+                        if (currEmail.length <= 0 || currEmail.match(emailRegex) == null){
+                            $(this).parents("div.control-group").addClass("error");
+                            nameCheck = false;
+                        }else{
+                            $(this).parents("div.control-group").removeClass("error");
+                        }
+                    });
+                    if(nameCheck == false){
+                        return false;
+                    }
+                	$("#makePurchase").fadeOut(500,function(){
+                    	$("#purchaseInformation").fadeIn();
+						$('#BackToFirst').fadeIn();
+                    	enterPress = true;
+                	});
+                	$("#availableSummary").fadeOut(500,function(){
+                    	var price = $("#ticketPrice").html();
+                    	var numPasses = $("#purchase_num_passes").val();
+                    	var purchaseTotal = numPasses * Number(price.replace(/\$/g,""));
+                    	var rounded = Math.round( purchaseTotal * 100 ) / 100;
+                    	var fixed = rounded.toFixed(2);
+                 		$("#totalAmount").html("$"+fixed);
+                    	$("#ticketsPurchased").html(numPasses);
+                    	$("#purchaseSummary").fadeIn();
+                	});
+            });
+			$("#nextAddInformation").click(function(){
+				$("#purchaseInformation").fadeOut(500,function(){
+                    $("#newInformation").fadeIn();
+                });
+			});
+			$("#nextBackToExisting").click(function(){
+				$("#newInformation").fadeOut(500,function(){
+                    $("#purchaseInformation").fadeIn();
+                });
+			});
+			$("#BackToFirst").click(function(){
+				$("#purchaseSummary").fadeOut();
+				$("#newInformation").fadeOut();
+				$('#BackToFirst').fadeOut();
+				$("#purchaseInformation").fadeOut(500,function(){
+					$("#availableSummary").fadeIn();
+					$("#makePurchase").fadeIn();
+                });
+			});
+            // Do not submit form on enter
+            $(document).bind("keydown",function(e){
+                if(e.which == 13 && enterPress == false){
+                    e.preventDefault();
+                }
+            });
+            // Inactive links don't do anything
+            $("a.inactiveLink").live('click',function(e){
+                e.preventDefault();
+                return false;
+            });
+            $("#purchase_num_passes").change(function(e){
+                var numpasses = $("#purchase_num_passes").val();
+                if(numpasses > 1){
+                    createFriendInputs(numpasses);
+                }
+            });
+        }
 
-<p>
-  <b>Fecha:</b>
-  <%= @deal_set.fecha_id %>
-</p>
+        function loadPassFriends(){
+            var numpasses = $("#purchase_num_passes").val();
+            if(numpasses > 1){
+                createFriendInputs(numpasses);
+            }
+        }
 
-<p>
-  <b>Total released deals:</b>
-  <%= @deal_set.total_released_deals %>
-</p>
+        loadPassFriends();
+        attachPurchaseListeners();
+    });
 
-<p>
-  <b>Sold deals:</b>
-  <%= @deal_set.sold_deals %>
-</p>
+    function createFriendInputs(passes){
+      $("#passFriends").html("");
+      for (var i = 1; i < passes; i++){
+          var containerDiv = $("<div class = 'control-group'/>");
+          var nameInput = $("<input type = 'text' class = 'friendName' name = 'purchase[friend_names][]'/>");
+          var nameLabel = $("<label class = 'control-label'>Guest #" + i + " Name</label>");
+          var emailInput = $("<input type = 'text' class = 'friendEmail' name = 'purchase[friend_emails][]'/>");
+          var emailLabel = $("<label class = 'control-label'>Guest #" + i + " Email</label>");
+          var nameDiv = $("<div class = 'controls' />");
+          var emailDiv = $("<div class = 'controls' />");
+          emailDiv.append(emailInput);
+          nameDiv.append(nameInput);
+          containerDiv.append(nameLabel);
+          containerDiv.append(nameDiv);
+		  containerDiv.append("<br>");
+          containerDiv.append(emailLabel);
+          containerDiv.append(emailDiv);
+          $("#passFriends").append(containerDiv);
+      } 
+    }
 
-<p>
-  <b>Unsold deals:</b>
-  <%= @deal_set.unsold_deals %>
-</p>
+    function getlistd()
+        {
+          FB.getLoginStatus() 
+          FB.api(
+            '/me/listdnow:get_listd_for',
+            'post',
+            { bar: "<%= @full_bar_path %>" },
+            function(response) {
+            });
+        }
+    function removeStripeListener(){
+        $("#new_purchase").unbind("submit");
+        $("#submitSaved").hide();
+		$('.cancelBtn').hide();
+        $("#purchaseLoading").show();
+    }
+</script>
+<% end %>
 
-<p>
-  <b>Revenue total:</b>
-  <%= @deal_set.revenue_total %>
-</p>
+<% content_for :title, "Listd - Purchase" %>
+	<!-- Version 2 -->
+	<div id="stripe_error">
+		<noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
+	</div>
 
-<p>
-  <b>Revenue percentage:</b>
-  <%= @deal_set.revenue_percentage %>
-</p>
+	<div id = "availableSummary">
+  		<legend><%= @deal_set.location.name %> Deals (<%= @deal_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+  		<dl class="dl-horizontal">
+    		<dt>Location</dt>
+    		<dd><%= @deal_set.location.name %></dd>
+			<dt>Deal Date</dt>
+			<dd><%= @deal_set.fecha.date.strftime("%m/%d/%Y") %></dd>
+			<dt>Unsold Deals</dt>
+			<dd id = "unsold"><%= @deal_set.unsold_deals %></dd>
+			<dt>Deal Price</dt>
+			<dd id = "ticketPrice"><%= number_to_currency(@deal_set.price_point.price) %></dd>
+			<dt>Description</dt>
+			<dd><%= @deal_set.price_point.description %></dd>
+  		</dl>
+	</div>
 
+	<div id = "purchaseSummary" style = "display:none;">
+		<legend>Summary of Your Purchase</legend>
+  		<dl class="dl-horizontal">
+    		<dt>Location</dt>
+   			<dd><%= @deal_set.location.name %></dd>
+			<dt>Date</dt>
+			<dd><%= @deal_set.fecha.date.strftime("%m/%d/%Y") %></dd>
+			<dt>Tickets Purchased</dt>
+			<dd id = "ticketsPurchased"></dd>
+			<dt>Total Amount</dt>
+			<dd id = "totalAmount"></dd>
+			<dt>Description</dt>
+			<dd>The purchase of this LISTD deal provides immediate entry to <%= @deal_set.location.name %> on <%= @deal_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+  		</dl>
+	</div>
 
-<%= link_to 'Edit', edit_deal_set_path(@deal_set) %> |
-<%= link_to 'Back', deal_sets_path %>
+	</br>
+
+	<% if current_user.partner? || current_user.admin? %>
+		<div class="row footer-cushion">
+			<div class="span7">
+					<h4 class="index-type">Unused Deals</h4>
+					<% for deal in @unused_deals %>
+						<div class="pass-preview">
+							<p class="title">
+								Name: <%= deal.name %>
+							</p>
+							<small>
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', deals_toggleRedeem_path(deal,:id => deal.id), :method=>:post %> </br>
+									# of Deals:</br>
+		        					Purchased on:</br>
+									Deals Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+		 							<%= deal.entries %></br>
+									<%= deal.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+									<%= deal.redeemed %></br>
+									<%= link_to deal.confirmation, deal %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<%= will_paginate @unused_deals, :previous_label => "Previous", :next_label => "Next", :param_name => 'unused_deals_page' %>
+			</div>
+			<div class="span4 vertical-rule">
+					<h4 class="index-type">Used Deals</h4>
+					<% for deal in @used_deals %>
+						<div class="pass-history-preview">
+	      					<p class="title">
+								Name: <%= deal.name %>
+							</p>
+							<small>	
+								<div class="pull-left dt">
+									<%= link_to 'Toggle Redeem', deals_toggleRedeem_path(deal,:id => deal.id), :method=>:post %> </br>
+				  					# of Deals:</br>
+		        					Purchased on:</br>
+									Deals Redeemed?:</br>
+									Confirmation Number:
+								</div>
+								<div class="pull-left dd">
+									</br>
+				  					<%= deal.entries %></br>
+									<%= deal.created_at.strftime('%b %d, %Y') %></br>
+									<%= deal.redeemed %></br>
+									<%= link_to deal.confirmation, deal %>
+								</div>
+							</small>
+						</div>
+					<% end %>
+				<%= will_paginate @used_deals, :previous_label => "Previous", :next_label => "Next", :param_name => 'used_deals_page' %>
+	 		</div>
+		</div>
+	<% else %>
+		<div id="sold_out">
+			</br>
+			<% if @deal_set.unsold_deals == 0 %>
+				<h1>Sorry, there are no available tickets for <%= @deal_set.fecha.date.strftime("%m/%d/%y")%>. </h1>
+			<% end %>
+		</div>
+	
+		<% if current_user.stripe_customer_token == nil || @customer_card.active_card == nil %>
+			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+				<fieldset>
+					<div id = "makePurchase">
+      					<legend>Make a Purchase</legend>
+      					<%= f.hidden_field :stripe_card_token %>
+      					<%= f.hidden_field :date,:value => @deal_set.fecha.date %>
+      					<%= f.hidden_field :location,:value =>  @location.id %>
+
+      						<div class="control-group">
+        						<%= f.label :num_passes, "Number of Tickets", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.select :num_passes, (1..@deal_set.unsold_deals) %>
+									</br>
+		  							<small>(You can purchase deals for your friends)</small>
+          							<%= f.hidden_field :deal_set,:value =>  @deal_set.id %>
+        						</div>
+      						</div>
+      						<div class="control-group" id = "passName">
+        						<%= f.label :name, "Full Name", class: "control-label" %>
+        						<div class="controls">
+          							<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
+        						</div>
+      						</div>
+
+      					<div class = "controls">
+							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
+						</div>
+						<hr>
+  					</div>
+
+  					<div id = "purchaseInformation">
+  						<legend>Purchase Information</legend>
+						<div class="field control-group">
+	  						<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>
+	  						<div class="controls">
+	    						<%= text_field_tag :card_number, nil, name: nil %>
+	  						</div>
+						</div>
+						<div class="field control-group">
+	  						<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
+	  						<div class="controls">
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVC)</small>
+	  						</div> 
+						</div> 
+						<div class="field control-group">
+	  						<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
+	  						<div class="controls">
+	    						<%= select_month Date.today, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+	    						<%= select_year Date.today, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+	  						</div>
+						</div>
+						<div class="control-group">
+	  						<div class="controls">
+	    						<label class="checkbox">
+		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information for future use
+								</label>
+	  						</div>
+						</div>
+						<%= f.submit "Purchase",:class => "btn btn-primary", :onclick => "return getlistd();" %>
+						<hr>
+					</div>
+						
+					<div id = "cancelOpts">
+	                   	<div id = "purchaseLoading" style = "display:none;">
+							<small>
+								Purchase in process...
+							</small>
+							</br>
+							<%= image_tag("loader.gif") %>
+							<hr>
+						</div>
+						</br>
+						<div id = "cancelView">
+							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
+					    	&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>							
+						</div>
+						</br>
+						</br>
+						<legend>Our Commitment to You</legend>
+						<guarantee>
+							When you use LISTD, you and your friends are part of an exclusive group that is guaranteed premium access to our partnered nightlife and dining locations. With your LISTD purchase, your experience will be more enjoyable and convenient.
+							</br>
+							</br>
+							Don't Wait In Line. Get LISTD.
+						</guarantee>
+	               	</div>			
+				</fieldset>
+			<% end %>
+		<% else %>
+			<%= form_for @purchase, :html => { :class => "form-horizontal" } do |f| %>
+				<fieldset>
+					<div id = "makePurchase">
+		      			<legend>Make a Purchase</legend>
+		      			<%= f.hidden_field :stripe_card_token %>
+		      			<%= f.hidden_field :date,:value => @deal_set.fecha.date %>
+		      			<%= f.hidden_field :location,:value =>  @location.id %>
+	      					<div class="control-group">
+	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.select :num_passes, (1..@deal_set.unsold_deals) %>
+									</br>
+			  						<small>(You can purchase deals for your friends)</small>
+	          						<%= f.hidden_field :deal_set,:value =>  @deal_set.id %>
+	        					</div>
+	      					</div>
+	      					<div class="control-group" id = "passName">
+	        					<%= f.label :name, "Full Name", class: "control-label" %>
+	        					<div class="controls">
+	          						<%= f.text_field :name %> 
+									</br>
+									<small>(Must Match Valid ID)</small>
+	        					</div>
+	      					</div>
+							
+						<div class = "controls">
+							<input type = "button" id = "nextPurchase" value = "Continue" class = "btn" />
+						</div>
+						<hr>
+		  			</div>
+		
+					<div id = "purchaseInformation">
+						</br>
+						<h4>To purchase these passes with the saved card below, select the "Purchase with Saved Card" button</h4>
+						<p>Last 4 numbers of Current Credit Card: <%= @last_four %></p>
+						<p>Card expires in the year: <%= @end_year %></p>
+						</br>
+						</br>
+		
+	  					<%= f.submit "Purchase with Saved Card", :id => "submitSaved", :class => "btn btn-primary cancelBtn", :onclick => "removeStripeListener();return getlistd();" %>
+      					<!--<%= button_to "Purchase with Saved Card", "/purchases/purchase_history", :class => "btn btn-primary"%>-->
+						<hr class = "cancelBtn">
+						<input type = "button" id = "nextAddInformation" value = "Purchase on Different Card" class = "btn cancelBtn" />
+						</hr>
+					</div>
+					
+					<div id = "newInformation">
+						<legend>Use a New Card</legend>
+						<p>To use a different card, fill in the follow fields and click "Purchase with New Card" button.</p>
+						<div class="field control-group">
+							<%= label_tag :card_number, "Credit Card Number", class: "control-label" %>								
+							<div class="controls">
+						    	<%= text_field_tag :card_number, nil, name: nil %>
+							</div>
+						</div>
+						<div class="field control-group">
+							<%= label_tag :card_code, "Security Code on Card", class: "control-label" %>
+							<div class="controls">
+								<%= text_field_tag :card_code, nil, name: nil %> <small>(CVC)</small>								
+							</div> 
+						</div> 
+						<div class="field control-group">
+							<%= label_tag :card_month, "Card Expiration", class: "control-label" %>
+							<div class="controls">
+								<%= select_month Date.today, {add_month_numbers: true}, {name: nil, 	id:"card_month"} %>
+								<%= select_year Date.today, {start_year: Date.today.year, end_year:Date.today.year+15}, {name: nil, id: "card_year"} %>
+							</div>
+						</div>
+						<div class="control-group">
+	  						<div class="controls">
+	    						<label class="checkbox">
+		  							<%= check_box_tag "credit_card_save"%> Save my credit/debit card information for future use
+								</label>
+	  						</div>
+						</div>
+						<%= f.submit "Purchase with New Card", :class => "btn btn-primary cancelBtn", :onclick => "return getlistd();" %>
+						<hr class = "cancelBtn">
+						<input type = "button" id = "nextBackToExisting" value = "Purchase on Saved Card" class = "btn cancelBtn" />
+						<hr>
+					</div>		
+                    <div id = "cancelOpts">
+                    	<div id = "purchaseLoading" style = "display:none;">
+							<small>
+								Purchase in process...
+							</small>
+							</br>
+							<%= image_tag("loader.gif") %>
+							</hr>
+						</div>
+						</br>
+						<div id = "cancelView">
+							<input type = "button" id = "BackToFirst" value = "Back" class = "btn cancelBtn"/>
+				    		&nbsp&nbsp<%= link_to 'Cancel Purchase', :back, :class => "btn btn-danger cancelBtn" %>
+						</div>
+						</br>
+						</br>
+						<legend>Our Commitment to You</legend>
+						<guarantee>
+							When you use LISTD, you and your friends are part of an exclusive group that is guaranteed premium access to our partnered nightlife and dining locations. With your LISTD purchase, your experience will be more enjoyable and convenient.
+							</br>
+							</br>
+							Don't Wait In Line. Get LISTD.
+						</guarantee>
+                    </div>			
+				</fieldset>
+			<% end %>
+		<% end %>
+	<% end %>
