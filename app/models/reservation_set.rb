@@ -1,13 +1,17 @@
 class ReservationSet < ActiveRecord::Base
   
   attr_accessible :fecha_id, :revenue_percentage, :revenue_total, :sold_reservations, 
-  :total_released_reservations, :unsold_reservations
+  :total_released_reservations, :unsold_reservations, :fecha_attributes, :price_point_attributes
   
-  validates :fecha, :date, :total_released_reservations, :sold_reservations, :unsold_reservations, :revenue_total, 
-  :revenue_percentage, :presence => true
+  validates :fecha, :total_released_reservations, :presence => true
   
-  belongs_to :fecha
-  has_many :reservations , :dependent => :delete_all
+  has_many :reservations, :dependent => :delete_all
   has_many :users, :through => :reservations
+  belongs_to :location
+  has_one :fecha, :dependent => :destroy
+  has_one :price_point, :dependent => :destroy
+  
+  accepts_nested_attributes_for :fecha
+  accepts_nested_attributes_for :price_point
 
 end

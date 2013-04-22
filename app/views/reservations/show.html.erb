@@ -1,96 +1,43 @@
-<p id="notice"><%= notice %></p>
+<% content_for :title, "Listd - Purchase Confirmation" %>
 
-<p>
-  <b>Reservation set:</b>
-  <%= @reservation.reservation_set_id %>
-</p>
-
-<p>
-  <b>Purchase:</b>
-  <%= @reservation.purchase_id %>
-</p>
-
-<p>
-  <b>Name:</b>
-  <%= @reservation.name %>
-</p>
-
-<p>
-  <b>Redeemed:</b>
-  <%= @reservation.redeemed %>
-</p>
-
-<p>
-  <b>Entries:</b>
-  <%= @reservation.entries %>
-</p>
-
-<p>
-  <b>Price:</b>
-  <%= @reservation.price %>
-</p>
-
-<p>
-  <b>Confirmation:</b>
-  <%= @reservation.confirmation %>
-</p>
-
-<p>
-  <b>Reservation time:</b>
-  <%= @reservation.reservation_time %>
-</p>
-
-
-<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
-<%= link_to 'Back', reservations_path %>
-
-<% else %>
 	<h3>Thank you for making a purchase</h3>
 	<p>You will receive a confirmation email with a copy of your reservation and instruction on how to use it.</p>
 	<div class="pass-preview">
 		<small>
-  			<h5 class="title title-confirmation">Purchase Summary on <%= @pass.created_at.strftime("%m/%d/%Y") %></h5>
+  			<h5 class="title title-confirmation">Purchase Summary on <%= @reservation.created_at.strftime("%m/%d/%Y") %></h5>
 			<div class="pull-left dt">
-	  			Location: <br>
+	  			Location Name: <br>
 	  			Date of Reservation: <br>
-				<% if @pass.pass_set.reservation_time_periods ==  true %>
-					Time of Reservation: <br>
-				<% end %>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
 	  			<hr class="ns-rule">
 	  			# of Guests: <br>
 	  			Subtotal: <br>
-	  			<% if @pass.purchase.stripe_charge_token != nil %>
-					<%= @card_type %> Card:
+	  			<% if @reservation.purchase.stripe_charge_token != nil %>
+					<%= @card_type %> Card (Last 4):
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
-	  			<%= @pass.pass_set.bar.name %> <br>
-	  			<%= @pass.pass_set.date.strftime("%m/%d/%Y") %> <br>
-				<% if @pass.pass_set.reservation_time_periods ==  true %>
-					<%= @pass.reservation_time %> <br>
-				<% end %>
-	  			<%= @pass.name %> <br>
-	  			<%= @pass.confirmation %> <br>
+	  			<%= @reservation.reservation_set.location.name %> <br>
+	  			<%= @reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+	  			<%= @reservation.name %> <br>
+	  			<%= @reservation.confirmation %> <br>
 	  			<hr class="ns-rule">
-	  			<%= @pass.entries%> <br>
-	  			<%= number_to_currency(@pass.total_price) %> <br>
-	  			<% if @pass.purchase.stripe_charge_token != nil %>
-					XXXX-XXXX-XXXX-<%= @card_four %>
+	  			<%= @reservation.entries%> <br>
+	  			<%= number_to_currency(@reservation.total_price) %> <br>
+	  			<% if @reservation.purchase.stripe_charge_token != nil %>
+					<%= @card_four %>
 	  			<% end %>
 			</div>
 			<br>
 			<div class="pull-right dd">
-	  			<%= link_to raw("View Reservation &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), pass_path(@pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
-	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => @pass.id), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("View Reservation &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), reservation_path(@reservation, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfreservationversion_path(:id => @reservation.id), :class => "btn title links-confirmation" %> <br>
 	  			<%= link_to raw("All Reservations <i class=\"icon-circle-arrow-right\"></i>"), '/myreservations', :class => "btn title links-confirmation" %>
 			</div>
 		</small>
 	</div> <!-- end of .pass-preview -->
-<% end %>
-
-else
-	pdf.text_box "<color rgb='888888'>#{@pass.reservation_time}</color>",:inline_format => true, :at => [80,205], :height => 90, :width => 210, :size => 24
-	pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [50,170], :height => 90, :width => 210, :size => 36
-end
+<hr>
+<div class="help-confirmation">
+  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact us at <%= mail_to("contactus@listdnow.com")%>.</small></p>
+</div>

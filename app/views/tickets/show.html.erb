@@ -1,7 +1,7 @@
 <% content_for :title, "Listd - Purchase Confirmation" %>
 
 	<h3>Thank you for making a purchase</h3>
-	<p>You will receive a confirmation email with a copy of your pass and instruction on how to use it.</p>
+	<p>You will receive a confirmation email with a copy of your ticket and instruction on how to use it.</p>
 	<div class="pass-preview">
 		<small>
   			<h5 class="title title-confirmation">Purchase Summary on <%= @ticket.created_at.strftime("%m/%d/%Y") %></h5>
@@ -32,7 +32,7 @@
 			<br>
 			<div class="pull-right dd">
 	  			<%= link_to raw("View Ticket &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), ticket_path(@ticket, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
-	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => @ticket.id), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfticketversion_path(:id => @ticket.id), :class => "btn title links-confirmation" %> <br>
 	  			<%= link_to raw("All Tickets <i class=\"icon-circle-arrow-right\"></i>"), '/mytickets', :class => "btn title links-confirmation" %>
 			</div>
 		</small>

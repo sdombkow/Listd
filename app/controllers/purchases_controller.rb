@@ -611,6 +611,123 @@ class PurchasesController < ApplicationController
           counter += 1
         end
         redirect_to [deal], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
+      elsif params[:purchase][:reservation_set] != nil
+        @reservation_set = ReservationSet.find(params[:purchase][:reservation_set])
+	      num_passes = params[:purchase][:num_passes].to_i
+    
+        if num_passes > @reservation_set.unsold_reservations
+		        flash[:error] = 'Not enough reservation left'
+		        redirect_to [@location,@reservation_set]
+		        return
+	      end
+	
+	      if @reservation_set.unsold_reservations == 0
+	          flash[:error] = 'Not enough reservations left'
+		        redirect_to [@location,@reservation_set]
+		        return
+	      end
+	  
+	      friend_names = params[:purchase][:friend_names]
+        friend_emails = params[:purchase][:friend_emails]
+        params[:purchase].delete("friend_names")
+        params[:purchase].delete("friend_emails")
+    
+	      @purchase = Purchase.new(params[:purchase])
+	      logger.error "#{current_user.id}"
+	      @purchase.user_id = @user.id
+	      @purchase.date = params[:purchase][:date]	
+	      if String(@reservation_set.price_point.price).split(".").last.length == 1
+            @decimals = String(@reservation_set.price_point.price).split(".").last + "0"
+        else 
+            @decimals = String(@reservation_set.price_point.price).split(".").last
+        end
+        @purchase.price = (String(@reservation_set.price_point.price).split(".").first + @decimals)
+	      @purchase.price = Integer(@purchase.price)*num_passes
+
+	      if @user.stripe_customer_token != nil
+	        if @purchase.stripe_card_token == ""
+	          if @purchase.payment_return_customer(current_user)
+      		      @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+      		      if @customer_card.active_card != nil
+                    @end_month = @customer_card.active_card.exp_month
+                    @end_year = @customer_card.active_card.exp_year
+                end
+	              if @end_month < Time.now.month && @end_year < Time.now.year
+	                  cu = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+                    cu.delete
+                    current_user.update_attribute(:stripe_customer_token,nil)
+                    current_user.save!
+  		              redirect_to [@bar,@reservation_set], notice: 'Sorry, your transaction has not occured. Your previous saved card has expired and is no longer valid.'
+  				          return
+  			        end
+            else
+            		redirect_to [@bar,@reservation_set], notice: current_user.error_message
+            		return
+          	end
+          elsif params[:credit_card_save] == "1"
+  			    if @purchase.return_customer_save_payment(current_user)
+  			    else
+      		      redirect_to [@bar,@reservation_set], notice: current_user.error_message
+      		      return
+      		  end
+  			  else
+  		      if @purchase.payment(current_user)
+  		      else
+        		    redirect_to [@bar,@reservation_set], notice: current_user.error_message
+        		    return
+		        end
+		      end    
+  	    elsif params[:credit_card_save] == "1"	
+  	      if @purchase.save_with_payment(current_user)
+  	      else
+  		      redirect_to [@bar,@reservation_set], notice: current_user.error_message
+  		      return
+  		    end
+  	    else
+          logger.error "Purchase: #{@purchase.inspect}"
+  		    if @purchase.payment(current_user)
+  			  else
+   		      redirect_to [@bar,@reservation_set], notice: current_user.error_message
+   		      return
+   		    end
+        end   
+  		
+        @reservation_set.sold_reservations+=num_passes
+        @reservation_set.unsold_reservations-=num_passes
+  			    
+  	    @reservation_set.revenue_total += @reservation_set.price_point.price * num_passes
+        @reservation_set.save 
+    
+        # for i in 0..num_passes-1
+	      reservation = Reservation.new
+	      reservation.name = params[:purchase][:name]
+	      reservation.purchase_id = @purchase.id
+	      reservation.reservation_set_id = @reservation_set.id
+	      reservation.redeemed = false
+	      reservation.price = @reservation_set.price_point.price
+	      reservation.total_price = @reservation_set.price_point.price * num_passes
+	      logger.error "#{@reservation_set.price_point.price}"
+	      logger.error "#{reservation.price}"
+	      logger.error "#{reservation.total_price}"
+		    reservation.entries = num_passes
+		    reservation.confirmation = SecureRandom.hex(4)
+		    logger.error "Reservation: #{reservation.inspect}"
+	      reservation.save!
+	      logger.error "Reservation: #{reservation.inspect}"
+	      UserMailer.purchase_confirmation_reservation(@user,reservation).deliver
+        counter = 0
+        while friend_names.nil? == false and counter < friend_names.length
+          fn = friend_names[counter]
+          fe = friend_emails[counter]
+          pf = PassFriend.new
+          pf.name = fn
+          pf.email = fe
+          pf.pass_id = pass.id
+          pf.save
+          UserMailer.friend_confirmation(fn,fe,reservation).deliver
+          counter += 1
+        end
+        redirect_to [reservation], notice: "Thank you for your purchase, you will receive a confirmation email at #{@user.email}."
       end
     end
 	end

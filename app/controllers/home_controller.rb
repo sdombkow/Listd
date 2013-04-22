@@ -54,6 +54,7 @@ class HomeController < ApplicationController
    	      logger.error "Fecha Date: #{@user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3).inspect}"
    	      @tickets = @user.tickets.where('redeemed = ?', false).joins(:ticket_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
    	      @deals = @user.deals.where('redeemed = ?', false).joins(:deal_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
+   	      @reservations = @user.reservations.where('redeemed = ?', false).joins(:reservation_set => :fecha).where('fechas.date >= ?', Time.now.to_date).order('fechas.date ASC').limit(3)
    	  end
   end
 end

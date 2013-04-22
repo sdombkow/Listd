@@ -1,0 +1,17 @@
+<div class="pass-preview">
+	<p class="title">
+		Name: <%= reservation.name %>	|	<%= link_to 'Toggle Redeem', reservations_toggleRedeem_path(reservation,:id => reservation.id), :method=>:post %>
+	</p>
+	<div class="pull-left dt">
+		# of Guests:</br>
+        Purchased on:</br>
+		Reservation Redeemed?:</br>
+		Confirmation Number:
+	</div>
+	<div class="pull-left dd">
+ 		<%= reservation.entries %></br>
+		<%= reservation.created_at.strftime('%b %d, %Y at %I:%M %p') %></br>
+		<%= reservation.redeemed %></br>
+		<%= link_to reservation.confirmation, reservation %>
+	</div>
+</div>

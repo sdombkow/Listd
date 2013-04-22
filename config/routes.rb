@@ -39,6 +39,7 @@ ListdApp::Application.routes.draw do
   post "passes/toggleRedeem"
   post "tickets/toggleRedeem"
   post "deals/toggleRedeem"
+  post "reservations/toggleRedeem"
   get "admin/customers"
   get "admin/partners"
   get "pages/terms_of_service"
@@ -52,6 +53,7 @@ ListdApp::Application.routes.draw do
   match '/pdfversion' => 'passes#pdfversion'
   match '/pdfticketversion' => 'tickets#pdfversion'
   match '/pdfdealversion' => 'deals#pdfversion'
+  match '/pdfreservationversion' => 'reservations#pdfversion'
 
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
   match 'contact' => 'contact#create', :as => 'contact', :via => :post
@@ -76,14 +78,18 @@ ListdApp::Application.routes.draw do
     collection do
       post 'search'
     end
+    resources :reservation_sets
+    collection do
+      post 'search'
+    end
   end
   
   resources :admin
   resources :passes
   match '/mypasses' => 'passes#index'
-  match '/myreservations' => 'passes#reservation_archive'
   match '/mytickets' => 'tickets#index'
   match '/mydeals' => 'deals#index'
+  match '/myreservations' => 'reservations#index'
   
   resources :purchases do
   	collection do
@@ -126,6 +132,9 @@ ListdApp::Application.routes.draw do
 	      get 'close_set'
 	    end
 	    resources :deal_sets do
+	      get 'close_set'
+	    end
+	    resources :reservation_sets do
 	      get 'close_set'
 	    end
 	  end

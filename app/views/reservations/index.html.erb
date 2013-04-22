@@ -1,37 +1,58 @@
-<h1>Listing reservations</h1>
+<% content_for :title, "Listd - My Tickets" %>
+	<h2>My Reservations</h2>
 
-<table>
-  <tr>
-    <th>Reservation set</th>
-    <th>Purchase</th>
-    <th>Name</th>
-    <th>Redeemed</th>
-    <th>Entries</th>
-    <th>Price</th>
-    <th>Confirmation</th>
-    <th>Reservation time</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+	<div class="row footer-cushion">
+  		<div class="span7">
+			<h4 class="index-type">Current</h4>
+			<% for reservation in @valid_reservations %>
+				<div class="pass-preview">
+					<small>
+      					<p class="title"><%= reservation.reservation_set.location.name %></p>
+						<div class="pull-left dt">
+		  						Date of Reservation: <br>
+		  						# of Guests: <br>
+		  						Name on Purchase: <br> 
+		  						Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+		  					<%= reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+		  					<%= reservation.entries%> <br>
+		  					<%= reservation.name %> <br>
+		  					<%= reservation.confirmation %>
+						</div>
+						<div class="pull-right dd">
+		  					<%= link_to raw("View Reservation &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), reservation_path(reservation, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfreservationversion_path(:id => reservation.id), :class => "btn title links-confirmation" %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @valid_reservations, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_reservations_page' %>
+  		</div>
 
-<% @reservations.each do |reservation| %>
-  <tr>
-    <td><%= reservation.reservation_set_id %></td>
-    <td><%= reservation.purchase_id %></td>
-    <td><%= reservation.name %></td>
-    <td><%= reservation.redeemed %></td>
-    <td><%= reservation.entries %></td>
-    <td><%= reservation.price %></td>
-    <td><%= reservation.confirmation %></td>
-    <td><%= reservation.reservation_time %></td>
-    <td><%= link_to 'Show', reservation %></td>
-    <td><%= link_to 'Edit', edit_reservation_path(reservation) %></td>
-    <td><%= link_to 'Destroy', reservation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-
-<%= link_to 'New Reservation', new_reservation_path %>
+  		<div class="span4 vertical-rule">
+			<h4 class="index-type">Past</h4>
+			<% for reservation in @past_reservations %>
+				<div class="pass-history-preview">
+    				<small>
+	      				<p class="title"><%= reservation.reservation_set.location.name %></p>
+						<div class="pull-left dt">
+			  				Date of Reservation: <br>
+			  				# of Guests: <br>
+			  				Name on Purchase: <br>
+			  				Confirmation Number: <br>
+			  				Redeemed:
+						</div>
+						<div class="pull-left dd">
+			  				<%= reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %> <br>
+			  				<%= reservation.entries%> <br>
+			  				<%= reservation.name %> <br>
+			  				<%= reservation.confirmation %> <br>
+			  				<%= reservation.redeemed %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @past_reservations, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_reservations_page' %>
+  		</div>
+	</div>

@@ -13,5 +13,6 @@ class PricePoint < ActiveRecord::Base
   belongs_to :ticket_set
   belongs_to :pass_set
   belongs_to :deal_set
+  belongs_to :reservation_set
   
 end

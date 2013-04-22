@@ -1,0 +1,18 @@
+<% if current_user != nil %>
+	<div class="title-bar">
+  		<h5>Upcoming Reservations</h5>
+	</div>
+
+	<div class="content-box">
+  		<% @reservations.each do |reservation| %>
+			<% if (!reservation.redeemed) %>
+				<div class = "row-fluid">
+      				<div class="pass-item">
+						<span><%= link_to reservation.reservation_set.location.name, reservation %></span>
+						<span class="offset2"><%= reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %></span>
+  	  				</div> <!-- end of .pass-item -->
+				</div>
+			<% end %>
+  		<% end %>
+	</div>
+<% end %>

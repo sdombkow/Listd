@@ -4,7 +4,7 @@ class Reservation < ActiveRecord::Base
   
   attr_accessible :confirmation, :entries, :name, :price, :purchase_id, :redeemed, :reservation_set_id, :reservation_time
   
-  validates :confirmation, :reservation_set_id, :entries, :name, :price, :purchase_id, :redeemed, :reservation_time, :presence => true
+  validates :confirmation, :reservation_set_id, :entries, :name, :price, :purchase_id, :presence => true
   validates :confirmation, :uniqueness => true
 
   belongs_to :reservation_set
