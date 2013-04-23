@@ -39,3 +39,8 @@ gem 'friendly_id'
 gem 'whenever', :require => false
 gem 'prawn', "~> 1.0.0.rc1"
 gem 'prawnto'
+
+# QR Codes
+gem 'rqrcode-rails3'
+gem 'mini_magick'
+gem 'barby'

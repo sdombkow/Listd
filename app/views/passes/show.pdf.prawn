@@ -5,6 +5,10 @@ pdf.font "Courier"
 pdf.grid([0,0], [4,3]).bounding_box do
 	pdf.image "#{Rails.root}/app/assets/images/pass_reserv_bg.png", :width => 240, :position => :center, :vposition => :center
 	pdf.text_box "<color rgb='888888'>#{@pass.pass_set.bar.name}</color>",:inline_format => true, :at => [38,295], :height => 90, :width => 200, :size => 21
+    pdf.grid([0,2],[1.5,3]).bounding_box do
+      @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{@pass.confirmation}?id=#{@pass.id}"
+      Barby::QrCode.new(@redeem_url, :size => 7).annotate_pdf(pdf, :xdim => 2)
+    end
 	if @pass.reservation_time == nil
 		pdf.text_box "<color rgb='888888'>#{@pass.pass_set.date.strftime("%m/%d/%y")}</color>",:inline_format => true, :at => [35,185], :height => 90, :width => 210, :size => 42
 	else
@@ -18,6 +22,7 @@ end
 pdf.grid([0,4], [4,7]).bounding_box do
 	pdf.image "#{Rails.root}/app/assets/images/get_listed_text.png", :width => 250, :position => :center, :vposition => :center
 end
+
 
 pdf.stroke_horizontal_rule
 pdf.move_down 50
@@ -43,7 +48,6 @@ else
 	pdf.move_down 10
 	pdf.text "3. Enjoy your meal!"
 end
-
 
 pdf.encrypt_document(:permissions => { :print_document => true,
 	:modify_contents => false,
