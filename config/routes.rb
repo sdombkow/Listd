@@ -6,7 +6,7 @@ ListdApp::Application.routes.draw do
   match '/payment_management' => 'current_user#update'
   match 'welcome' => 'home#welcome'
   post "users/unsetPartner"
-  post "passes/toggleRedeem"
+  get "passes/toggleRedeem"
   get "admin/customers"
   get "admin/partners"
   get "pages/terms_of_service"
