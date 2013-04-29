@@ -22,7 +22,8 @@
 						</div>
 						<div class="pull-right dd">
 		  					<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), pass_path(pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
-				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => pass.id), :class => "btn title links-confirmation" %>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => pass.id), :class => "btn title links-confirmation" %><br />
+                            <%= link_to raw("Get Code <i class=\"icon-qrcode\"></i>"), qrcode_path(:id => pass.confirmation), :class => "btn title links-confirmation" %>
 						</div>
 					</small>
 				</div> <!-- end of .pass-preview -->

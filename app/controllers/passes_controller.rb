@@ -1,5 +1,6 @@
 require 'barby/barcode/qr_code'
 require 'barby/outputter/prawn_outputter'
+require 'rqrcode'
 
 class PassesController < ApplicationController
 
@@ -130,5 +131,18 @@ class PassesController < ApplicationController
       else
           send_data pdf.render, :filename => "LISTDRESERVATION(#{@pass.confirmation}).pdf", :type => "application/pdf"
       end
+  end
+
+  def mobile_code
+    pass = Pass.find_by_confirmation(params[:id])
+    if pass.nil? == false and pass.purchase.user_id == current_user.id
+        respond_to do |format|
+          @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{pass.confirmation}?id=#{pass.id}"
+          @qr = RQRCode::QRCode.new(@redeem_url, :size => 7)
+          format.html { render :layout => false }
+        end
+    else
+        redirect_to "/mypasses"
+    end
   end
 end
