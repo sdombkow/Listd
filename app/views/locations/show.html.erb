@@ -155,6 +155,10 @@
 					<%= link_to image_tag("twitter_icon(bar).png"), @location.twitter_url %>
 				<% end %>
     			</br>
+    			<h5>Hours</h5>
+				<% for hour in @location.location_hours %>
+	  				<small><%= hour.day_of_week_open %>: <%= hour.opening_time.strftime('%l:%M %p') %> &ndash; <%= hour.closing_time.strftime('%l:%M %p') %> </small><br>
+				<% end %>
             </div>
   		</div>
 		

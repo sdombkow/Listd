@@ -16,6 +16,6 @@ class PassSet < ActiveRecord::Base
   accepts_nested_attributes_for :time_periods
   
   accepts_nested_attributes_for :fecha
-  accepts_nested_attributes_for :price_point
+  accepts_nested_attributes_for :price_point, :reject_if => lambda { |a| a[:content].blank? }
 
 end

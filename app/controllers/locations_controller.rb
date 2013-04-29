@@ -51,6 +51,8 @@ class LocationsController < ApplicationController
     @user = User.find(params[:id])
     @location.user = @user
     @location.user_id= @user.id
+    
+    3.times { @location.location_hours.build }
 
     respond_to do |format|
       format.html # new.html.erb
@@ -72,7 +74,9 @@ class LocationsController < ApplicationController
     @user = User.find(params[:os])
     @location.user = @user
     @location.user_id= @user.id
-
+    @location_hours = params[:location][:location_hours_attributes]
+    logger.error "#{@location_hours.inspect}"
+    
     respond_to do |format|
       if @location.save
         format.html { redirect_to @location, notice: 'Location was successfully created.' }

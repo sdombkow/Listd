@@ -35,15 +35,15 @@ class HomeController < ApplicationController
       #end
 
       @venues = Bar.all
-      @localvenues = Location.all
+      @localvenues = Location.all.take(3)
     
       #if someone has searched for venues and there are locatons within 20 miles of that
       #location displays them, if their are no local then it displays all bars, if their are
       #local venues it displays those
       if params[:search].present?
-          @locations = Bar.near(params[:search], 50, :order => :distance)
+          @locations = Bar.near(params[:search], 50, :order => :distance).take(3)
       else
-          @locations = @localvenues
+          @locations = @localvenues.take(3)
       end
     
       if user_signed_in?

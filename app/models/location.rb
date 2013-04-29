@@ -3,7 +3,8 @@ class Location < ActiveRecord::Base
   friendly_id :name_city, :use => :slugged
   
   attr_accessible :city, :facebook_url, :full_address, :intro_paragraph, :latitude, :logo, :longtitude, 
-  :name, :phone_number, :slug, :state, :street_address, :twitter_url, :user_id, :website_url, :zip_code
+  :name, :phone_number, :slug, :state, :street_address, :twitter_url, :user_id, :website_url, :zip_code, 
+  :location_hours_attributes
   
   validates_uniqueness_of :name, :scope => :city
   validates :phone_number,  :uniqueness => true, :presence => true

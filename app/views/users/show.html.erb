@@ -57,8 +57,8 @@
 				<td><%= link_to "View Information", user_location_path(@user, :id => location.id), :method=>:get %></td>
 				<td>  <%= link_to 'Delete Bar Location', [@user,location], :confirm => 'Are you sure?', :method => :delete %> </td>
   			</tr>
+		<% end %>
 	</table>
-	<% end %>
 <% else %>
 <p> user is a user </p>
 <% end %>

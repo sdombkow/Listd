@@ -57,6 +57,24 @@
     <%= f.label :twitter_url %><br />
     <%= f.text_field :twitter_url %>
   </div>
+  	<%= f.fields_for :location_hours do |builder| %>
+		<div>
+    		<%= builder.label :day_of_week_open %><br />
+    		<%= builder.select :day_of_week_open, Date::DAYNAMES %>
+  		</div>
+		<div>
+    		<%= builder.label :opening_time %><br />
+    		<%= builder.time_select :opening_time %>
+  		</div>
+		<div>
+    		<%= builder.label :day_of_week_close %><br />
+    		<%= builder.select :day_of_week_close, Date::DAYNAMES %>
+  		</div>
+		<div>
+    		<%= builder.label :closing_time %><br />
+    		<%= builder.time_select :closing_time %>
+  		</div>
+	<% end %>
 
   <div class="actions">
     <%= f.submit %>
