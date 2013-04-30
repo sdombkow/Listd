@@ -1,63 +1,73 @@
-<%= form_for([@location.user,@location]) do |f| %>
-  <% if @location.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@location.errors.count, "error") %> prohibited this bar from being saved:</h2>
+<% content_for :head do %>
+	<script type="text/javascript">
+		function add_fields(link, association, content) {  
+		    var new_id = new Date().getTime();  
+		    var regexp = new RegExp("new_" + association, "g");  
+		    $(link).before(content.replace(regexp, new_id));  
+		};
+	</script>
+<% end %>
 
-      <ul>
-      <% @location.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for([@location.user,@location]) do |f| %>
+  	<% if @location.errors.any? %>
+    	<div id="error_explanation">
+      		<h2><%= pluralize(@location.errors.count, "error") %> prohibited this bar from being saved:</h2>
+			<ul>
+      			<% @location.errors.full_messages.each do |msg| %>
+        			<li><%= msg %></li>
+      				<% end %>
+      		</ul>
+    	</div>
+  	<% end %>
   
-  <%= hidden_field_tag :os,@user.id %>
+  	<%= hidden_field_tag :os,@user.id %>
   
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :phone_number %><br />
-    <%= f.number_field :phone_number %>
-  </div>
-  <div class="field">
-  	<%= f.label :street_address %><br />
-  	<%= f.text_field :street_address %>
-  </div>
-  <div class="field">
- 	<%= f.label :city %><br />
-  	<%= f.text_field :city %>
-  </div>
-  <div class="field">
-  	<%= f.label :state %><br />
-  	<%= f.select :state, options_for_select(us_states, :selected => @location.state) %>
-  </div>
-  <div class="field">
-  	<%= f.label :zip_code %><br />
-  	<%= f.text_field :zip_code %>
-  </div>
-  <div class="field">
-    <%= f.label :intro_paragraph %><br />
-    <%= f.text_area :intro_paragraph %>
-  </div>
-  <div class="field">
-    <%= f.label :logo %><br />
-    <%= f.text_field :logo %>
-  </div>
-  <div class="field">
-    <%= f.label :website_url %><br />
-    <%= f.text_field :website_url %>
-  </div>
-  <div class="field">
-    <%= f.label :facebook_url %><br />
-    <%= f.text_field :facebook_url %>
-  </div>
-  <div class="field">
-    <%= f.label :twitter_url %><br />
-    <%= f.text_field :twitter_url %>
-  </div>
+  	<div class="field">
+    	<%= f.label :name %><br />
+    	<%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :phone_number %><br />
+    	<%= f.number_field :phone_number %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :street_address %><br />
+  		<%= f.text_field :street_address %>
+  	</div>
+  	<div class="field">
+ 		<%= f.label :city %><br />
+  		<%= f.text_field :city %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :state %><br />
+  		<%= f.select :state, options_for_select(us_states, :selected => @location.state) %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :zip_code %><br />
+  		<%= f.text_field :zip_code %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :intro_paragraph %><br />
+    	<%= f.text_area :intro_paragraph %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :logo %><br />
+    	<%= f.text_field :logo %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :website_url %><br />
+    	<%= f.text_field :website_url %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :facebook_url %><br />
+    	<%= f.text_field :facebook_url %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :twitter_url %><br />
+    	<%= f.text_field :twitter_url %>
+  	</div>
   	<%= f.fields_for :location_hours do |builder| %>
+		<!--<%= render 'location_hour_fields', :f => builder %>-->
 		<div>
     		<%= builder.label :day_of_week_open %><br />
     		<%= builder.select :day_of_week_open, Date::DAYNAMES %>
@@ -75,9 +85,12 @@
     		<%= builder.time_select :closing_time %>
   		</div>
 	<% end %>
+  	
+	<%= link_to_add_fields "Add New Hours", f, :location_hours %>
+	</br>
+	</br>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-
+  	<div class="actions">
+    	<%= f.submit %>
+  	</div>
 <% end %>

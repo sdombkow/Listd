@@ -23,7 +23,7 @@ class Location < ActiveRecord::Base
 	has_many :location_hours, :dependent => :destroy
 	belongs_to :user
 	
-	accepts_nested_attributes_for :location_hours, :allow_destroy => true
+	accepts_nested_attributes_for :location_hours, :reject_if => lambda { |a| a[:day_of_week_open].blank? }, :allow_destroy => true
 	
 	geocoded_by :full_address
 	after_validation :geocode, :if => :full_address_changed?

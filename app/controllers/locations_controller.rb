@@ -52,7 +52,7 @@ class LocationsController < ApplicationController
     @location.user = @user
     @location.user_id= @user.id
     
-    3.times { @location.location_hours.build }
+    1.times { @location.location_hours.build }
 
     respond_to do |format|
       format.html # new.html.erb
