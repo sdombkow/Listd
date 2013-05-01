@@ -19,7 +19,6 @@ pdf.grid([0,4], [4,7]).bounding_box do
 	pdf.image "#{Rails.root}/app/assets/images/get_listed_text.png", :width => 250, :position => :center, :vposition => :center
 end
 
-
 pdf.stroke_horizontal_rule
 pdf.move_down 50
 
