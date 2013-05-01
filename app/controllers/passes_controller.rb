@@ -138,7 +138,7 @@ class PassesController < ApplicationController
     if pass.nil? == false and pass.purchase.user_id == current_user.id
         respond_to do |format|
           @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{pass.confirmation}?id=#{pass.id}"
-          @qr = RQRCode::QRCode.new(@redeem_url, :size => 7)
+          @qr = RQRCode::QRCode.new(@redeem_url, :size => 9)
           format.html { render :layout => false }
         end
     else
