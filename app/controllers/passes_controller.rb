@@ -7,6 +7,9 @@ class PassesController < ApplicationController
   before_filter :authenticate_user!
   
   def index
+    if current_user.partner == true
+        redirect_to :root
+    end
   	@user = current_user
     # Eager loading pass sets on the user's passes
   	@valid_passes = @user.passes.joins(:pass_set).where('pass_sets.selling_passes = ? AND pass_sets.date >= ?', true, Time.now.to_date).order('pass_sets.date ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
@@ -142,7 +145,7 @@ class PassesController < ApplicationController
           format.html { render :layout => false }
         end
     else
-        redirect_to "/mypasses"
+        redirect_to :root
     end
   end
 end
