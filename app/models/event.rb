@@ -14,15 +14,22 @@ class Event < ActiveRecord::Base
                     :allow_blank => true, 
                     :allow_nil => true
                     
-	has_many :pass_sets, :dependent => :destroy
-	has_many :ticket_sets, :dependent => :destroy
-	belongs_to :user
+	has_many :fechas, :dependent => :destroy
+  has_many :ticket_sets, :dependent => :destroy
+  has_many :pass_sets, :dependent => :destroy
+  has_many :deal_sets, :dependent => :destroy
+  has_many :reservation_sets, :dependent => :destroy
+
+  has_many :location_hours, :dependent => :destroy
+  belongs_to :user
 	
 	accepts_nested_attributes_for :pass_sets, :allow_destroy => true
 	accepts_nested_attributes_for :ticket_sets, :allow_destroy => true
 	
 	geocoded_by :address
 	after_validation :geocode, :if => :address_changed?
+	
+	accepts_nested_attributes_for :location_hours, :reject_if => lambda { |a| a[:day_of_week_open].blank? }, :allow_destroy => true
 
 	def self.search(search)
 	  search_condition = "%" + search + "%"
@@ -34,5 +41,5 @@ class Event < ActiveRecord::Base
 	def name_city
       "#{name} #{city}"
   end
-
+  
 end

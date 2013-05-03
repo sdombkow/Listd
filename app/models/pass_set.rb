@@ -10,6 +10,8 @@ class PassSet < ActiveRecord::Base
   has_many :time_periods, :dependent => :destroy
   
   belongs_to :location
+  belongs_to :event
+  
   has_one :fecha, :dependent => :destroy
   has_one :price_point, :dependent => :destroy
   

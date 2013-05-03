@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130422035617) do
+ActiveRecord::Schema.define(:version => 20130503190140) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
     t.integer  "location_id"
+    t.integer  "event_id"
   end
 
   create_table "deals", :force => true do |t|
@@ -111,7 +112,6 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.date     "date_of_event"
     t.time     "time_of_event"
     t.float    "latitude"
-    t.float    "longtitude"
     t.string   "logo"
     t.string   "website_url"
     t.string   "facebook_url"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.string   "slug"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
+    t.float    "longitude"
   end
 
   create_table "fechas", :force => true do |t|
@@ -138,6 +139,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.integer  "pass_set_id"
     t.integer  "deal_set_id"
     t.integer  "reservation_set_id"
+    t.integer  "event_id"
   end
 
   create_table "friend_purchases", :force => true do |t|
@@ -159,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.time     "closing_time"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.integer  "event_id"
   end
 
   create_table "locations", :force => true do |t|
@@ -216,6 +219,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.integer  "location_id"
     t.integer  "fecha_id"
     t.decimal  "revenue_percentage"
+    t.integer  "event_id"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -282,6 +286,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.datetime "updated_at",                  :null => false
     t.boolean  "reservation_time_periods"
     t.integer  "location_id"
+    t.integer  "event_id"
   end
 
   create_table "reservations", :force => true do |t|
@@ -319,6 +324,7 @@ ActiveRecord::Schema.define(:version => 20130422035617) do
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
     t.integer  "location_id"
+    t.integer  "event_id"
   end
 
   create_table "tickets", :force => true do |t|

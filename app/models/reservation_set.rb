@@ -7,7 +7,10 @@ class ReservationSet < ActiveRecord::Base
   
   has_many :reservations, :dependent => :delete_all
   has_many :users, :through => :reservations
+  
   belongs_to :location
+  belongs_to :event
+  
   has_one :fecha, :dependent => :destroy
   has_one :price_point, :dependent => :destroy
   

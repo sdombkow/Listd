@@ -7,7 +7,10 @@ class TicketSet < ActiveRecord::Base
   
   has_many :tickets , :dependent => :delete_all
   has_many :users, :through => :tickets
+  
   belongs_to :location
+  belongs_to :event
+  
   has_one :fecha, :dependent => :destroy
   has_one :price_point, :dependent => :destroy
   
