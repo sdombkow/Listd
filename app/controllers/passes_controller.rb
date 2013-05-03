@@ -49,24 +49,24 @@ class PassesController < ApplicationController
   end
   
   def toggleRedeem
-   @pass = Pass.find(params[:id])
-   if current_user.partner?
-     if @pass.pass_set.bar.user.id != current_user.id
-       redirect_to :root
-       return
-     end
-   else
-     redirect_to :root
-     return
-   end
-   if(@pass.redeemed?)
-   @pass.redeemed=false
-   else
-   @pass.redeemed=true
-   end
-   @pass.save
-   redirect_to :back
-   flash[:notice] = "Redeem Toggled!"
+    @pass = Pass.find(params[:id])
+    if current_user.partner?
+      if @pass.pass_set.bar.user.id != current_user.id
+        redirect_to :root
+        return
+      end
+    else
+      redirect_to :root
+      return
+    end
+    if(@pass.redeemed?)
+      @pass.redeemed=false
+    else
+      @pass.redeemed=true
+    end
+    @pass.save
+    redirect_to :back
+    flash[:notice] = "Redeem Toggled!"
   end
   
   def pdfversion
