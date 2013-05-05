@@ -4,24 +4,102 @@
 			$('#single_price').hide();
 			$('#double_price').hide();
 			$('#triple_price').hide();
-			$('#checkbox1').change(function(){
-				if(this.checked)
-	        		$('#single_price').fadeIn();
-			   	else
-	        		$('#single_price').hide();
-			});
-			$('#checkbox2').change(function(){
-				if(this.checked)
-	        		$('#double_price').fadeIn();
-			   	else
-	        		$('#double_price').hide();
-			});
-			$('#checkbox3').change(function(){
-				if(this.checked)
-	        		$('#triple_price').fadeIn();
-			   	else
-	        		$('#triple_price').hide();
-			});
+			
+			function singlePriceCheck(){
+	            $('#checkbox1').click(function() {
+					if($(this).is(":checked")) {
+						$('#single_price').fadeIn();
+						if($('#checkbox2').is(":checked")) {
+							$("#checkbox2").removeAttr("checked");
+							if($('#double_price').is(":visible")) {
+								$('#double_price').hide();
+							}
+						}
+						if($('#checkbox3').is(":checked")) {
+							$("#checkbox3").removeAttr("checked");
+							if($('#triple_price').is(":visible")) {
+								$('#double_price').hide();
+								$('#triple_price').hide();
+							}
+						}
+					}
+				   	else {
+		        		$('#single_price').hide();
+					}
+				})
+	        };
+	
+			function doublePriceCheck(){
+				$('#checkbox2').click(function() {
+					if($(this).is(":checked")) {
+		        		$('#double_price').fadeIn();
+						if($('#checkbox1').is(":checked")) {
+							$("#checkbox1").removeAttr("checked");
+							if($('#single_price').is(":visible")) {
+							}
+							else {
+								$('#single_price').fadeIn();
+							}
+						}
+						else {
+							$('#single_price').fadeIn();
+						}
+						if($('#checkbox3').is(":checked")) {
+							$("#checkbox3").removeAttr("checked");
+							if($('#triple_price').is(":visible")) {
+								$('#triple_price').hide();
+							}
+						}
+					}
+				   	else {
+						$('#single_price').hide();
+		        		$('#double_price').hide();
+					}
+				})
+			};
+			
+			function triplePriceCheck(){
+				$('#checkbox3').click(function(){
+					if($(this).is(":checked")) {
+		        		$('#triple_price').fadeIn();
+						if($('#checkbox1').is(":checked")) {
+							$("#checkbox1").removeAttr("checked");
+							if($('#single_price').is(":visible")) {
+							}
+							else {
+								$('#single_price').fadeIn();
+								$('#double_price').fadeIn();
+							}
+						}
+						else {
+							$('#single_price').fadeIn();
+							$('#double_price').fadeIn();
+						}
+						if($('#checkbox2').is(":checked")) {
+							$("#checkbox2").removeAttr("checked");
+							if($('#double_price').is(":visible")) {
+							}
+							else {
+								$('#single_price').fadeIn();
+								$('#double_price').fadeIn();
+							}
+						}
+						else {
+							$('#single_price').fadeIn();
+							$('#double_price').fadeIn();
+						}
+					}
+				   	else {
+						$('#single_price').hide();
+		        		$('#double_price').hide();
+		        		$('#triple_price').hide();
+					}
+				})
+			};
+			
+			singlePriceCheck();
+			doublePriceCheck();
+			triplePriceCheck();
 		});
 	</script>
 <% end %>
