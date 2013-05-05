@@ -23,15 +23,32 @@ class PurchasesController < ApplicationController
 		@purchase = Purchase.new(params[:purchase])
 		@purchase.user_id = @user.id
 		@purchase.date = params[:purchase][:date]
-		logger.error "Number: #{@pass_set.price}"
-		if Integer(String(@pass_set.price).split(".").last) < 10
-		    logger.error "Number: #{Integer(String(@pass_set.price).split(".").last)}"
-	      @decimals = String(@pass_set.price).split(".").last+"0"
-	      logger.error "Number: #{Integer(String(@pass_set.price).split(".").last)}"+"0"
+		if @pass_set.single_price_level ==  true
+      @price = @pass_set.price
+    elsif @pass_set.double_price_level == true
+      if @pass_set.double_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.price
+      else
+        @price = @pass_set.double_price_value
+      end
+    elsif @pass_set.triple_price_level == true
+      if @pass_set.double_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.price
+      elsif @pass_set.triple_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.double_price_value
+      else
+        @price = @pass_set.triple_price_value
+      end
+    end
+		logger.error "Number: #{@price}"
+		if Integer(String(@price).split(".").last) < 10
+		    logger.error "Number: #{Integer(String(@price).split(".").last)}"
+	      @decimals = String(@price).split(".").last+"0"
+	      logger.error "Number: #{Integer(String(@price).split(".").last)}"+"0"
 	  else 
-	      @decimals = String(@pass_set.price).split(".").last 
+	      @decimals = String(@price).split(".").last 
 	  end
-		@purchase.price = (String(@pass_set.price).split(".").first+@decimals)
+		@purchase.price = (String(@price).split(".").first+@decimals)
 		@purchase.price = Integer(@purchase.price)*num_passes
 		logger.error "Price: #{@purchase.price}"
 		logger.error "Stripe Card Token: #{@purchase.stripe_card_token}"
@@ -199,7 +216,7 @@ class PurchasesController < ApplicationController
 		                    @pass_set.unsold_passes-=1
 		                end
 		            end
-		            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
+		            @pass_set.revenue_total = @price*num_passes + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -207,7 +224,7 @@ class PurchasesController < ApplicationController
 			          pass.purchase_id = @purchase.id
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
-			          pass.price = @pass_set.price
+			          pass.price = @price
 			          if @pass_set.reservation_time_periods == true
 			            pass.reservation_time = params[:purchase][:reservation_time]
 			          end
@@ -372,14 +389,14 @@ class PurchasesController < ApplicationController
 	                    @pass_set.unsold_passes-=1
 	                end
 	            end
-	            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
+	            @pass_set.revenue_total = @price*num_passes + @pass_set.revenue_total
     		      @pass_set.save
     			    pass = Pass.new
     			    pass.name = params[:purchase][:name]
     			    pass.purchase_id = @purchase.id
     			    pass.pass_set_id = @pass_set.id
     			    pass.redeemed = false
-    			    pass.price = @pass_set.price
+    			    pass.price = @price
     			    if @pass_set.reservation_time_periods == true
 		            pass.reservation_time = params[:purchase][:reservation_time]
 		          end
@@ -544,7 +561,7 @@ class PurchasesController < ApplicationController
 		                    @pass_set.unsold_passes-=1
 		                end
 		            end
-		            @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
+		            @pass_set.revenue_total = @price*num_passes + @pass_set.revenue_total
 		            @pass_set.save
 		            # for i in 0..num_passes-1
 			          pass = Pass.new
@@ -552,7 +569,7 @@ class PurchasesController < ApplicationController
 			          pass.purchase_id = @purchase.id
 			          pass.pass_set_id = @pass_set.id
 			          pass.redeemed = false
-			          pass.price = @pass_set.price
+			          pass.price = @price
 			          if @pass_set.reservation_time_periods == true
 			            pass.reservation_time = params[:purchase][:reservation_time]
 			          end
@@ -718,7 +735,7 @@ class PurchasesController < ApplicationController
                   @pass_set.unsold_passes-=1
               end
           end
-          @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
+          @pass_set.revenue_total = @price*num_passes + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -726,7 +743,7 @@ class PurchasesController < ApplicationController
 			      pass.purchase_id = @purchase.id
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
-			      pass.price = @pass_set.price
+			      pass.price = @price
 			      if @pass_set.reservation_time_periods == true
 	            pass.reservation_time = params[:purchase][:reservation_time]
 	          end
@@ -893,7 +910,7 @@ class PurchasesController < ApplicationController
                   @pass_set.unsold_passes-=1
               end
           end
-          @pass_set.revenue_total = @pass_set.price*num_passes + @pass_set.revenue_total
+          @pass_set.revenue_total = @price*num_passes + @pass_set.revenue_total
 		      @pass_set.save
 		      # for i in 0..num_passes-1
 			      pass = Pass.new
@@ -901,7 +918,7 @@ class PurchasesController < ApplicationController
 			      pass.purchase_id = @purchase.id
 			      pass.pass_set_id = @pass_set.id
 			      pass.redeemed = false
-			      pass.price = @pass_set.price
+			      pass.price = @price
 			      if @pass_set.reservation_time_periods == true
 	            pass.reservation_time = params[:purchase][:reservation_time]
 	          end
@@ -944,7 +961,7 @@ class PurchasesController < ApplicationController
   		@purchase = Purchase.new(params[:purchase])
   		@purchase.user_id = @user.id
   		@purchase.date = params[:purchase][:date]
-  		@purchase.price = @purchase.integer_convert(@pass_set.price)
+  		@purchase.price = @purchase.integer_convert(@price)
 
   		logger.error "Stripe error while creating customer: #{@user.stripe_customer_token}"
   		if @user.stripe_customer_token != nil

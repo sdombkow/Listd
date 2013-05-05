@@ -1,3 +1,31 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#single_price').hide();
+			$('#double_price').hide();
+			$('#triple_price').hide();
+			$('#checkbox1').change(function(){
+				if(this.checked)
+	        		$('#single_price').fadeIn();
+			   	else
+	        		$('#single_price').hide();
+			});
+			$('#checkbox2').change(function(){
+				if(this.checked)
+	        		$('#double_price').fadeIn();
+			   	else
+	        		$('#double_price').hide();
+			});
+			$('#checkbox3').change(function(){
+				if(this.checked)
+	        		$('#triple_price').fadeIn();
+			   	else
+	        		$('#triple_price').hide();
+			});
+		});
+	</script>
+<% end %>
+
 <%= form_for([@bar.user,@bar,@pass_set]) do |f| %>
   
   <% if @pass_set.errors.any? %>
@@ -20,13 +48,47 @@
     	<%= f.number_field :total_released_passes %>
   	</div>
   	<div class="field">
-    	<%= f.label :price %><br />
-    	<%= f.text_field :price %>
-  	</div>
-  	<div class="field">
 		<%= f.label :selling_passes %><br/>
 		<%= f.check_box :selling_passes %>
   	</div>
+	<div class="field">
+		<%= f.label :single_price_level %><br/>
+		<%= f.check_box :single_price_level, :id => "checkbox1", :checked => "unchecked" %>
+  	</div>
+	<div class="field">
+		<%= f.label :double_price_level %><br/>
+		<%= f.check_box :double_price_level, :id => "checkbox2", :checked => "unchecked" %>
+  	</div>
+	<div class="field">
+		<%= f.label :triple_price_level %><br/>
+		<%= f.check_box :triple_price_level, :id => "checkbox3", :checked => "unchecked" %>
+  	</div>
+	<div id = "single_price">
+		<div class="field">
+	    	<%= f.label :price %><br />
+	    	<%= f.text_field :price %>
+	  	</div>
+	</div>
+	<div id = "double_price">
+		<div class="field">
+	    	<%= f.label :double_price_less_than %><br />
+	    	<%= f.number_field :double_price_less_than %>
+	  	</div>
+		<div class="field">
+	    	<%= f.label :double_price_value %><br />
+	    	<%= f.text_field :double_price_value %>
+	  	</div>
+	</div>
+	<div id = "triple_price">
+		<div class="field">
+	    	<%= f.label :triple_price_less_than %><br />
+	    	<%= f.number_field :double_price_less_than %>
+	  	</div>
+		<div class="field">
+	    	<%= f.label :triple_price_value %><br />
+	    	<%= f.text_field :double_price_value %>
+	  	</div>
+	</div>
   	<div>
   		<%= f.label :description %>
   		<%= f.text_area :description, :rows => "10", :class => "input-xlarge"  %>

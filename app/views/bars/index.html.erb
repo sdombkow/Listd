@@ -35,6 +35,8 @@
     			<th>Price</th>
 				<th>Revenue</th>
     			<th></th>
+				<th></th>
+				<th></th>
             </tr>
   			</thead>
             <tbody>
@@ -47,6 +49,8 @@
     				<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
 					<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
 					<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
+					<td><%= link_to 'Edit', edit_user_bar_pass_set_path(bar.user, bar, pass_set) %></td>
+					<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(bar.user, bar, pass_set), :confirm => 'Are you sure?' %></td>
   				</tr>
 			<% end %>
             </tbody>
@@ -89,8 +93,7 @@
 		</table>
     </div>
 	<% end %>
-	
-	
+	<%= link_to 'New Pass Set', new_user_bar_pass_set_path(current_user,bar) %>	
 	
 <% end %>
 </ul>
