@@ -40,7 +40,7 @@
             </tr>
   			</thead>
             <tbody>
-			<% bar.pass_sets.where('selling_passes = ?', true).each do |pass_set| %>
+			<% bar.pass_sets.where('selling_passes = ?', true).order(:date).each do |pass_set| %>
   				<tr>
     				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
     				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
@@ -78,7 +78,7 @@
   			</tr>
          </thead>
          <tbody>
-			<% bar.pass_sets.where('selling_passes = ?', false).each do |pass_set| %>
+			<% bar.pass_sets.where('selling_passes = ?', false).order(:date).each do |pass_set| %>
   				<tr>
     				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
     				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>

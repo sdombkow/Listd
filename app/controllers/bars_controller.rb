@@ -17,7 +17,7 @@ class BarsController < ApplicationController
   # GET /bars.json
   def index
     @user=current_user
-	@bars = @user.bars
+	  @bars = @user.bars
 	
     respond_to do |format|
       format.html # index.html.erb
@@ -31,7 +31,7 @@ class BarsController < ApplicationController
     @bar = Bar.find(params[:id])
 	  @user = @bar.user
     @full_path = "http://#{request.host+request.fullpath}"
-    @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
+    @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date).limit(10)
     @reservation_sets = @bar.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
 	  @expired_sets= @bar.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
 	  @expired_reservation_sets= @bar.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)

@@ -107,6 +107,8 @@ class PassSetsController < ApplicationController
   def create
     @pass_set = PassSet.new(params[:pass_set])
     @time_period = TimePeriod.new(params[:time_period])
+    @pass_set.reservation_time_periods = false
+    @pass_set.selling_passes = true
     if @pass_set.reservation_time_periods == true && @pass_set.selling_passes == false
         @pass_set.total_released_passes = 0
         @available_times = @pass_set.time_periods.first
