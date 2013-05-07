@@ -49,7 +49,7 @@ class PassesController < ApplicationController
   end
   
   def toggleRedeem
-   @pass = Pass.find(params[:id])
+   @pass = Pass.find_by_confirmation(params[:id])
    if current_user.partner?
      if @pass.pass_set.bar.user.id != current_user.id
        redirect_to :root
@@ -65,7 +65,8 @@ class PassesController < ApplicationController
    @pass.redeemed=true
    end
    @pass.save
-   redirect_to :back
+   back_url = "/bars/#{@pass.pass_set.bar_id}/pass_sets/#{@pass.pass_set_id}"
+   redirect_to back_url
    flash[:notice] = "Redeem Toggled!"
   end
   
@@ -120,7 +121,7 @@ class PassesController < ApplicationController
       end
 
         pdf.grid([4,6],[7,6]).bounding_box do
-          @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{@pass.confirmation}?id=#{@pass.id}"
+          @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem?id=#{@pass.confirmation}"
           Barby::QrCode.new(@redeem_url, :size => 7).annotate_pdf(pdf, :xdim => 2)
         end
 
@@ -140,7 +141,7 @@ class PassesController < ApplicationController
     pass = Pass.find_by_confirmation(params[:id])
     if pass.nil? == false and pass.purchase.user_id == current_user.id
         respond_to do |format|
-          @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{pass.confirmation}?id=#{pass.id}"
+          @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem?id=#{pass.confirmation}"
           @qr = RQRCode::QRCode.new(@redeem_url, :size => 9)
           format.html { render :layout => false }
         end

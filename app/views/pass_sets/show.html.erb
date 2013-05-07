@@ -253,7 +253,7 @@
 							</p>
 							<small>
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id) %> </br>
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
 									# of Passes:</br>
 		        					Purchased on:</br>
 									Passes Redeemed?:</br>
@@ -278,7 +278,7 @@
 							</p>
 							<small>
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id) %> </br>
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
 									# of Guests:</br>
 									<% if pass.pass_set.reservation_time_periods == true %>
 										Time of Reservation:<br>
@@ -313,7 +313,7 @@
 							</p>
 							<small>	
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id) %> </br>
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
 				  					# of Passes:</br>
 		        					Purchased on:</br>
 									Passes Redeemed?:</br>
@@ -338,7 +338,7 @@
 							</p>
 							<small>	
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.id) %> </br>
+									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
 				  					# of Guests:</br>
 									<% if pass.pass_set.reservation_time_periods == true %>
 										Time of Reservation:<br>
