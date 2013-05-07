@@ -59,6 +59,23 @@
   			</tr>
 		<% end %>
 	</table>
+	<table cellpadding="10">
+  		<tr>
+    		<th>Event Name</th>
+    		<th>Address</th>
+    		<th></th>
+			<th></th>
+  		</tr>
+
+		<% @events.each do |event| %>
+  			<tr>
+    			<td><%= event.name %></td>
+    			<td><%= event.address %></td>
+				<td><%= link_to "View Information", user_event_path(@user, :id => event.id), :method=>:get %></td>
+				<td>  <%= link_to 'Delete Event Location', [@user,event], :confirm => 'Are you sure?', :method => :delete %> </td>
+  			</tr>
+		<% end %>
+	</table>
 <% else %>
 <p> user is a user </p>
 <% end %>
@@ -72,6 +89,7 @@
 		<%= link_to 'Unset Partner', users_unsetPartner_path(@user, :id => @user.id), :method=>:post %> |
 		<%= link_to 'Add a bar location', new_user_bar_path(@user, :id => @user.id), :method=>:get %> |				
 		<%= link_to 'Add a Location', new_user_location_path(@user, :id => @user.id), :method=>:get %> |
+		<%= link_to 'Add an Event', new_user_event_path(@user, :id => @user.id), :method=>:get %> |
 		<%= link_to 'Back', admin_partners_path %>
 	<% else %>
 		<%= link_to 'Set Partner', users_setPartner_path(@user, :id => @user.id), :method=>:post %> |

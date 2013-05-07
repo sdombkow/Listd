@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130503190140) do
+ActiveRecord::Schema.define(:version => 20130507011514) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -118,12 +118,12 @@ ActiveRecord::Schema.define(:version => 20130503190140) do
     t.string   "twitter_url"
     t.string   "street_address"
     t.string   "city"
-    t.integer  "zip_code"
     t.string   "state"
     t.string   "slug"
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
     t.float    "longitude"
+    t.string   "zip_code"
   end
 
   create_table "fechas", :force => true do |t|

@@ -61,6 +61,67 @@
   <% end %> 
 </div> <!-- end of .section-container -->
 
+<div class="section-container">
+  <% if(@localevents.empty?) %>
+	<div class="title-bar">
+	  <h5> Available Events</h5>
+	</div> <!-- end of .title-bar -->
+	  <% for event in @events %>
+	    <div class="content-box">
+		  <div class="vertical-line">
+		    <h6><%= link_to event.name, event %></h6>
+		    <address>
+			  <small> 
+			    <%= event.address %>
+				<br>
+		        <abbr title="Phone">P: </abbr><%= number_to_phone(event.phone_number, :area_code => true) %>
+				</br>
+				<% if event.website_url != ""%>
+			 	  <%= link_to event.website_url, "http://#{event.website_url}", :target => "_blank"%></br>
+				<% end %>
+				<% if event.facebook_url != "" %>
+				  <%= link_to image_tag("fb_icon(bar).png"), event.facebook_url, :target => "_blank" %>
+			  	<% end %>
+				<% if event.twitter_url != "" %>
+				  <%= link_to image_tag("twitter_icon(bar).png"), event.twitter_url, :target => "_blank" %>
+				<% end %>
+			  </small>
+		    </address>
+		  </div> <!-- end of .vertical-line -->
+	 	</div> <!-- end of .content-box -->
+	  <% end %>
+
+  <% else %>
+    <div class="title-bar">
+	  <h5> Available Events</h5>
+	</div>
+	<% for event in @localevents %>
+	  <div class="content-box">
+		<div class="vertical-line">
+		  <h6><%= link_to event.name, event %></h6>
+		  <address>
+		  	<small> 
+			    <%= location.full_address %>
+				<br>
+		        <abbr title="Phone">P: </abbr><%= number_to_phone(event.phone_number, :area_code => true) %>
+				</br>
+				<% if event.website_url != ""%>
+			 	  <%= link_to event.website_url, "http://#{event.website_url}", :target => "_blank"%></br>
+				<% end %>
+				<% if event.facebook_url != "" %>
+				  <%= link_to image_tag("fb_icon(bar).png"), event.facebook_url, :target => "_blank" %>
+			  	<% end %>
+				<% if event.twitter_url != "" %>
+				  <%= link_to image_tag("twitter_icon(bar).png"), event.twitter_url, :target => "_blank" %>
+				<% end %>
+			  </small>
+		  </address>
+		</div> <!-- end of .vertical-line -->
+	  </div> <!-- end of .content-box -->
+	<% end %>
+  <% end %> 
+</div> <!-- end of .section-container -->
+
 <% if user_signed_in? == false %>
 	<div class="title-bar">
 	  	<h5>Your Passes and Reservations</h5>

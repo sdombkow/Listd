@@ -1,28 +1,100 @@
-<%= simple_form_for(@event) do |f| %>
-  <%= f.error_notification %>
+<% content_for :head do %>
+	<script type="text/javascript">
+		function add_fields(link, association, content) {  
+		    var new_id = new Date().getTime();  
+		    var regexp = new RegExp("new_" + association, "g");  
+		    $(link).before(content.replace(regexp, new_id));  
+		};
+	</script>
+<% end %>
 
-  <div class="form-inputs">
-    <%= f.input :user_id %>
-    <%= f.input :name %>
-    <%= f.input :phone_number %>
-    <%= f.input :address %>
-    <%= f.input :intro_paragraph %>
-    <%= f.input :date_of_event %>
-    <%= f.input :time_of_event %>
-    <%= f.input :latitude %>
-    <%= f.input :longtitude %>
-    <%= f.input :logo %>
-    <%= f.input :website_url %>
-    <%= f.input :facebook_url %>
-    <%= f.input :twitter_url %>
-    <%= f.input :street_address %>
-    <%= f.input :city %>
-    <%= f.input :zip_code %>
-    <%= f.input :state %>
-    <%= f.input :slug %>
-  </div>
+<%= form_for([@event.user,@event]) do |f| %>
+  	<% if @event.errors.any? %>
+    	<div id="error_explanation">
+      		<h2><%= pluralize(@event.errors.count, "error") %> prohibited this event from being saved:</h2>
+			<ul>
+      			<% @event.errors.full_messages.each do |msg| %>
+        			<li><%= msg %></li>
+      				<% end %>
+      		</ul>
+    	</div>
+  	<% end %>
+  
+  	<%= hidden_field_tag :os,@user.id %>
+  
+  	<div class="field">
+    	<%= f.label :name %><br />
+    	<%= f.text_field :name %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :phone_number %><br />
+    	<%= f.number_field :phone_number %>
+  	</div>
+	<div class="field">
+		<%= f.label :date_of_event %><br />
+    	<%= f.date_select :date_of_event %>
+	</div>
+  	<div class="field">
+  		<%= f.label :street_address %><br />
+  		<%= f.text_field :street_address %>
+  	</div>
+  	<div class="field">
+ 		<%= f.label :city %><br />
+  		<%= f.text_field :city %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :state %><br />
+  		<%= f.select :state, options_for_select(us_states, :selected => @event.state) %>
+  	</div>
+  	<div class="field">
+  		<%= f.label :zip_code %><br />
+  		<%= f.text_field :zip_code %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :intro_paragraph %><br />
+    	<%= f.text_area :intro_paragraph %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :logo %><br />
+    	<%= f.text_field :logo %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :website_url %><br />
+    	<%= f.text_field :website_url %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :facebook_url %><br />
+    	<%= f.text_field :facebook_url %>
+  	</div>
+  	<div class="field">
+    	<%= f.label :twitter_url %><br />
+    	<%= f.text_field :twitter_url %>
+  	</div>
+  	<%= f.fields_for :location_hours do |builder| %>
+		<!--<%= render 'location_hour_fields', :f => builder %>-->
+		<div>
+    		<%= builder.label :day_of_week_open %><br />
+    		<%= builder.select :day_of_week_open, Date::DAYNAMES %>
+  		</div>
+		<div>
+    		<%= builder.label :opening_time %><br />
+    		<%= builder.time_select :opening_time %>
+  		</div>
+		<div>
+    		<%= builder.label :day_of_week_close %><br />
+    		<%= builder.select :day_of_week_close, Date::DAYNAMES %>
+  		</div>
+		<div>
+    		<%= builder.label :closing_time %><br />
+    		<%= builder.time_select :closing_time %>
+  		</div>
+	<% end %>
+  	
+	<%= link_to_add_fields "Add New Hours", f, :location_hours %>
+	</br>
+	</br>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  	<div class="actions">
+    	<%= f.submit %>
+  	</div>
 <% end %>

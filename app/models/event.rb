@@ -8,7 +8,7 @@ class Event < ActiveRecord::Base
   
   validates_uniqueness_of :name, :scope => :city
   validates :phone_number,  :uniqueness => true, :presence => true
-  validates :street_address, :city, :state, :zip_code, :date_of_event :presence => true
+  validates :street_address, :city, :state, :zip_code, :date_of_event, :presence => true
   validates_format_of :phone_number, 
                     :with => /\A[0-9]{10}\Z/, 
                     :allow_blank => true, 

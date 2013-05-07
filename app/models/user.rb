@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_many :bars, :dependent => :destroy
   has_many :locations, :dependent => :destroy
+  has_many :events, :dependent => :destroy
+  
   has_many :purchases
   has_many :passes, :through => :purchases
   has_many :tickets, :through => :purchases

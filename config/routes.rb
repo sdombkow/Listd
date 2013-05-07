@@ -84,6 +84,25 @@ ListdApp::Application.routes.draw do
     end
   end
   
+  resources :events do
+    resources :ticket_sets
+    collection do
+      post 'search'
+    end
+    resources :pass_sets
+    collection do
+      post 'search'
+    end
+    resources :deal_sets
+    collection do
+      post 'search'
+    end
+    resources :reservation_sets
+    collection do
+      post 'search'
+    end
+  end
+  
   resources :admin
   resources :passes
   match '/mypasses' => 'passes#index'
@@ -123,6 +142,25 @@ ListdApp::Application.routes.draw do
 	
 	resources :users do
 	  resources :locations do
+	    resources :ticket_sets do
+	      get 'close_set'
+	    end
+	    resources :fecha do
+	    end
+	    resources :pass_sets do
+	      get 'close_set'
+	    end
+	    resources :deal_sets do
+	      get 'close_set'
+	    end
+	    resources :reservation_sets do
+	      get 'close_set'
+	    end
+	  end
+	end
+	
+	resources :users do
+	  resources :events do
 	    resources :ticket_sets do
 	      get 'close_set'
 	    end

@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 	    @bars = @user.bars
 	    logger.error "#{@locations.inspect}"
 	    @locations = @user.locations
+	    @events = @user.events
   end
   
   def setPartner 

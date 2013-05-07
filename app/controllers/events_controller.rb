@@ -31,11 +31,13 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     @user = @event.user
     @full_path = "http://#{request.host+request.fullpath}"
-    @pass_sets = @event.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
-    @reservation_sets = @event.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
-    @expired_sets= @event.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
-    @expired_reservation_sets= @event.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)
-
+    
+      @ticket_sets = @event.ticket_sets.joins(:fecha).where("date >= ?", Date.today).order(:date)
+      @expired_ticket_sets = @event.ticket_sets.joins(:fecha).where("date < ?", Date.today).order(:date)
+      @pass_sets = @event.pass_sets.joins(:fecha).where("fechas.date >= ?", Date.today).order(:date)
+      @deal_sets = @event.deal_sets.joins(:fecha).where("fechas.date >= ?", Date.today).order(:date)
+      @reservation_sets = @event.reservation_sets.joins(:fecha).where("fechas.date >= ?", Date.today).order(:date)
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @event }

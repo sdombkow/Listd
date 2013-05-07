@@ -1,0 +1,28 @@
+<% if(@events.nil? ) %>
+	<h5> There are no events with the searched name </h5>
+<% else %>
+	<% @events.each do |event| %>
+		<div>
+  			<div class="bar-preview shadow">
+    			<h5> <%= link_to event.name, event %> </h5>
+    			<address>
+	  				<small> <%= event.address %> <br>
+        			<abbr title="Phone">P:</abbr> <%= number_to_phone(event.phone_number, :area_code => true) %>
+					</br>
+					<% if event.website_url != ""%>
+						<%= link_to event.website_url, "http://#{event.website_url}"%>
+						</br>
+					<% end %>
+					<% if event.facebook_url != "" %>
+						<%= link_to image_tag("fb_icon(bar).png"), event.facebook_url %>
+					<% end %>
+					<% if event.twitter_url != "" %>
+						<%= link_to image_tag("twitter_icon(bar).png"), event.twitter_url %>
+					<% end %>
+	  				</small>
+				</address>
+				<small></small>
+  			</div> <!-- end of .bar-preview -->
+		</div>
+	<% end %>
+<%end%>
