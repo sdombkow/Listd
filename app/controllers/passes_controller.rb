@@ -127,7 +127,7 @@ class PassesController < ApplicationController
       	:modify_contents => false,
       	:copy_contents => false,
       	:modify_annotations => false })
-r
+      	
       if @pass.pass_set.selling_passes == true
           send_data pdf.render, :filename => "LISTDPASS(#{@pass.confirmation}).pdf", :type => "application/pdf"
       else
