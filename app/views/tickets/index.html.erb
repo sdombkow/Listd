@@ -7,7 +7,11 @@
 			<% for ticket in @valid_tickets %>
 				<div class="pass-preview">
 					<small>
-      					<p class="title"><%= ticket.ticket_set.location.name %></p>
+      					<% if ticket.ticket_set.location %>
+							<p class="title"><%= ticket.ticket_set.location.name %></p>
+						<% elsif ticket.ticket_set.event %>
+							<p class="title"><%= ticket.ticket_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 		  						Date of Ticket: <br>
 		  						# of Tickets: <br>
@@ -35,7 +39,11 @@
 			<% for ticket in @past_tickets %>
 				<div class="pass-history-preview">
     				<small>
-	      				<p class="title"><%= ticket.ticket_set.location.name %></p>
+	      				<% if ticket.ticket_set.location %>
+							<p class="title"><%= ticket.ticket_set.location.name %></p>
+						<% elsif ticket.ticket_set.event %>
+							<p class="title"><%= ticket.ticket_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 			  				Date of Ticket: <br>
 			  				# of Tickets: <br>

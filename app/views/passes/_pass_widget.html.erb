@@ -8,7 +8,11 @@
 			<% if (!pass.redeemed) %>
 				<div class = "row-fluid">
       				<div class="pass-item">
-						<span><%= link_to pass.pass_set.location.name, pass %></span>
+						<% if pass.pass_set.location %>
+							<span><%= link_to pass.pass_set.location.name, pass %></span>
+						<% elsif pass.pass_set.event %>
+							<span><%= link_to pass.pass_set.event.name, pass %></span>
+						<% end %>
 						<span class="offset2"><%= pass.pass_set.fecha.date.strftime("%m/%d/%Y") %></span>
   	  				</div> <!-- end of .pass-item -->
 				</div>

@@ -7,7 +7,11 @@
 			<% for deal in @valid_deals %>
 				<div class="pass-preview">
 					<small>
-     					<p class="title"><%= deal.deal_set.location.name %></p>
+     					<% if deal.deal_set.location %>
+							<p class="title"><%= deal.deal_set.location.name %></p>
+						<% elsif deal.deal_set.event %>
+							<p class="title"><%= deal.deal_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 		  						Date of Deal: <br>
 		  						# of Deals: <br>
@@ -35,7 +39,11 @@
 			<% for pass in @past_deals %>
 				<div class="pass-history-preview">
    				<small>
-	      				<p class="title"><%= deal.deal_set.location.name %></p>
+	      				<% if deal.deal_set.location %>
+							<p class="title"><%= deal.deal_set.location.name %></p>
+						<% elsif deal.deal_set.event %>
+							<p class="title"><%= deal.deal_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 			  				Date of Deal: <br>
 			  				# of Deals: <br>

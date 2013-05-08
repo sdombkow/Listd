@@ -1,7 +1,7 @@
 class Purchase < ActiveRecord::Base
   
-  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time, :location, :ticket_set, :deal_set, :reservation_set
-  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time, :location, :ticket_set, :deal_set, :reservation_set
+  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time, :location, :ticket_set, :deal_set, :reservation_set, :event
+  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time, :location, :ticket_set, :deal_set, :reservation_set, :event
   
   validates :name, :price, :num_passes, :date, :presence => true
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}

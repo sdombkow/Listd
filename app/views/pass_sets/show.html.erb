@@ -163,10 +163,17 @@
 	</div>
 
 	<div id = "availableSummary">
-  		<legend><%= @pass_set.location.name %> Passes (<%= @pass_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
-		<dl class="dl-horizontal">
-   			<dt>Location</dt>
-   			<dd><%= @pass_set.location.name %></dd>
+		<% if @pass_set.location != nil %>
+  			<legend><%= @pass_set.location.name %> Passes (<%= @pass_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+   				<dt>Location</dt>
+   				<dd><%= @pass_set.location.name %></dd>
+		<% elsif @pass_set.event != nil %>
+		  	<legend><%= @pass_set.event.name %> Passes (<%= @pass_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+		   		<dt>Event</dt>
+		   		<dd><%= @pass_set.event.name %></dd>
+		<% end %>
 			<dt>Pass Date</dt>
 			<dd><%= @pass_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Unsold Passes</dt>
@@ -181,8 +188,13 @@
 	<div id = "purchaseSummary" style = "display:none;">
 		<legend>Summary of Your Purchase</legend>
   		<dl class="dl-horizontal">
-    		<dt>Location</dt>
-    		<dd><%= @pass_set.location.name %></dd>
+			<% if @pass_set.location != nil %>
+    			<dt>Location</dt>
+    			<dd><%= @pass_set.location.name %></dd>
+			<% elsif @pass_set.event != nil %>
+				<dt>Event</dt>
+    			<dd><%= @pass_set.event.name %></dd>
+			<% end %>
 			<dt>Date</dt>
 			<dd><%= @pass_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Passes Purchased</dt>
@@ -190,7 +202,11 @@
 			<dt>Total Amount</dt>			
 			<dd id = "totalAmount"></dd>
 			<dt>Description</dt>
-			<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.location.name %> on <%= @pass_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% if @pass_set.location != nil %>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.location.name %> on <%= @pass_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% elsif @pass_set.event != nil %>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @pass_set.event.name %> on <%= @pass_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% end %>
   		</dl>
 	</div>
 
@@ -268,7 +284,11 @@
       					<legend>Make a Purchase</legend>
       					<%= f.hidden_field :stripe_card_token %>
       					<%= f.hidden_field :date,:value => @pass_set.fecha.date %>
-      					<%= f.hidden_field :location,:value =>  @location.id %>
+						<% if @pass_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @pass_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
       					<div class="control-group">
         					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
         					<div class="controls">
@@ -360,7 +380,11 @@
 		      			<legend>Make a Purchase</legend>
 		      			<%= f.hidden_field :stripe_card_token %>
 		      			<%= f.hidden_field :date,:value => @pass_set.fecha.date %>
-		      			<%= f.hidden_field :location,:value =>  @location.id %>
+		      			<% if @pass_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @pass_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
 
 	      				<div class="control-group">
 	        				<%= f.label :num_passes, "Number of Passes", class: "control-label" %>

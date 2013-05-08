@@ -6,7 +6,11 @@
 		<small>
   			<h5 class="title title-confirmation">Purchase Summary on <%= @pass.created_at.strftime("%m/%d/%Y") %></h5>
 			<div class="pull-left dt">
-	  			Bar Name: <br>
+				<% if @pass.pass_set.location != nil %>
+	  				Location Name: <br>
+				<% elsif @pass.pass_set.event != nil %>
+					Event Name: <br>
+				<% end %>
 	  			Date of Pass: <br>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
@@ -18,7 +22,11 @@
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
-	  			<%= @pass.pass_set.location.name %> <br>
+				<% if @pass.pass_set.location != nil %>
+	  				<%= @pass.pass_set.location.name %> <br>
+				<% elsif @pass.pass_set.event != nil %>
+					<%= @pass.pass_set.event.name %> <br>
+				<% end %>
 	  			<%= @pass.pass_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 	  			<%= @pass.name %> <br>
 	  			<%= @pass.confirmation %> <br>

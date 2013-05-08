@@ -473,11 +473,11 @@
 	</div>
 </br>
 
-<%= link_to 'New Ticket Set', new_user_location_ticket_set_path(@user,@event) %> |
-<%= link_to 'New Pass Set', new_user_location_pass_set_path(@user,@event) %> |
-<%= link_to 'New Deal Set', new_user_location_deal_set_path(@user,@event) %> |
-<%= link_to 'New Reservation Set', new_user_location_reservation_set_path(@user,@event) %> |
-<%= link_to 'Edit Event Information', edit_user_location_path(@user,@event) %> |
+<%= link_to 'New Ticket Set', new_user_event_ticket_set_path(@user,@event) %> |
+<%= link_to 'New Pass Set', new_user_event_pass_set_path(@user,@event) %> |
+<%= link_to 'New Deal Set', new_user_event_deal_set_path(@user,@event) %> |
+<%= link_to 'New Reservation Set', new_user_event_reservation_set_path(@user,@event) %> |
+<%= link_to 'Edit Event Information', edit_user_event_path(@user,@event) %> |
 <%= link_to 'Delete Event Location', [@user,@event], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>
 

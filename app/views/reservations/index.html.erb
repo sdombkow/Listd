@@ -7,7 +7,11 @@
 			<% for reservation in @valid_reservations %>
 				<div class="pass-preview">
 					<small>
-      					<p class="title"><%= reservation.reservation_set.location.name %></p>
+      					<% if reservation.reservation_set.location %>
+							<p class="title"><%= reservation.reservation_set.location.name %></p>
+						<% elsif reservation.reservation_set.event %>
+							<p class="title"><%= reservation.reservation_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 		  						Date of Reservation: <br>
 		  						# of Guests: <br>
@@ -35,7 +39,11 @@
 			<% for reservation in @past_reservations %>
 				<div class="pass-history-preview">
     				<small>
-	      				<p class="title"><%= reservation.reservation_set.location.name %></p>
+	      				<% if reservation.reservation_set.location %>
+							<p class="title"><%= reservation.reservation_set.location.name %></p>
+						<% elsif reservation.reservation_set.event %>
+							<p class="title"><%= reservation.reservation_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 			  				Date of Reservation: <br>
 			  				# of Guests: <br>

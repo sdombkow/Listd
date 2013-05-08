@@ -5,13 +5,23 @@ class PassSetsController < ApplicationController
 
   # Ensure that the user owns the bar for this pass set
   def ownsPassSet
-      @location = Location.find(params[:location_id])
-      if current_user.partner? == false and current_user.admin? == false
-          redirect_to @location
-      elsif current_user.partner? == true and @bar.user_id != current_user.id
-          redirect_to @location
+      if params[:location_id] != nil
+          @location = Location.find(params[:location_id])
+          if current_user.partner? == false and current_user.admin? == false
+              redirect_to @location
+          elsif current_user.partner? == true and @location.user_id != current_user.id
+              redirect_to @location
+          end
+          return
+      elsif params[:event_id] != nil
+          @event = Event.find(params[:event_id])
+          if current_user.partner? == false and current_user.admin? == false
+              redirect_to @event
+          elsif current_user.partner? == true and @event.user_id != current_user.id
+              redirect_to @event
+          end
+          return
       end
-      return
   end
 
   # GET /pass_sets
@@ -23,8 +33,15 @@ class PassSetsController < ApplicationController
   # GET /pass_sets/1
   # GET /pass_sets/1.json
   def show
-      @location = Location.find(params[:location_id])
-      @pass_set = PassSet.find(params[:id])
+      if params[:location_id] != nil
+          @location = Location.find(params[:location_id])
+          @pass_set = PassSet.find(params[:id])
+          @full_bar_path = "http://#{request.host}" + (location_path @pass_set.location).to_s
+      elsif params[:event_id] != nil
+          @event = Event.find(params[:event_id])
+          @pass_set = PassSet.find(params[:id])
+          @full_bar_path = "http://#{request.host}" + (event_path @pass_set.event).to_s
+      end
 	    @used_passes = @pass_set.passes.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:used_passes_page], :per_page => 5)
 	    @unused_passes = @pass_set.passes.order("name DESC").where('redeemed = ?', false).paginate(:page => params[:unused_passes_page], :per_page => 5)
       @purchase = Purchase.new
@@ -36,7 +53,6 @@ class PassSetsController < ApplicationController
               @end_year = @customer_card.active_card.exp_year
           end
       end
-      @full_bar_path = "http://#{request.host}" + (location_path @pass_set.location).to_s
       @open_graph = false
       if flash[:notice] == 'Purchase created'
           @open_graph = true
@@ -54,8 +70,13 @@ class PassSetsController < ApplicationController
       @pass_set = PassSet.new
       @pass_set.build_fecha
       @pass_set.build_price_point
-      @location = Location.find(params[:location_id])
-      @location_label = "Location ID for "<< @location.name
+      if params[:location_id] != nil
+          @location = Location.find(params[:location_id])
+          @location_label = "Location ID for "<< @location.name
+      elsif params[:event_id] != nil
+          @location = Event.find(params[:event_id])
+          @location_label = "Event ID for "<< @event.name
+      end
     
       respond_to do |format|
           format.html # new.html.erb
@@ -65,7 +86,11 @@ class PassSetsController < ApplicationController
 
   # GET /pass_sets/1/edit
   def edit
-      @location = Location.find(params[:location_id])
+      if params[:location_id] != nil
+          @location = Location.find(params[:location_id])
+      elsif params[:event_id] != nil
+          @event = Location.find(params[:event_id])
+      end
       @pass_set = PassSet.find(params[:id])
   end
 
@@ -80,65 +105,128 @@ class PassSetsController < ApplicationController
       logger.error "Price Point Values: #{@price_point.inspect}"
       no_change = false
       existing = false
-      @location_fechas = @location.fechas.where("date = ?", @fecha.date)
-      @existing_set = @location_fechas.first
-      logger.error "No Change: #{no_change}"
-      logger.error "Fechas: #{@location_fechas.empty?}"
-      logger.error "Fechas: #{@existing_set.inspect}"
-      if @location_fechas.empty?
-          @fecha.location = @location
-          @fecha.pass_set = @pass_set
-          @fecha.selling_passes = true
-          @pass_set.sold_passes = 0
-      	  @pass_set.unsold_passes = @pass_set.total_released_passes
-      	  @pass_set.revenue_percentage = 0.7
-      	  @pass_set.revenue_total = 0
-      	  @pass_set.location = @location
-      	  @pass_set.fecha = @fecha
-      	  @price_point.num_released = @pass_set.total_released_passes
-      	  @price_point.num_sold = 0
-      	  @price_point.num_unsold = 0
-      elsif @existing_set.selling_passes == false
-          logger.error "In Existing Set"
-          @fecha = @existing_set
-          @fecha.pass_set = @pass_set
-          @fecha.selling_passes = true
-          @pass_set.sold_passes = 0
-      	  @pass_set.unsold_passes = @pass_set.total_released_passes
-      	  @pass_set.revenue_percentage = 0.7
-      	  @pass_set.revenue_total = 0
-      	  @pass_set.location = @location
-      	  @pass_set.fecha = @fecha
-      	  @price_point.num_released = @pass_set.total_released_passes
-      	  @price_point.num_sold = 0
-      	  @price_point.num_unsold = 0
-      else       
-          no_change = true
-      end  
-
-      respond_to do |format|
-          if @fecha.date < Date.today
-  	          flash[:notice] = 'Error: You are trying to create a pass set for a date that has already passed!'
-              format.html { render action: "new"  }
-              format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-          elsif no_change == true
-              logger.error "Here"
-  				    flash[:notice] = 'Error: Please use edit to change existing passes'
-  				    format.html { redirect_to edit_user_location_pass_set_path(@location.user, @location, @existing_set.pass_set) }
-  				    format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-          elsif @pass_set.save
+      if params[:location_id] != nil
+          @location_fechas = @location.fechas.where("date = ?", @fecha.date)
+          @existing_set = @location_fechas.first
+          logger.error "No Change: #{no_change}"
+          logger.error "Fechas: #{@location_fechas.empty?}"
+          logger.error "Fechas: #{@existing_set.inspect}"
+          if @location_fechas.empty?
+              @fecha.location = @location
               @fecha.pass_set = @pass_set
-              @fecha.save!
-              logger.error "Fecha Values: #{@fecha.inspect}"
-              @price_point.pass_set_id = @pass_set.id
-              @price_point.save!
-              logger.error "Ticket Set Associated with Price Point #{@price_point.pass_set.inspect}"
-              format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully created.' }
-              format.json { render json: @pass_set, status: :created, location: @pass_set }
-          else
-              format.html { render action: "new" }
-              format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              @fecha.selling_passes = true
+              @pass_set.sold_passes = 0
+      	      @pass_set.unsold_passes = @pass_set.total_released_passes
+      	      @pass_set.revenue_percentage = 0.7
+      	      @pass_set.revenue_total = 0
+      	      @pass_set.location = @location
+      	      @pass_set.fecha = @fecha
+      	      @price_point.num_released = @pass_set.total_released_passes
+      	      @price_point.num_sold = 0
+      	      @price_point.num_unsold = 0
+          elsif @existing_set.selling_passes == false
+              logger.error "In Existing Set"
+              @fecha = @existing_set
+              @fecha.pass_set = @pass_set
+              @fecha.selling_passes = true
+              @pass_set.sold_passes = 0
+      	      @pass_set.unsold_passes = @pass_set.total_released_passes
+      	      @pass_set.revenue_percentage = 0.7
+      	      @pass_set.revenue_total = 0
+      	      @pass_set.location = @location
+      	      @pass_set.fecha = @fecha
+      	      @price_point.num_released = @pass_set.total_released_passes
+      	      @price_point.num_sold = 0
+      	      @price_point.num_unsold = 0
+          else       
+              no_change = true
+          end  
+
+          respond_to do |format|
+              if @fecha.date < Date.today
+  	              flash[:notice] = 'Error: You are trying to create a pass set for a date that has already passed!'
+                  format.html { render action: "new"  }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif no_change == true
+                  logger.error "Here"
+  				        flash[:notice] = 'Error: Please use edit to change existing passes'
+  				        format.html { redirect_to edit_user_location_pass_set_path(@location.user, @location, @existing_set.pass_set) }
+  				        format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif @pass_set.save
+                  @fecha.pass_set = @pass_set
+                  @fecha.save!
+                  logger.error "Fecha Values: #{@fecha.inspect}"
+                  @price_point.pass_set_id = @pass_set.id
+                  @price_point.save!
+                  logger.error "Ticket Set Associated with Price Point #{@price_point.pass_set.inspect}"
+                  format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully created.' }
+                  format.json { render json: @pass_set, status: :created, location: @pass_set }
+              else
+                  format.html { render action: "new" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              end
           end
+      elsif params[:event_id] != nil
+          @event_fechas = @event.fechas.where("date = ?", @fecha.date)
+          @existing_set = @event_fechas.first
+          logger.error "No Change: #{no_change}"
+          logger.error "Fechas: #{@event_fechas.empty?}"
+          logger.error "Fechas: #{@existing_set.inspect}"
+          if @event_fechas.empty?
+              @fecha.event = @event
+              @fecha.pass_set = @pass_set
+              @fecha.selling_passes = true
+              @pass_set.sold_passes = 0
+    	        @pass_set.unsold_passes = @pass_set.total_released_passes
+    	        @pass_set.revenue_percentage = 0.7
+    	        @pass_set.revenue_total = 0
+    	        @pass_set.event = @event
+    	        @pass_set.fecha = @fecha
+    	        @price_point.num_released = @pass_set.total_released_passes
+    	        @price_point.num_sold = 0
+    	        @price_point.num_unsold = 0
+          elsif @existing_set.selling_passes == false
+              logger.error "In Existing Set"
+              @fecha = @existing_set
+              @fecha.pass_set = @pass_set
+              @fecha.selling_passes = true
+              @pass_set.sold_passes = 0
+    	        @pass_set.unsold_passes = @pass_set.total_released_passes
+    	        @pass_set.revenue_percentage = 0.7
+    	        @pass_set.revenue_total = 0
+    	        @pass_set.event = @event
+    	        @pass_set.fecha = @fecha
+    	        @price_point.num_released = @pass_set.total_released_passes
+    	        @price_point.num_sold = 0
+    	        @price_point.num_unsold = 0
+          else       
+              no_change = true
+          end  
+        
+          respond_to do |format|
+              if @fecha.date < Date.today
+	                flash[:notice] = 'Error: You are trying to create a pass set for a date that has already passed!'
+                  format.html { render action: "new"  }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif no_change == true
+                  logger.error "Here"
+				          flash[:notice] = 'Error: Please use edit to change existing passes'
+				          format.html { redirect_to edit_user_event_pass_set_path(@event.user, @event, @existing_set.pass_set) }
+				          format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif @pass_set.save
+                  @fecha.pass_set = @pass_set
+                  @fecha.save!
+                  logger.error "Fecha Values: #{@fecha.inspect}"
+                  @price_point.pass_set_id = @pass_set.id
+                  @price_point.save!
+                  logger.error "Ticket Set Associated with Price Point #{@price_point.pass_set.inspect}"
+                  format.html { redirect_to [@event.user, @event], notice: 'Pass set was successfully created.' }
+                  format.json { render json: @pass_set, status: :created, location: @pass_set }
+              else
+                  format.html { render action: "new" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              end
+          end      
       end
   end
 

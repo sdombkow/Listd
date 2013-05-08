@@ -8,7 +8,11 @@
 			<% if (!ticket.redeemed) %>
 				<div class = "row-fluid">
       				<div class="pass-item">
-						<span><%= link_to ticket.ticket_set.location.name, ticket %></span>
+						<% if ticket.ticket_set.location %>
+							<span><%= link_to ticket.ticket_set.location.name, ticket %></span>
+						<% elsif ticket.ticket_set.event %>
+							<span><%= link_to ticket.ticket_set.event.name, ticket %></span>
+						<% end %>
 						<span class="offset2"><%= ticket.ticket_set.fecha.date.strftime("%m/%d/%Y") %></span>
   	  				</div> <!-- end of .pass-item -->
 				</div>

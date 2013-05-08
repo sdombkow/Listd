@@ -8,7 +8,11 @@
 			<% if (!deal.redeemed) %>
 				<div class = "row-fluid">
       				<div class="pass-item">
-						<span><%= link_to deal.deal_set.location.name, deal %></span>
+						<% if deal.deal_set.location %>
+							<span><%= link_to deal.deal_set.location.name, deal %></span>
+						<% elsif deal.deal_set.event %>
+							<span><%= link_to deal.deal_set.event.name, deal %></span>
+						<% end %>
 						<span class="offset2"><%= deal.deal_set.fecha.date.strftime("%m/%d/%Y") %></span>
   	  				</div> <!-- end of .pass-item -->
 				</div>

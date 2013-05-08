@@ -7,7 +7,11 @@
 			<% for pass in @valid_passes %>
 				<div class="pass-preview">
 					<small>
-      					<p class="title"><%= pass.pass_set.location.name %></p>
+						<% if pass.pass_set.location %>
+							<p class="title"><%= pass.pass_set.location.name %></p>
+						<% elsif pass.pass_set.event %>
+							<p class="title"><%= pass.pass_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 		  						Date of Pass: <br>
 		  						# of Passes: <br>
@@ -35,7 +39,11 @@
 			<% for pass in @past_passes %>
 				<div class="pass-history-preview">
     				<small>
-	      				<p class="title"><%= pass.pass_set.location.name %></p>
+	      				<% if pass.pass_set.location %>
+							<p class="title"><%= pass.pass_set.location.name %></p>
+						<% elsif pass.pass_set.event %>
+							<p class="title"><%= pass.pass_set.event.name %></p>
+						<% end %>
 						<div class="pull-left dt">
 			  				Date of Pass: <br>
 			  				# of Passes: <br>

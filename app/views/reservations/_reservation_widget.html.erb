@@ -8,7 +8,11 @@
 			<% if (!reservation.redeemed) %>
 				<div class = "row-fluid">
       				<div class="pass-item">
-						<span><%= link_to reservation.reservation_set.location.name, reservation %></span>
+						<% if reservation.reservation_set.location %>
+							<span><%= link_to reservation.reservation_set.location.name, reservation %></span>
+						<% elsif reservation.reservation_set.event %>
+							<span><%= link_to reservation.reservation_set.event.name, reservation %></span>
+						<% end %>
 						<span class="offset2"><%= reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %></span>
   	  				</div> <!-- end of .pass-item -->
 				</div>
