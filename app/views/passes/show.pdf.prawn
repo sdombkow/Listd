@@ -45,7 +45,7 @@ else
 end
 
 pdf.grid([4,6],[7,6]).bounding_box do
-  @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem.#{@pass.confirmation}?id=#{@pass.id}"
+  @redeem_url = "#{request.protocol}#{request.host_with_port}/passes/toggleRedeem?id=#{@pass.confirmation}"
       Barby::QrCode.new(@redeem_url, :size => 7).annotate_pdf(pdf, :xdim => 2)
 end
 
