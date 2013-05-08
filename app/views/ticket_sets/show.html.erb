@@ -163,10 +163,17 @@
 	</div>
 
 	<div id = "availableSummary">
-  		<legend><%= @ticket_set.location.name %> Tickets (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
-  		<dl class="dl-horizontal">
-    		<dt>Location</dt>
-    		<dd><%= @ticket_set.location.name %></dd>
+  		<% if @ticket_set.location != nil %>
+  			<legend><%= @ticket_set.location.name %> Passes (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+   				<dt>Location</dt>
+   				<dd><%= @ticket_set.location.name %></dd>
+		<% elsif @ticket_set.event != nil %>
+		  	<legend><%= @ticket_set.event.name %> Passes (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+		   		<dt>Event</dt>
+		   		<dd><%= @ticket_set.event.name %></dd>
+		<% end %>
 			<dt>Ticket Date</dt>
 			<dd><%= @ticket_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Unsold Tickets</dt>
@@ -181,8 +188,13 @@
 	<div id = "purchaseSummary" style = "display:none;">
 		<legend>Summary of Your Purchase</legend>
   		<dl class="dl-horizontal">
-    		<dt>Location</dt>
-   			<dd><%= @ticket_set.location.name %></dd>
+			<% if @ticket_set.location != nil %>
+    			<dt>Location</dt>
+	   			<dd><%= @ticket_set.location.name %></dd>
+			<% elsif @ticket_set.event != nil %>
+				<dt>Event</dt>
+    			<dd><%= @ticket_set.event.name %></dd>
+			<% end %>
 			<dt>Date</dt>
 			<dd><%= @ticket_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Tickets Purchased</dt>
@@ -190,7 +202,11 @@
 			<dt>Total Amount</dt>
 			<dd id = "totalAmount"></dd>
 			<dt>Description</dt>
-			<dd>The purchase of this LISTD pass provides immediate entry to <%= @ticket_set.location.name %> on <%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% if @ticket_set.location != nil %>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @ticket_set.location.name %> on <%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% elsif @ticket_set.event != nil %>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @ticket_set.event.name %> on <%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% end %>
   		</dl>
 	</div>
 
@@ -268,7 +284,11 @@
       					<legend>Make a Purchase</legend>
       					<%= f.hidden_field :stripe_card_token %>
       					<%= f.hidden_field :date,:value => @ticket_set.fecha.date %>
-      					<%= f.hidden_field :location,:value =>  @location.id %>
+						<% if @ticket_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @ticket_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
 
       						<div class="control-group">
         						<%= f.label :num_passes, "Number of Tickets", class: "control-label" %>
@@ -359,8 +379,13 @@
 		      			<legend>Make a Purchase</legend>
 		      			<%= f.hidden_field :stripe_card_token %>
 		      			<%= f.hidden_field :date,:value => @ticket_set.fecha.date %>
-		      			<%= f.hidden_field :location,:value =>  @location.id %>
-	      					<div class="control-group">
+		      			<% if @ticket_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @ticket_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
+	      					
+						<div class="control-group">
 	        					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
 	        					<div class="controls">
 	          						<%= f.select :num_passes, (1..@ticket_set.unsold_tickets) %>

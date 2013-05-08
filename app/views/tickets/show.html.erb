@@ -6,7 +6,11 @@
 		<small>
   			<h5 class="title title-confirmation">Purchase Summary on <%= @ticket.created_at.strftime("%m/%d/%Y") %></h5>
 			<div class="pull-left dt">
-	  			Bar Name: <br>
+	  			<% if @ticket.ticket_set.location != nil %>
+	  				Location Name: <br>
+				<% elsif @ticket.ticket_set.event != nil %>
+					Event Name: <br>
+				<% end %>
 	  			Date of Ticket: <br>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
@@ -18,7 +22,11 @@
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
-	  			<%= @ticket.ticket_set.location.name %> <br>
+	  			<% if @ticket.ticket_set.location != nil %>
+	  				<%= @ticket.ticket_set.location.name %> <br>
+				<% elsif @ticket.ticket_set.event != nil %>
+					<%= @ticket.ticket_set.event.name %> <br>
+				<% end %>
 	  			<%= @ticket.ticket_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 	  			<%= @ticket.name %> <br>
 	  			<%= @ticket.confirmation %> <br>

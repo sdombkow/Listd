@@ -89,7 +89,7 @@ class PassSetsController < ApplicationController
       if params[:location_id] != nil
           @location = Location.find(params[:location_id])
       elsif params[:event_id] != nil
-          @event = Location.find(params[:event_id])
+          @event = Event.find(params[:event_id])
       end
       @pass_set = PassSet.find(params[:id])
   end
@@ -233,40 +233,77 @@ class PassSetsController < ApplicationController
   # PUT /pass_sets/1
   # PUT /pass_sets/1.json
   def update
-      @location = Location.find(params[:location_id])
       @pass_set = PassSet.find(params[:id])
 	    @date = Date.new(params[:pass_set][:fecha_attributes]["date(1i)"].to_i,params[:pass_set][:fecha_attributes]["date(2i)"].to_i,params[:pass_set][:fecha_attributes]["date(3i)"].to_i)
-	    @existing_set = @location.fechas.where("date = ?", @date).first.pass_set
-	    logger.error "Ticket Set: #{@existing_set.inspect}"
-      if @existing_set.nil?
-          logger.error "Nil Existing Set"
-          flash[:notice] = "Error: You cannot change the date of this pass set. Please create a new one"
-          redirect_to :action => "index", :controller => "locations"
-          return
-      end
-      @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
-      @existing_sets = @location.fechas.where("date = ? and selling_passes = ?", @date, true).length
-      logger.error "Price: #{params[:pass_set][:price_point_attributes]}"
-      @pass_set.price_point.price = params[:pass_set][:price_point_attributes]["price"]
-      logger.error "Pass Set Price: #{@pass_set.price_point.price}"
-      logger.error "Pass Set: #{@pass_set.inspect}"
-
-      respond_to do |format|
-          if @date < Date.today
-  	          flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
-              format.html { render action: "edit" }
-              format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-              # Next if statements prevents any editing to this pass set
-          elsif @existing_sets == 1 and @existing_set.id != @pass_set.id
-    	        flash[:notice] = 'Error: There is already a pass set with this date!'
-              format.html { render action: "edit" }
-              format.json { render json: @pass_set.errors, status: :unprocessable_entity }
-          elsif @pass_set.update_attributes(params[:pass_set])
-              format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully updated.' }
-              format.json { head :no_content }
-          else
-              format.html { render action: "edit" }
-              format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+      if params[:location_id] != nil
+          @location = Location.find(params[:location_id])
+          @existing_set = @location.fechas.where("date = ?", @date).first.pass_set
+    	    logger.error "Ticket Set: #{@existing_set.inspect}"
+          if @existing_set.nil?
+              logger.error "Nil Existing Set"
+              flash[:notice] = "Error: You cannot change the date of this pass set. Please create a new one"
+              redirect_to :action => "index", :controller => "locations"
+              return
+          end
+          @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
+          @existing_sets = @location.fechas.where("date = ? and selling_passes = ?", @date, true).length
+          logger.error "Price: #{params[:pass_set][:price_point_attributes]}"
+          @pass_set.price_point.price = params[:pass_set][:price_point_attributes]["price"]
+          logger.error "Pass Set Price: #{@pass_set.price_point.price}"
+          logger.error "Pass Set: #{@pass_set.inspect}"
+          
+          respond_to do |format|
+              if @date < Date.today
+      	          flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+                  # Next if statements prevents any editing to this pass set
+              elsif @existing_sets == 1 and @existing_set.id != @pass_set.id
+        	        flash[:notice] = 'Error: There is already a pass set with this date!'
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif @pass_set.update_attributes(params[:pass_set])
+                  format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully updated.' }
+                  format.json { head :no_content }
+              else
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              end
+          end
+      elsif params[:event_id] != nil
+          @event = Event.find(params[:event_id])
+          @existing_set = @event.fechas.where("date = ?", @date).first.pass_set
+    	    logger.error "Ticket Set: #{@existing_set.inspect}"
+          if @existing_set.nil?
+              logger.error "Nil Existing Set"
+              flash[:notice] = "Error: You cannot change the date of this pass set. Please create a new one"
+              redirect_to :action => "index", :controller => "events"
+              return
+          end
+          @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
+          @existing_sets = @event.fechas.where("date = ? and selling_passes = ?", @date, true).length
+          logger.error "Price: #{params[:pass_set][:price_point_attributes]}"
+          @pass_set.price_point.price = params[:pass_set][:price_point_attributes]["price"]
+          logger.error "Pass Set Price: #{@pass_set.price_point.price}"
+          logger.error "Pass Set: #{@pass_set.inspect}"
+          
+          respond_to do |format|
+              if @date < Date.today
+      	          flash[:notice] = 'Error: You are trying to edit a pass to a date that has already passed!'
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+                  # Next if statements prevents any editing to this pass set
+              elsif @existing_sets == 1 and @existing_set.id != @pass_set.id
+        	        flash[:notice] = 'Error: There is already a pass set with this date!'
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              elsif @pass_set.update_attributes(params[:pass_set])
+                  format.html { redirect_to [@event.user, @event], notice: 'Pass set was successfully updated.' }
+                  format.json { head :no_content }
+              else
+                  format.html { render action: "edit" }
+                  format.json { render json: @pass_set.errors, status: :unprocessable_entity }
+              end
           end
       end
   end
@@ -275,25 +312,43 @@ class PassSetsController < ApplicationController
   # DELETE /pass_sets/1.json
   def destroy
       @pass_set = PassSet.find(params[:id])
-      @location = @pass_set.location
-      @pass_set.destroy
+      if @pass_set.location != nil
+          @location = @pass_set.location
+          @pass_set.destroy
 
-      respond_to do |format|
-        format.html { redirect_to [@location], notice: 'Pass set was successfully deleted.' }
-        format.json { head :no_content }
+          respond_to do |format|
+            format.html { redirect_to [@location], notice: 'Pass set was successfully deleted.' }
+            format.json { head :no_content }
+          end
+      elsif @pass_set.event != nil
+          @event = @pass_set.event
+          @pass_set.destroy
+
+          respond_to do |format|
+            format.html { redirect_to [@event], notice: 'Pass set was successfully deleted.' }
+            format.json { head :no_content }
+          end
       end
   end
   
   def close_set
       @pass_set = PassSet.find(params[:pass_set_id])
-      @location = @pass_set.location
       @pass_set.total_released_passes = @pass_set.sold_passes
       @pass_set.unsold_passes = 0
       @pass_set.save
-    
-      respond_to do |format|
-          format.html { redirect_to [@location], notice: 'Pass set was successfully closed.' }
-          format.json { head :no_content }
+      
+      if @pass_set.location != nil
+          @location = @pass_set.location
+          respond_to do |format|
+              format.html { redirect_to [@location], notice: 'Pass set was successfully closed.' }
+              format.json { head :no_content }
+          end
+      elsif @pass_set.event != nil
+          @event = @pass_set.event
+          respond_to do |format|
+              format.html { redirect_to [@event], notice: 'Pass set was successfully closed.' }
+              format.json { head :no_content }
+          end
       end
   end
 end

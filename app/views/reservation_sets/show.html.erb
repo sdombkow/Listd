@@ -163,10 +163,17 @@
 	</div>
 
 	<div id = "availableSummary">
-  		<legend><%= @reservation_set.location.name %> Reservations (<%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
-		<dl class="dl-horizontal">
-   			<dt>Location</dt>
-   			<dd><%= @reservation_set.location.name %></dd>
+		<% if @reservation_set.location %>
+  			<legend><%= @reservation_set.location.name %> Reservations (<%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+   				<dt>Location</dt>
+   				<dd><%= @reservation_set.location.name %></dd>
+		<% elsif @reservation_set.event %>
+			<legend><%= @reservation_set.event.name %> Reservations (<%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+			<dl class="dl-horizontal">
+   				<dt>Event</dt>
+   				<dd><%= @reservation_set.event.name %></dd>
+		<% end %>
 			<dt>Reservation Date</dt>
 			<dd><%= @reservation_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Unsold Reservations</dt>
@@ -179,8 +186,13 @@
 	<div id = "purchaseSummary" style = "display:none;">
 		<legend>Summary of Your Purchase</legend>
   		<dl class="dl-horizontal">
-    		<dt>Location</dt>
-    		<dd><%= @reservation_set.location.name %></dd>
+			<% if @reservation_set.location %>
+    			<dt>Location</dt>
+    			<dd><%= @reservation_set.location.name %></dd>
+			<% elsif @reservation_set.event %>
+				<dt>Event</dt>
+    			<dd><%= @reservation_set.event.name %></dd>
+			<% end %>
 			<dt>Date</dt>
 			<dd><%= @reservation_set.fecha.date.strftime("%m/%d/%Y") %></dd>
 			<dt>Reservations Purchased</dt>
@@ -188,7 +200,11 @@
 			<dt>Total Amount</dt>			
 			<dd id = "totalAmount"></dd>
 			<dt>Description</dt>
-			<dd>The purchase of this LISTD reservation provides immediate entry to <%= @reservation_set.location.name %> on <%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% if @reservation_set.location %>
+				<dd>The purchase of this LISTD reservation provides immediate entry to <%= @reservation_set.location.name %> on <%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% elsif @reservation_set.event %>
+				<dd>The purchase of this LISTD reservation provides immediate entry to <%= @reservation_set.event.name %> on <%= @reservation_set.fecha.date.strftime("%m/%d/%y") %>.</dd>
+			<% end %>
   		</dl>
 	</div>
 
@@ -266,7 +282,12 @@
       					<legend>Make a Purchase</legend>
       					<%= f.hidden_field :stripe_card_token %>
       					<%= f.hidden_field :date,:value => @reservation_set.fecha.date %>
-      					<%= f.hidden_field :location,:value =>  @location.id %>
+      					<% if @reservation_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @reservation_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
+
       					<div class="control-group">
         					<%= f.label :num_passes, "Number of Passes", class: "control-label" %>
         					<div class="controls">
@@ -355,7 +376,11 @@
 		      			<legend>Make a Purchase</legend>
 		      			<%= f.hidden_field :stripe_card_token %>
 		      			<%= f.hidden_field :date,:value => @reservation_set.fecha.date %>
-		      			<%= f.hidden_field :location,:value =>  @location.id %>
+		      			<% if @reservation_set.location != nil %>
+      						<%= f.hidden_field :location,:value =>  @location.id %>
+						<% elsif @reservation_set.event != nil %>
+							<%= f.hidden_field :event,:value =>  @event.id %>
+						<% end %>
 
 	      				<div class="control-group">
 	        				<%= f.label :num_passes, "Number of Passes", class: "control-label" %>

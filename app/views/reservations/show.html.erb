@@ -6,7 +6,11 @@
 		<small>
   			<h5 class="title title-confirmation">Purchase Summary on <%= @reservation.created_at.strftime("%m/%d/%Y") %></h5>
 			<div class="pull-left dt">
-	  			Location Name: <br>
+	  			<% if @reservation.reservation_set.location != nil %>
+	  				Location Name: <br>
+				<% elsif @reservation.reservation_set.event != nil %>
+					Event Name: <br>
+				<% end %>
 	  			Date of Reservation: <br>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
@@ -18,7 +22,11 @@
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
-	  			<%= @reservation.reservation_set.location.name %> <br>
+				<% if @reservation.reservation_set.location != nil %>
+	  				<%= @reservation.reservation_set.location.name %> <br>
+				<% elsif @reservation.reservation_set.event != nil %>
+					<%= @reservation.reservation_set.event.name %> <br>
+				<% end %>
 	  			<%= @reservation.reservation_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 	  			<%= @reservation.name %> <br>
 	  			<%= @reservation.confirmation %> <br>

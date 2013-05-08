@@ -6,7 +6,11 @@
 		<small>
   			<h5 class="title title-confirmation">Purchase Summary on <%= @deal.created_at.strftime("%m/%d/%Y") %></h5>
 			<div class="pull-left dt">
-	  			Location Name: <br>
+				<% if @deal.deal_set.location != nil %>
+	  				Location Name: <br>
+				<% elsif @deal.deal_set.event != nil %>
+					Event Name: <br>
+				<% end %>
 	  			Date of Deal: <br>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
@@ -18,7 +22,11 @@
 	  			<% end %>
 			</div>
 			<div class="pull-left dd">
-	  			<%= @deal.deal_set.location.name %> <br>
+				<% if @deal.deal_set.location %>
+	  				<%= @deal.deal_set.location.name %> <br>
+				<% elsif @deal.deal_set.event %>
+					<%= @deal.deal_set.event.name %> <br>
+				<% end %>
 	  			<%= @deal.deal_set.fecha.date.strftime("%m/%d/%Y") %> <br>
 	  			<%= @deal.name %> <br>
 	  			<%= @deal.confirmation %> <br>
