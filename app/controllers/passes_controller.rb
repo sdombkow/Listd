@@ -55,14 +55,12 @@ class PassesController < ApplicationController
        redirect_to :root
        return
      end
-   else
-     redirect_to :root
-     return
    end
+   
    if(@pass.redeemed?)
-   @pass.redeemed=false
+     @pass.redeemed=false
    else
-   @pass.redeemed=true
+     @pass.redeemed=true
    end
    @pass.save
    back_url = "/bars/#{@pass.pass_set.bar_id}/pass_sets/#{@pass.pass_set_id}"
@@ -129,7 +127,7 @@ class PassesController < ApplicationController
       	:modify_contents => false,
       	:copy_contents => false,
       	:modify_annotations => false })
-
+r
       if @pass.pass_set.selling_passes == true
           send_data pdf.render, :filename => "LISTDPASS(#{@pass.confirmation}).pdf", :type => "application/pdf"
       else
