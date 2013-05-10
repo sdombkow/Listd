@@ -305,8 +305,8 @@
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Tickets', [@event.user, @event, ticket_set] %></td>
-								<td><%= link_to 'Edit', edit_user_location_ticket_set_path(@event.user, @event, ticket_set) %></td>
-								<td><%= link_to 'Close Out', user_location_ticket_set_close_set_path(@event.user, @event, ticket_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Edit', edit_user_event_ticket_set_path(@event.user, @event, ticket_set) %></td>
+								<td><%= link_to 'Close Out', user_event_ticket_set_close_set_path(@event.user, @event, ticket_set), :confirm => 'Are you sure?' %></td>
 								<td><%= link_to 'Delete', [@event.user, @event, ticket_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Passes', [@event, ticket_set] %></td>
@@ -356,8 +356,8 @@
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Passes', [@event.user, @event, pass_set] %></td>
-								<td><%= link_to 'Edit', edit_user_location_pass_set_path(@event.user, @event, pass_set) %></td>
-								<td><%= link_to 'Close Out', user_location_pass_set_close_set_path(@event.user, @event, pass_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Edit', edit_user_event_pass_set_path(@event.user, @event, pass_set) %></td>
+								<td><%= link_to 'Close Out', user_event_pass_set_close_set_path(@event.user, @event, pass_set), :confirm => 'Are you sure?' %></td>
 								<td><%= link_to 'Delete', [@event.user, @event, pass_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Passes', [@event, pass_set] %></td>
@@ -406,8 +406,8 @@
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Deals', [@event.user, @event, deal_set] %></td>
-								<td><%= link_to 'Edit', edit_user_location_deal_set_path(@event.user, @event, deal_set) %></td>
-								<td><%= link_to 'Close Out', user_location_deal_set_close_set_path(@event.user, @event, deal_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Edit', edit_user_event_deal_set_path(@event.user, @event, deal_set) %></td>
+								<td><%= link_to 'Close Out', user_event_deal_set_close_set_path(@event.user, @event, deal_set), :confirm => 'Are you sure?' %></td>
 								<td><%= link_to 'Delete', [@event.user, @event, deal_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Deals', [@event, deal_set] %></td>
@@ -456,8 +456,8 @@
 
 							<%if(user_signed_in? && current_user.admin?) %>
     							<td><%= link_to 'Show Purchased Reservations', [@event.user, @event, reservation_set] %></td>
-								<td><%= link_to 'Edit', edit_user_location_reservation_set_path(@event.user, @event, reservation_set) %></td>
-								<td><%= link_to 'Close Out', user_location_reservation_set_close_set_path(@event.user, @event, reservation_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Edit', edit_user_event_reservation_set_path(@event.user, @event, reservation_set) %></td>
+								<td><%= link_to 'Close Out', user_event_reservation_set_close_set_path(@event.user, @event, reservation_set), :confirm => 'Are you sure?' %></td>
 								<td><%= link_to 'Delete', [@event.user, @event, reservation_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Reservations', [@event, reservation_set] %></td>

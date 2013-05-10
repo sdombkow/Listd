@@ -125,7 +125,7 @@ class ReservationSetsController < ApplicationController
         elsif @existing_set.selling_reservations == false
             logger.error "In Existing Set"
             @fecha = @existing_set
-            @fecha.reservation_set = @deal_set
+            @fecha.reservation_set = @reservation_set
             @fecha.selling_reservations = true
             @reservation_set.sold_reservations = 0
     	      @reservation_set.unsold_reservations = @reservation_set.total_released_reservations
@@ -184,7 +184,7 @@ class ReservationSetsController < ApplicationController
         elsif @existing_set.selling_reservations == false
             logger.error "In Existing Set"
             @fecha = @existing_set
-            @fecha.reservation_set = @deal_set
+            @fecha.reservation_set = @reservation_set
             @fecha.selling_reservations = true
             @reservation_set.sold_reservations = 0
     	      @reservation_set.unsold_reservations = @reservation_set.total_released_reservations
@@ -234,6 +234,7 @@ class ReservationSetsController < ApplicationController
     if params[:location_id] != nil
         @location = Location.find(params[:location_id])
         @existing_set = @location.fechas.where("date = ?", @date).first.reservation_set
+        logger.error "Fecha Values #{@location.fechas.where("date = ?", @date).first.inspect}"
         logger.error "Reservation Set: #{@existing_set.inspect}"
         if @existing_set.nil?
             logger.error "Nil Existing Set"
@@ -269,6 +270,7 @@ class ReservationSetsController < ApplicationController
         @event = Event.find(params[:event_id])
         @existing_set = @event.fechas.where("date = ?", @date).first.reservation_set
         logger.error "Reservation Set: #{@existing_set.inspect}"
+        logger.error "Fecha Values: #{@event.fechas.where("date = ?", @date).first.inspect}"
         if @existing_set.nil?
             logger.error "Nil Existing Set"
             flash[:notice] = "Error: You cannot change the date of this reservation set. Please create a new one"

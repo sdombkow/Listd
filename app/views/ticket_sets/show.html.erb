@@ -164,12 +164,12 @@
 
 	<div id = "availableSummary">
   		<% if @ticket_set.location != nil %>
-  			<legend><%= @ticket_set.location.name %> Passes (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+  			<legend><%= @ticket_set.location.name %> Tickets (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
 			<dl class="dl-horizontal">
    				<dt>Location</dt>
    				<dd><%= @ticket_set.location.name %></dd>
 		<% elsif @ticket_set.event != nil %>
-		  	<legend><%= @ticket_set.event.name %> Passes (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+		  	<legend><%= @ticket_set.event.name %> Tickets (<%= @ticket_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
 			<dl class="dl-horizontal">
 		   		<dt>Event</dt>
 		   		<dd><%= @ticket_set.event.name %></dd>

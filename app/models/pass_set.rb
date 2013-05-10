@@ -3,6 +3,7 @@ class PassSet < ActiveRecord::Base
   attr_accessible :revenue_percentage, :fecha_attributes, :price_point_attributes, :total_released_passes
   
   validates :total_released_passes, :presence => true
+  validates :unsold_passes, :numericality => { :greater_than_or_equal_to => 0 }
   
   belongs_to :bar
   has_many :passes , :dependent => :delete_all

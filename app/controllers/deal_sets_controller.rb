@@ -196,7 +196,7 @@ class DealSetsController < ApplicationController
              @deal_set.unsold_deals = @deal_set.total_released_deals
              @deal_set.revenue_percentage = 0.7
           	 @deal_set.revenue_total = 0
-             @deal_set.location = @location
+             @deal_set.event = @event
           	 @deal_set.fecha = @fecha
           	 @price_point.num_released = @deal_set.total_released_deals
              @price_point.num_sold = 0
@@ -239,7 +239,7 @@ class DealSetsController < ApplicationController
     @date = Date.new(params[:deal_set][:fecha_attributes]["date(1i)"].to_i,params[:deal_set][:fecha_attributes]["date(2i)"].to_i,params[:deal_set][:fecha_attributes]["date(3i)"].to_i)
     if params[:location_id] != nil
         @location = Location.find(params[:location_id])
-        @existing_set = @location.fechas.where("date = ?", @date).first.reservation_set
+        @existing_set = @location.fechas.where("date = ?", @date).first.deal_set
         logger.error "Reservation Set: #{@existing_set.inspect}"
         if @existing_set.nil?
             logger.error "Nil Existing Set"
@@ -270,11 +270,12 @@ class DealSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @deal_set.errors, status: :unprocessable_entity }
             end
-        end
+        end 
     elsif params[:event_id] != nil
         @event = Event.find(params[:event_id])
-        @existing_set = @event.fechas.where("date = ?", @date).first.reservation_set
+        @existing_set = @event.fechas.where("date = ?", @date).first.deal_set
         logger.error "Reservation Set: #{@existing_set.inspect}"
+        logger.error "Fecha Values: #{@event.fechas.where("date = ?", @date).first.inspect}"
         if @existing_set.nil?
             logger.error "Nil Existing Set"
             flash[:notice] = "Error: You cannot change the date of this deal set. Please create a new one"
@@ -282,7 +283,7 @@ class DealSetsController < ApplicationController
             return
         end
         @deal_set.unsold_deals = Integer(params[:deal_set]["total_released_deals"]) - @deal_set.sold_deals
-        @existing_sets = @levent.fechas.where("date = ? and selling_deals = ?", @date, true).length
+        @existing_sets = @event.fechas.where("date = ? and selling_deals = ?", @date, true).length
         logger.error "Price: #{params[:deal_set][:price_point_attributes]}"
         @deal_set.price_point.price = params[:deal_set][:price_point_attributes]["price"]
         logger.error "Deal Set Price: #{@deal_set.price_point.price}"
@@ -337,13 +338,13 @@ class DealSetsController < ApplicationController
       @deal_set.unsold_deals = 0
       @deal_set.save
       
-      if @pass_set.location != nil
+      if @deal_set.location != nil
           @location = @deal_set.location
           respond_to do |format|
               format.html { redirect_to [@location], notice: 'Deal set was successfully closed.' }
               format.json { head :no_content }
           end
-      elsif @pass_set.event != nil
+      elsif @deal_set.event != nil
           @event = @deal_set.event
           respond_to do |format|
               format.html { redirect_to [@event], notice: 'Deal set was successfully closed.' }

@@ -2,5 +2,10 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', [@location.user, @location,@pass_set] %> |
-<%= link_to 'Back', [@location.user, @location] %>
+<% if params[:location_id] != nil %>
+	<%= link_to 'Show', [@location.user, @location, @pass_set] %> |
+	<%= link_to 'Back', [@location.user, @location] %>
+<% elsif params[:event_id] != nil %>
+	<%= link_to 'Show', [@event.user, @event, @pass_set] %> |
+	<%= link_to 'Back', [@event.user, @event] %>
+<% end %>

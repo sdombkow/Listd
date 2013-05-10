@@ -4,6 +4,7 @@ class DealSet < ActiveRecord::Base
   :total_released_deals, :unsold_deals, :fecha_attributes, :price_point_attributes
   
   validates :fecha, :total_released_deals, :presence => true
+  validates :unsold_deals, :numericality => { :greater_than_or_equal_to => 0 }
   
   has_many :deals, :dependent => :delete_all
   has_many :users, :through => :tickets

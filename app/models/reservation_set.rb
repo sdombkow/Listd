@@ -4,6 +4,7 @@ class ReservationSet < ActiveRecord::Base
   :total_released_reservations, :unsold_reservations, :fecha_attributes, :price_point_attributes
   
   validates :fecha, :total_released_reservations, :presence => true
+  validates :unsold_reservations, :numericality => { :greater_than_or_equal_to => 0 }
   
   has_many :reservations, :dependent => :delete_all
   has_many :users, :through => :reservations

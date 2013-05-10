@@ -164,12 +164,12 @@
 
 	<div id = "availableSummary">
   		<% if @deal_set.location != nil %>
-  			<legend><%= @deal_set.location.name %> Passes (<%= @deal_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+  			<legend><%= @deal_set.location.name %> Deals (<%= @deal_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
 			<dl class="dl-horizontal">
    				<dt>Location</dt>
    				<dd><%= @deal_set.location.name %></dd>
 		<% elsif @deal_set.event != nil %>
-		  	<legend><%= @deal_set.event.name %> Passes (<%= @deal_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
+		  	<legend><%= @deal_set.event.name %> Deals (<%= @deal_set.fecha.date.strftime("%m/%d/%y") %>)</legend>
 			<dl class="dl-horizontal">
 		   		<dt>Event</dt>
 		   		<dd><%= @deal_set.event.name %></dd>
@@ -273,7 +273,7 @@
 		<div id="sold_out">
 			</br>
 			<% if @deal_set.unsold_deals == 0 %>
-				<h1>Sorry, there are no available tickets for <%= @deal_set.fecha.date.strftime("%m/%d/%y")%>. </h1>
+				<h1>Sorry, there are no available deals for <%= @deal_set.fecha.date.strftime("%m/%d/%y")%>. </h1>
 			<% end %>
 		</div>
 	

@@ -4,6 +4,7 @@ class TicketSet < ActiveRecord::Base
   :unsold_tickets, :fecha_attributes, :price_point_attributes
   
   validates :total_released_tickets, :revenue_percentage, :sold_tickets, :unsold_tickets, :presence => true
+  validates :unsold_tickets, :numericality => { :greater_than_or_equal_to => 0 }
   
   has_many :tickets , :dependent => :delete_all
   has_many :users, :through => :tickets
