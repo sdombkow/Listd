@@ -1,6 +1,6 @@
 class PassSet < ActiveRecord::Base
 
-  attr_accessible :revenue_percentage, :fecha_attributes, :price_point_attributes, :total_released_passes
+  attr_accessible :revenue_percentage, :fecha_attributes, :price_points_attributes, :total_released_passes
   
   validates :total_released_passes, :presence => true
   validates :unsold_passes, :numericality => { :greater_than_or_equal_to => 0 }
@@ -14,11 +14,11 @@ class PassSet < ActiveRecord::Base
   belongs_to :event
   
   has_one :fecha, :dependent => :destroy
-  has_one :price_point, :dependent => :destroy
+  
+  has_many :price_points, :dependent => :destroy
   
   accepts_nested_attributes_for :time_periods
-  
   accepts_nested_attributes_for :fecha
-  accepts_nested_attributes_for :price_point, :reject_if => lambda { |a| a[:content].blank? }
+  accepts_nested_attributes_for :price_points, :reject_if => lambda { |a| a[:price].blank? }, :allow_destroy => true
 
 end

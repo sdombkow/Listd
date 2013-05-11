@@ -69,7 +69,7 @@ class PassSetsController < ApplicationController
   def new
       @pass_set = PassSet.new
       @pass_set.build_fecha
-      @pass_set.build_price_point
+      1.times { @pass_set.price_points.build }
       if params[:location_id] != nil
           @location = Location.find(params[:location_id])
           @location_label = "Location ID for "<< @location.name
@@ -156,8 +156,6 @@ class PassSetsController < ApplicationController
                   @fecha.pass_set = @pass_set
                   @fecha.save!
                   logger.error "Fecha Values: #{@fecha.inspect}"
-                  @price_point.pass_set_id = @pass_set.id
-                  @price_point.save!
                   logger.error "Ticket Set Associated with Price Point #{@price_point.pass_set.inspect}"
                   format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully created.' }
                   format.json { render json: @pass_set, status: :created, location: @pass_set }
