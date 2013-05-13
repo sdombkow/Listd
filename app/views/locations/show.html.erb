@@ -337,8 +337,8 @@
     						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
     						<td data-title="Sold"><%= pass_set.sold_passes %></td>
     						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
-							<% if pass_set.price_point != nil %>
-								<td data-title="Price"><%= number_to_currency(pass_set.price_point.price) %></td>
+							<% if pass_set.price != nil %>
+								<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
 							<% else %>
 								<td data-title="Price"> 0 </td>
 							<% end %>

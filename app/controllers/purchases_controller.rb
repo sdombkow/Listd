@@ -403,12 +403,12 @@ class PurchasesController < ApplicationController
 	      logger.error "#{current_user.id}"
 	      @purchase.user_id = @user.id
 	      @purchase.date = params[:purchase][:date]	
-	      if String(@pass_set.price_point.price).split(".").last.length == 1
-            @decimals = String(@pass_set.price_point.price).split(".").last + "0"
+	      if String(@pass_set.price).split(".").last.length == 1
+            @decimals = String(@pass_set.price).split(".").last + "0"
         else 
-            @decimals = String(@pass_set.price_point.price).split(".").last
+            @decimals = String(@pass_set.price).split(".").last
         end
-        @purchase.price = (String(@pass_set.price_point.price).split(".").first + @decimals)
+        @purchase.price = (String(@pass_set.price).split(".").first + @decimals)
 	      @purchase.price = Integer(@purchase.price)*num_passes
 
 	      if @user.stripe_customer_token != nil
@@ -460,10 +460,24 @@ class PurchasesController < ApplicationController
         end   
   		
         @pass_set.sold_passes+=num_passes
-        @pass_set.unsold_passes-=num_passes
-  			    
-  	    @pass_set.revenue_total += @pass_set.price_point.price * num_passes
+        @pass_set.unsold_passes-=num_passes 			    
+  	    @pass_set.revenue_total += @pass_set.price * num_passes
         @pass_set.save 
+        
+        check_active = true
+        @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        @pass_set.price_points.each_with_index.map {|price, index| 
+	          if check_active == true
+	              if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than
+    	              if price.active_check != true
+    	                  price.active_check = true
+    	                  @pass_set.price = price.price
+    	              end
+    	          else
+    	              price.active_check = false
+    	          end
+	          end
+	      }
     
         # for i in 0..num_passes-1
 	      pass = Pass.new
@@ -471,9 +485,9 @@ class PurchasesController < ApplicationController
 	      pass.purchase_id = @purchase.id
 	      pass.pass_set_id = @pass_set.id
 	      pass.redeemed = false
-	      pass.price = @pass_set.price_point.price
-	      pass.total_price = @pass_set.price_point.price * num_passes
-	      logger.error "#{@pass_set.price_point.price}"
+	      pass.price = @pass_set.price
+	      pass.total_price = @pass_set.price * num_passes
+	      logger.error "#{@pass_set.price}"
 	      logger.error "#{pass.price}"
 	      logger.error "#{pass.total_price}"
 		    pass.entries = num_passes

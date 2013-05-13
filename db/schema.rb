@@ -1,4 +1,4 @@
-4# encoding: UTF-8
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507011514) do
+ActiveRecord::Schema.define(:version => 20130513203040) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -220,6 +220,13 @@ ActiveRecord::Schema.define(:version => 20130507011514) do
     t.integer  "fecha_id"
     t.decimal  "revenue_percentage"
     t.integer  "event_id"
+    t.boolean  "single_price_level"
+    t.boolean  "double_price_level"
+    t.boolean  "triple_price_level"
+    t.integer  "double_price_less_than"
+    t.integer  "triple_price_less_than"
+    t.decimal  "double_price_value",       :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "triple_price_value",       :precision => 10, :scale => 2, :default => 0.0
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -232,10 +239,10 @@ ActiveRecord::Schema.define(:version => 20130507011514) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.integer  "entries",          :default => 0
-    t.integer  "price"
     t.string   "confirmation"
     t.string   "reservation_time"
     t.decimal  "total_price"
+    t.decimal  "price"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"
@@ -262,6 +269,8 @@ ActiveRecord::Schema.define(:version => 20130507011514) do
     t.datetime "created_at",         :null => false
     t.datetime "updated_at",         :null => false
     t.integer  "deal_set_id"
+    t.integer  "active_less_than"
+    t.boolean  "active_check"
   end
 
   create_table "purchases", :force => true do |t|
