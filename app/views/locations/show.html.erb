@@ -286,8 +286,8 @@
     						<td data-title="Released Passes"><%= ticket_set.total_released_tickets %></td>
     						<td data-title="Sold"><%= ticket_set.sold_tickets %></td>
     						<td data-title="Unsold"><%= ticket_set.unsold_tickets %></td>
-							<% if ticket_set.price_point != nil %>
-								<td data-title="Price"><%= number_to_currency(ticket_set.price_point.price) %></td>
+							<% if ticket_set.price != nil %>
+								<td data-title="Price"><%= number_to_currency(ticket_set.price) %></td>
 							<% else %>
 								<td data-title="Price"> 0 </td>
 							<% end %>
@@ -387,8 +387,8 @@
     						<td data-title="Released Passes"><%= deal_set.total_released_deals %></td>
     						<td data-title="Sold"><%= deal_set.sold_deals %></td>
     						<td data-title="Unsold"><%= deal_set.unsold_deals %></td>
-							<% if deal_set.price_point != nil %>
-								<td data-title="Price"><%= number_to_currency(deal_set.price_point.price) %></td>
+							<% if deal_set.price != nil %>
+								<td data-title="Price"><%= number_to_currency(deal_set.price) %></td>
 							<% else %>
 								<td data-title="Price"> 0 </td>
 							<% end %>
@@ -437,8 +437,8 @@
     						<td data-title="Released Passes"><%= reservation_set.total_released_reservations %></td>
     						<td data-title="Sold"><%= reservation_set.sold_reservations %></td>
     						<td data-title="Unsold"><%= reservation_set.unsold_reservations %></td>
-							<% if reservation_set.price_point != nil %>
-								<td data-title="Price"><%= number_to_currency(reservation_set.price_point.price) %></td>
+							<% if reservation_set.price != nil %>
+								<td data-title="Price"><%= number_to_currency(reservation_set.price) %></td>
 							<% else %>
 								<td data-title="Price"> 0 </td>
 							<% end %>

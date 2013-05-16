@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130513203040) do
+ActiveRecord::Schema.define(:version => 20130516230645) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -78,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.datetime "updated_at",           :null => false
     t.integer  "location_id"
     t.integer  "event_id"
+    t.decimal  "price"
   end
 
   create_table "deals", :force => true do |t|
@@ -216,10 +217,6 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.text     "description"
     t.boolean  "reservation_time_periods"
     t.boolean  "friend_check"
-    t.integer  "location_id"
-    t.integer  "fecha_id"
-    t.decimal  "revenue_percentage"
-    t.integer  "event_id"
     t.boolean  "single_price_level"
     t.boolean  "double_price_level"
     t.boolean  "triple_price_level"
@@ -227,6 +224,10 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.integer  "triple_price_less_than"
     t.decimal  "double_price_value",       :precision => 10, :scale => 2, :default => 0.0
     t.decimal  "triple_price_value",       :precision => 10, :scale => 2, :default => 0.0
+    t.integer  "location_id"
+    t.integer  "fecha_id"
+    t.decimal  "revenue_percentage"
+    t.integer  "event_id"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -241,8 +242,8 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.integer  "entries",          :default => 0
     t.string   "confirmation"
     t.string   "reservation_time"
-    t.decimal  "total_price"
     t.decimal  "price"
+    t.decimal  "total_price"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"
@@ -296,6 +297,7 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.boolean  "reservation_time_periods"
     t.integer  "location_id"
     t.integer  "event_id"
+    t.decimal  "price"
   end
 
   create_table "reservations", :force => true do |t|
@@ -334,6 +336,7 @@ ActiveRecord::Schema.define(:version => 20130513203040) do
     t.datetime "updated_at",             :null => false
     t.integer  "location_id"
     t.integer  "event_id"
+    t.decimal  "price"
   end
 
   create_table "tickets", :force => true do |t|

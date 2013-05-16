@@ -179,7 +179,7 @@
 			<dt>Unsold Deals</dt>
 			<dd id = "unsold"><%= @deal_set.unsold_deals %></dd>
 			<dt>Deal Price</dt>
-			<dd id = "ticketPrice"><%= number_to_currency(@deal_set.price_point.price) %></dd>
+			<dd id = "ticketPrice"><%= number_to_currency(@deal_set.price) %></dd>
 			<dt>Description</dt>
 			<dd><%= @deal_set.price_point.description %></dd>
   		</dl>

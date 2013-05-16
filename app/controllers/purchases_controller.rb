@@ -286,12 +286,12 @@ class PurchasesController < ApplicationController
 		    @purchase = Purchase.new(params[:purchase])
 		    @purchase.user_id = @user.id
 		    @purchase.date = params[:purchase][:date]	
-		    if String(@ticket_set.price_point.price).split(".").last.length == 1
-	          @decimals = String(@ticket_set.price_point.price).split(".").last + "0"
+		    if String(@ticket_set.price).split(".").last.length == 1
+	          @decimals = String(@ticket_set.price).split(".").last + "0"
 	      else 
-	          @decimals = String(@ticket_set.price_point.price).split(".").last
+	          @decimals = String(@ticket_set.price).split(".").last
 	        end
-	      @purchase.price = (String(@ticket_set.price_point.price).split(".").first + @decimals)
+	      @purchase.price = (String(@ticket_set.price).split(".").first + @decimals)
 		    @purchase.price = Integer(@purchase.price)*num_passes
 
 		    if @user.stripe_customer_token != nil
@@ -345,7 +345,21 @@ class PurchasesController < ApplicationController
         @ticket_set.sold_tickets+=num_passes
         @ticket_set.unsold_tickets-=num_passes
     			    
-    	  @ticket_set.revenue_total += @ticket_set.price_point.price * num_passes
+    	  @ticket_set.revenue_total += @ticket_set.price * num_passes
+    	  check_active = true
+        @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        @ticket_set.price_points.each_with_index.map {|price, index| 
+	          if check_active == true
+	              if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than
+    	              if price.active_check != true
+    	                  price.active_check = true
+    	                  @ticket_set.price = price.price
+    	              end
+    	          else
+    	              price.active_check = false
+    	          end
+	          end
+	      }
 	      @ticket_set.save 
 	    
 	      # for i in 0..num_passes-1
@@ -354,9 +368,9 @@ class PurchasesController < ApplicationController
 		    ticket.purchase_id = @purchase.id
 		    ticket.ticket_set_id = @ticket_set.id
 		    ticket.redeemed = false
-		    ticket.price = @ticket_set.price_point.price
-		    ticket.total_price = @ticket_set.price_point.price * num_passes
-		    logger.error "#{@ticket_set.price_point.price}"
+		    ticket.price = @ticket_set.price
+		    ticket.total_price = @ticket_set.price * num_passes
+		    logger.error "#{@ticket_set.price}"
 		    logger.error "#{ticket.price}"
 		    logger.error "#{ticket.total_price}"
 			  ticket.entries = num_passes
@@ -462,9 +476,7 @@ class PurchasesController < ApplicationController
         @pass_set.sold_passes+=num_passes
         @pass_set.unsold_passes-=num_passes 			    
   	    @pass_set.revenue_total += @pass_set.price * num_passes
-        @pass_set.save 
-        
-        check_active = true
+  	    check_active = true
         @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
         @pass_set.price_points.each_with_index.map {|price, index| 
 	          if check_active == true
@@ -478,6 +490,7 @@ class PurchasesController < ApplicationController
     	          end
 	          end
 	      }
+        @pass_set.save 
     
         # for i in 0..num_passes-1
 	      pass = Pass.new
@@ -534,12 +547,12 @@ class PurchasesController < ApplicationController
 	      logger.error "#{current_user.id}"
 	      @purchase.user_id = @user.id
 	      @purchase.date = params[:purchase][:date]	
-	      if String(@deal_set.price_point.price).split(".").last.length == 1
-            @decimals = String(@deal_set.price_point.price).split(".").last + "0"
+	      if String(@deal_set.price).split(".").last.length == 1
+            @decimals = String(@deal_set.price).split(".").last + "0"
         else 
-            @decimals = String(@deal_set.price_point.price).split(".").last
+            @decimals = String(@deal_set.price).split(".").last
         end
-        @purchase.price = (String(@deal_set.price_point.price).split(".").first + @decimals)
+        @purchase.price = (String(@deal_set.price).split(".").first + @decimals)
 	      @purchase.price = Integer(@purchase.price)*num_passes
 
 	      if @user.stripe_customer_token != nil
@@ -593,7 +606,21 @@ class PurchasesController < ApplicationController
         @deal_set.sold_deals+=num_passes
         @deal_set.unsold_deals-=num_passes
   			    
-  	    @deal_set.revenue_total += @deal_set.price_point.price * num_passes
+  	    @deal_set.revenue_total += @deal_set.price * num_passes
+  	    check_active = true
+        @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        @deal_set.price_points.each_with_index.map {|price, index| 
+	          if check_active == true
+	              if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than
+    	              if price.active_check != true
+    	                  price.active_check = true
+    	                  @deal_set.price = price.price
+    	              end
+    	          else
+    	              price.active_check = false
+    	          end
+	          end
+	      }
         @deal_set.save 
     
         # for i in 0..num_passes-1
@@ -602,9 +629,9 @@ class PurchasesController < ApplicationController
 	      deal.purchase_id = @purchase.id
 	      deal.deal_set_id = @deal_set.id
 	      deal.redeemed = false
-	      deal.price = @deal_set.price_point.price
-	      deal.total_price = @deal_set.price_point.price * num_passes
-	      logger.error "#{@deal_set.price_point.price}"
+	      deal.price = @deal_set.price
+	      deal.total_price = @deal_set.price * num_passes
+	      logger.error "#{@deal_set.price}"
 	      logger.error "#{deal.price}"
 	      logger.error "#{deal.total_price}"
 		    deal.entries = num_passes
@@ -651,12 +678,12 @@ class PurchasesController < ApplicationController
 	      logger.error "#{current_user.id}"
 	      @purchase.user_id = @user.id
 	      @purchase.date = params[:purchase][:date]	
-	      if String(@reservation_set.price_point.price).split(".").last.length == 1
-            @decimals = String(@reservation_set.price_point.price).split(".").last + "0"
+	      if String(@reservation_set.price).split(".").last.length == 1
+            @decimals = String(@reservation_set.price).split(".").last + "0"
         else 
-            @decimals = String(@reservation_set.price_point.price).split(".").last
+            @decimals = String(@reservation_set.price).split(".").last
         end
-        @purchase.price = (String(@reservation_set.price_point.price).split(".").first + @decimals)
+        @purchase.price = (String(@reservation_set.price).split(".").first + @decimals)
 	      @purchase.price = Integer(@purchase.price)*num_passes
 
 	      if @user.stripe_customer_token != nil
@@ -710,7 +737,21 @@ class PurchasesController < ApplicationController
         @reservation_set.sold_reservations+=num_passes
         @reservation_set.unsold_reservations-=num_passes
   			    
-  	    @reservation_set.revenue_total += @reservation_set.price_point.price * num_passes
+  	    @reservation_set.revenue_total += @reservation_set.price * num_passes
+  	    check_active = true
+        @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        @reservation_set.price_points.each_with_index.map {|price, index| 
+	          if check_active == true
+	              if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than
+    	              if price.active_check != true
+    	                  price.active_check = true
+    	                  @reservation_set.price = price.price
+    	              end
+    	          else
+    	              price.active_check = false
+    	          end
+	          end
+	      }
         @reservation_set.save 
     
         # for i in 0..num_passes-1
@@ -719,9 +760,9 @@ class PurchasesController < ApplicationController
 	      reservation.purchase_id = @purchase.id
 	      reservation.reservation_set_id = @reservation_set.id
 	      reservation.redeemed = false
-	      reservation.price = @reservation_set.price_point.price
-	      reservation.total_price = @reservation_set.price_point.price * num_passes
-	      logger.error "#{@reservation_set.price_point.price}"
+	      reservation.price = @reservation_set.price
+	      reservation.total_price = @reservation_set.price * num_passes
+	      logger.error "#{@reservation_set.price}"
 	      logger.error "#{reservation.price}"
 	      logger.error "#{reservation.total_price}"
 		    reservation.entries = num_passes
@@ -771,12 +812,12 @@ class PurchasesController < ApplicationController
   		  @purchase = Purchase.new(params[:purchase])
   		  @purchase.user_id = @user.id
   		  @purchase.date = params[:purchase][:date]	
-  		  if String(@ticket_set.price_point.price).split(".").last.length == 1
-  	        @decimals = String(@ticket_set.price_point.price).split(".").last + "0"
+  		  if String(@ticket_set.price).split(".").last.length == 1
+  	        @decimals = String(@ticket_set.price).split(".").last + "0"
   	    else 
-  	        @decimals = String(@ticket_set.price_point.price).split(".").last
+  	        @decimals = String(@ticket_set.price).split(".").last
   	    end
-  	    @purchase.price = (String(@ticket_set.price_point.price).split(".").first + @decimals)
+  	    @purchase.price = (String(@ticket_set.price).split(".").first + @decimals)
   		  @purchase.price = Integer(@purchase.price)*num_passes
 
   		  if @user.stripe_customer_token != nil
@@ -830,7 +871,21 @@ class PurchasesController < ApplicationController
           @ticket_set.sold_tickets+=num_passes
           @ticket_set.unsold_tickets-=num_passes
 
-      	  @ticket_set.revenue_total += @ticket_set.price_point.price * num_passes
+      	  @ticket_set.revenue_total += @ticket_set.price * num_passes
+      	  check_active = true
+          @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          @ticket_set.price_points.each_with_index.map {|price, index| 
+  	          if check_active == true
+  	              if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than
+      	              if price.active_check != true
+      	                  price.active_check = true
+      	                  @ticket_set.price = price.price
+      	              end
+      	          else
+      	              price.active_check = false
+      	          end
+  	          end
+  	      }
   	      @ticket_set.save 
 
   	      # for i in 0..num_passes-1
@@ -839,9 +894,9 @@ class PurchasesController < ApplicationController
   		    ticket.purchase_id = @purchase.id
   		    ticket.ticket_set_id = @ticket_set.id
   		    ticket.redeemed = false
-  		    ticket.price = @ticket_set.price_point.price
-  		    ticket.total_price = @ticket_set.price_point.price * num_passes
-  		    logger.error "#{@ticket_set.price_point.price}"
+  		    ticket.price = @ticket_set.price
+  		    ticket.total_price = @ticket_set.price * num_passes
+  		    logger.error "#{@ticket_set.price}"
   		    logger.error "#{ticket.price}"
   		    logger.error "#{ticket.total_price}"
   			  ticket.entries = num_passes
@@ -888,12 +943,12 @@ class PurchasesController < ApplicationController
   	      logger.error "#{current_user.id}"
   	      @purchase.user_id = @user.id
   	      @purchase.date = params[:purchase][:date]	
-  	      if String(@pass_set.price_point.price).split(".").last.length == 1
-              @decimals = String(@pass_set.price_point.price).split(".").last + "0"
+  	      if String(@pass_set.price).split(".").last.length == 1
+              @decimals = String(@pass_set.price).split(".").last + "0"
           else 
-              @decimals = String(@pass_set.price_point.price).split(".").last
+              @decimals = String(@pass_set.price).split(".").last
           end
-          @purchase.price = (String(@pass_set.price_point.price).split(".").first + @decimals)
+          @purchase.price = (String(@pass_set.price).split(".").first + @decimals)
   	      @purchase.price = Integer(@purchase.price)*num_passes
 
   	      if @user.stripe_customer_token != nil
@@ -947,7 +1002,21 @@ class PurchasesController < ApplicationController
           @pass_set.sold_passes+=num_passes
           @pass_set.unsold_passes-=num_passes
 
-    	    @pass_set.revenue_total += @pass_set.price_point.price * num_passes
+    	    @pass_set.revenue_total += @pass_set.price * num_passes
+    	    check_active = true
+          @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          @pass_set.price_points.each_with_index.map {|price, index| 
+  	          if check_active == true
+  	              if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than
+      	              if price.active_check != true
+      	                  price.active_check = true
+      	                  @pass_set.price = price.price
+      	              end
+      	          else
+      	              price.active_check = false
+      	          end
+  	          end
+  	      }
           @pass_set.save 
 
           # for i in 0..num_passes-1
@@ -956,9 +1025,9 @@ class PurchasesController < ApplicationController
   	      pass.purchase_id = @purchase.id
   	      pass.pass_set_id = @pass_set.id
   	      pass.redeemed = false
-  	      pass.price = @pass_set.price_point.price
-  	      pass.total_price = @pass_set.price_point.price * num_passes
-  	      logger.error "#{@pass_set.price_point.price}"
+  	      pass.price = @pass_set.price
+  	      pass.total_price = @pass_set.price * num_passes
+  	      logger.error "#{@pass_set.price}"
   	      logger.error "#{pass.price}"
   	      logger.error "#{pass.total_price}"
   		    pass.entries = num_passes
@@ -1005,12 +1074,12 @@ class PurchasesController < ApplicationController
   	      logger.error "#{current_user.id}"
   	      @purchase.user_id = @user.id
   	      @purchase.date = params[:purchase][:date]	
-  	      if String(@deal_set.price_point.price).split(".").last.length == 1
-              @decimals = String(@deal_set.price_point.price).split(".").last + "0"
+  	      if String(@deal_set.price).split(".").last.length == 1
+              @decimals = String(@deal_set.price).split(".").last + "0"
           else 
-              @decimals = String(@deal_set.price_point.price).split(".").last
+              @decimals = String(@deal_set.price).split(".").last
           end
-          @purchase.price = (String(@deal_set.price_point.price).split(".").first + @decimals)
+          @purchase.price = (String(@deal_set.price).split(".").first + @decimals)
   	      @purchase.price = Integer(@purchase.price)*num_passes
 
   	      if @user.stripe_customer_token != nil
@@ -1064,7 +1133,21 @@ class PurchasesController < ApplicationController
           @deal_set.sold_deals+=num_passes
           @deal_set.unsold_deals-=num_passes
 
-    	    @deal_set.revenue_total += @deal_set.price_point.price * num_passes
+    	    @deal_set.revenue_total += @deal_set.price * num_passes
+    	    check_active = true
+          @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          @deal_set.price_points.each_with_index.map {|price, index| 
+  	          if check_active == true
+  	              if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than
+      	              if price.active_check != true
+      	                  price.active_check = true
+      	                  @deal_set.price = price.price
+      	              end
+      	          else
+      	              price.active_check = false
+      	          end
+  	          end
+  	      }
           @deal_set.save 
 
           # for i in 0..num_passes-1
@@ -1073,9 +1156,9 @@ class PurchasesController < ApplicationController
   	      deal.purchase_id = @purchase.id
   	      deal.deal_set_id = @deal_set.id
   	      deal.redeemed = false
-  	      deal.price = @deal_set.price_point.price
-  	      deal.total_price = @deal_set.price_point.price * num_passes
-  	      logger.error "#{@deal_set.price_point.price}"
+  	      deal.price = @deal_set.price
+  	      deal.total_price = @deal_set.price * num_passes
+  	      logger.error "#{@deal_set.price}"
   	      logger.error "#{deal.price}"
   	      logger.error "#{deal.total_price}"
   		    deal.entries = num_passes
@@ -1122,12 +1205,12 @@ class PurchasesController < ApplicationController
   	      logger.error "#{current_user.id}"
   	      @purchase.user_id = @user.id
   	      @purchase.date = params[:purchase][:date]	
-  	      if String(@reservation_set.price_point.price).split(".").last.length == 1
-              @decimals = String(@reservation_set.price_point.price).split(".").last + "0"
+  	      if String(@reservation_set.price).split(".").last.length == 1
+              @decimals = String(@reservation_set.price).split(".").last + "0"
           else 
-              @decimals = String(@reservation_set.price_point.price).split(".").last
+              @decimals = String(@reservation_set.price).split(".").last
           end
-          @purchase.price = (String(@reservation_set.price_point.price).split(".").first + @decimals)
+          @purchase.price = (String(@reservation_set.price).split(".").first + @decimals)
   	      @purchase.price = Integer(@purchase.price)*num_passes
 
   	      if @user.stripe_customer_token != nil
@@ -1181,7 +1264,21 @@ class PurchasesController < ApplicationController
           @reservation_set.sold_reservations+=num_passes
           @reservation_set.unsold_reservations-=num_passes
 
-    	    @reservation_set.revenue_total += @reservation_set.price_point.price * num_passes
+    	    @reservation_set.revenue_total += @reservation_set.price * num_passes
+    	    check_active = true
+          @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          @reservation_set.price_points.each_with_index.map {|price, index| 
+  	          if check_active == true
+  	              if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than
+      	              if price.active_check != true
+      	                  price.active_check = true
+      	                  @reservation_set.price = price.price
+      	              end
+      	          else
+      	              price.active_check = false
+      	          end
+  	          end
+  	      }
           @reservation_set.save 
 
           # for i in 0..num_passes-1
@@ -1190,9 +1287,9 @@ class PurchasesController < ApplicationController
   	      reservation.purchase_id = @purchase.id
   	      reservation.reservation_set_id = @reservation_set.id
   	      reservation.redeemed = false
-  	      reservation.price = @reservation_set.price_point.price
-  	      reservation.total_price = @reservation_set.price_point.price * num_passes
-  	      logger.error "#{@reservation_set.price_point.price}"
+  	      reservation.price = @reservation_set.price
+  	      reservation.total_price = @reservation_set.price * num_passes
+  	      logger.error "#{@reservation_set.price}"
   	      logger.error "#{reservation.price}"
   	      logger.error "#{reservation.total_price}"
   		    reservation.entries = num_passes

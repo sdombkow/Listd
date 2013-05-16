@@ -69,7 +69,7 @@ class TicketSetsController < ApplicationController
   def new
     @ticket_set = TicketSet.new
     @ticket_set.build_fecha
-    @ticket_set.build_price_point
+    1.times { @ticket_set.price_points.build }
     if params[:location_id] != nil
         @location = Location.find(params[:location_id])
         @location_label = "Location ID for "<< @location.name
@@ -118,6 +118,27 @@ class TicketSetsController < ApplicationController
     	      @ticket_set.revenue_total = 0
     	      @ticket_set.location = @location
     	      @ticket_set.fecha = @fecha
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      check_active = true
+    	      @ticket_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @ticket_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @ticket_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
     	      @price_point.num_released = @ticket_set.total_released_tickets
     	      @price_point.num_sold = 0
     	      @price_point.num_unsold = 0
@@ -133,6 +154,27 @@ class TicketSetsController < ApplicationController
       	    @ticket_set.revenue_total = 0
       	    @ticket_set.location = @location
       	    @ticket_set.fecha = @fecha
+      	    logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      check_active = true
+    	      @ticket_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @ticket_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @ticket_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
       	    @price_point.num_released = @ticket_set.total_released_tickets
       	    @price_point.num_sold = 0
       	    @price_point.num_unsold = 0
@@ -154,8 +196,6 @@ class TicketSetsController < ApplicationController
                 @fecha.ticket_set = @ticket_set
                 @fecha.save!
                 logger.error "Fecha: #{@fecha.inspect}"
-                @price_point.ticket_set_id = @ticket_set.id
-                @price_point.save!
                 logger.error "Ticket Set Associated with Price Point #{@price_point.ticket_set.inspect}"
                 format.html { redirect_to [@location.user, @location], notice: 'Ticket set was successfully created.' }
                 format.json { render json: @ticket_set, status: :created, location: @ticket_set }
@@ -178,6 +218,27 @@ class TicketSetsController < ApplicationController
     	      @ticket_set.revenue_total = 0
     	      @ticket_set.event = @event
     	      @ticket_set.fecha = @fecha
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      check_active = true
+    	      @ticket_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @ticket_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @ticket_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
     	      @price_point.num_released = @ticket_set.total_released_tickets
     	      @price_point.num_sold = 0
     	      @price_point.num_unsold = 0
@@ -193,6 +254,27 @@ class TicketSetsController < ApplicationController
       	    @ticket_set.revenue_total = 0
       	    @ticket_set.event = @event
       	    @ticket_set.fecha = @fecha
+      	    logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+    	      check_active = true
+    	      @ticket_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @ticket_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @ticket_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
       	    @price_point.num_released = @ticket_set.total_released_tickets
       	    @price_point.num_sold = 0
       	    @price_point.num_unsold = 0
@@ -214,8 +296,6 @@ class TicketSetsController < ApplicationController
                 @fecha.ticket_set = @ticket_set
                 @fecha.save!
                 logger.error "Fecha: #{@fecha.inspect}"
-                @price_point.ticket_set_id = @ticket_set.id
-                @price_point.save!
                 logger.error "Ticket Set Associated with Price Point #{@price_point.ticket_set.inspect}"
                 format.html { redirect_to [@event.user, @event], notice: 'Ticket set was successfully created.' }
                 format.json { render json: @ticket_set, status: :created, location: @ticket_set }
@@ -259,6 +339,28 @@ class TicketSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
             elsif @ticket_set.update_attributes(params[:ticket_set])
+                logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      check_active = true
+        	      @ticket_set.price_points.each_with_index.map {|price, index| 
+        	        price.num_sold = 0
+        	        if @ticket_set.price_points[index+1] != nil
+        	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+        	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+        	        else
+        	            price.num_released = price.active_less_than
+        	            price.num_unsold = price.active_less_than
+        	        end
+        	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+        	            price.active_check = true
+        	            @ticket_set.price = price.price
+        	        else
+        	            price.active_check = false
+        	        end
+        	      }
+        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      @ticket_set.update_attributes(params[:ticket_set])
                 format.html { redirect_to [@location.user, @location], notice: 'Ticket set was successfully updated.' }
                 format.json { head :no_content }
             else
@@ -293,6 +395,28 @@ class TicketSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @ticket_set.errors, status: :unprocessable_entity }
             elsif @ticket_set.update_attributes(params[:ticket_set])
+                logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      check_active = true
+        	      @ticket_set.price_points.each_with_index.map {|price, index| 
+        	        price.num_sold = 0
+        	        if @ticket_set.price_points[index+1] != nil
+        	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+        	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+        	        else
+        	            price.num_released = price.active_less_than
+        	            price.num_unsold = price.active_less_than
+        	        end
+        	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+        	            price.active_check = true
+        	            @ticket_set.price = price.price
+        	        else
+        	            price.active_check = false
+        	        end
+        	      }
+        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+        	      @ticket_set.update_attributes(params[:ticket_set])
                 format.html { redirect_to [@event.user, @event], notice: 'Ticket set was successfully updated.' }
                 format.json { head :no_content }
             else

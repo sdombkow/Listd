@@ -69,7 +69,7 @@ class ReservationSetsController < ApplicationController
   def new
     @reservation_set = ReservationSet.new
     @reservation_set.build_fecha
-    @reservation_set.build_price_point
+    1.times { @reservation_set.price_points.build }
     if params[:location_id] != nil
         @location = Location.find(params[:location_id])
         @location_label = "Location ID for "<< @location.name
@@ -119,6 +119,27 @@ class ReservationSetsController < ApplicationController
     	      @reservation_set.revenue_total = 0
     	      @reservation_set.location = @location
     	      @reservation_set.fecha = @fecha
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      check_active = true
+    	      @reservation_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @reservation_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @reservation_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
     	      @price_point.num_released = @reservation_set.total_released_reservations
     	      @price_point.num_sold = 0
     	      @price_point.num_unsold = @reservation_set.total_released_reservations
@@ -133,6 +154,27 @@ class ReservationSetsController < ApplicationController
       	    @reservation_set.revenue_total = 0
             @reservation_set.location = @location
       	    @reservation_set.fecha = @fecha
+      	    logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      check_active = true
+    	      @reservation_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @reservation_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @reservation_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
     	      @price_point.num_released = @reservation_set.total_released_reservations
             @price_point.num_sold = 0
       	    @price_point.num_unsold = 0
@@ -154,8 +196,6 @@ class ReservationSetsController < ApplicationController
             elsif @reservation_set.save
                 @fecha.reservation_set = @reservation_set
                 @fecha.save!
-                @price_point.reservation_set_id = @reservation_set.id
-                @price_point.save!
                 logger.error "Reservation Set Associated with Price Point #{@price_point.reservation_set.inspect}"
                 format.html { redirect_to [@location.user, @location], notice: 'Reservation set was successfully created.' }
                 format.json { render json: @reservation_set, status: :created, location: @reservation_set }
@@ -178,6 +218,27 @@ class ReservationSetsController < ApplicationController
     	      @reservation_set.revenue_total = 0
     	      @reservation_set.event = @event
     	      @reservation_set.fecha = @fecha
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      check_active = true
+    	      @reservation_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @reservation_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @reservation_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
     	      @price_point.num_released = @reservation_set.total_released_reservations
     	      @price_point.num_sold = 0
     	      @price_point.num_unsold = @reservation_set.total_released_reservations
@@ -192,6 +253,27 @@ class ReservationSetsController < ApplicationController
       	    @reservation_set.revenue_total = 0
             @reservation_set.event = @event
       	    @reservation_set.fecha = @fecha
+      	    logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+    	      check_active = true
+    	      @reservation_set.price_points.each_with_index.map {|price, index| 
+    	        price.num_sold = 0
+    	        if @reservation_set.price_points[index+1] != nil
+    	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+    	        else
+    	            price.num_released = price.active_less_than
+    	            price.num_unsold = price.active_less_than
+    	        end
+    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	            price.active_check = true
+    	            @reservation_set.price = price.price
+    	        else
+    	            price.active_check = false
+    	        end
+    	      }
+    	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
     	      @price_point.num_released = @reservation_set.total_released_reservations
             @price_point.num_sold = 0
       	    @price_point.num_unsold = 0
@@ -213,8 +295,6 @@ class ReservationSetsController < ApplicationController
             elsif @reservation_set.save
                 @fecha.reservation_set = @reservation_set
                 @fecha.save!
-                @price_point.reservation_set_id = @reservation_set.id
-                @price_point.save!
                 logger.error "Reservation Set Associated with Price Point #{@price_point.reservation_set.inspect}"
                 format.html { redirect_to [@event.user, @event], notice: 'Reservation set was successfully created.' }
                 format.json { render json: @reservation_set, status: :created, location: @reservation_set }
@@ -259,6 +339,28 @@ class ReservationSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @reservation_set.errors, status: :unprocessable_entity }
             elsif @reservation_set.update_attributes(params[:reservation_set])
+                logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      check_active = true
+        	      @reservation_set.price_points.each_with_index.map {|price, index| 
+        	        price.num_sold = 0
+        	        if @reservation_set.price_points[index+1] != nil
+        	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+        	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+        	        else
+        	            price.num_released = price.active_less_than
+        	            price.num_unsold = price.active_less_than
+        	        end
+        	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+        	            price.active_check = true
+        	            @reservation_set.price = price.price
+        	        else
+        	            price.active_check = false
+        	        end
+        	      }
+        	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      @reservation_set.update_attributes(params[:reservation_set])
                 format.html { redirect_to [@location.user, @location], notice: 'Reservation set was successfully updated.' }
                 format.json { head :no_content }
             else
@@ -294,6 +396,28 @@ class ReservationSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @reservation_set.errors, status: :unprocessable_entity }
             elsif @reservation_set.update_attributes(params[:reservation_set])
+                logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      check_active = true
+        	      @reservation_set.price_points.each_with_index.map {|price, index| 
+        	        price.num_sold = 0
+        	        if @reservation_set.price_points[index+1] != nil
+        	            price.num_released = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+        	            price.num_unsold = price.active_less_than - @reservation_set.price_points[index+1].active_less_than
+        	        else
+        	            price.num_released = price.active_less_than
+        	            price.num_unsold = price.active_less_than
+        	        end
+        	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+        	            price.active_check = true
+        	            @reservation_set.price = price.price
+        	        else
+        	            price.active_check = false
+        	        end
+        	      }
+        	      logger.error "Price Points #{@reservation_set.price_points.inspect}"
+        	      @reservation_set.update_attributes(params[:reservation_set])
                 format.html { redirect_to [@event.user, @event], notice: 'Reservation set was successfully updated.' }
                 format.json { head :no_content }
             else

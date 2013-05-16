@@ -179,7 +179,7 @@
 			<dt>Unsold Reservations</dt>
 			<dd id = "unsold"><%= @reservation_set.unsold_reservations %></dd>
 			<dt>Price Per Person</dt>
-			<dd id = "ticketPrice"><%= number_to_currency(@reservation_set.price_point.price) %></dd>
+			<dd id = "ticketPrice"><%= number_to_currency(@reservation_set.price) %></dd>
   		</dl>
 	</div>
 

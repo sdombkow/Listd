@@ -34,10 +34,7 @@
   		</div>
 
 		<%= f.fields_for :price_points do |builder| %>
-			<div class="field">
-				<%= builder.label :price %><br />
-	    		<%= builder.text_field :price %>
-			</div>
+			<%= render 'price_point_fields', :f => builder %>
 		<% end %>
 		
 		<%= link_to_add_fields "Add Different Price Point", f, :price_points %>
@@ -72,10 +69,7 @@
 	  	</div>
 
 		<%= f.fields_for :price_points do |builder| %>
-			<div class="field">
-				<%= builder.label :price %><br />
-		    	<%= builder.text_field :price %>
-			</div>
+			<%= render 'price_point_fields', :f => builder %>
 		<% end %>
 		
 		<%= link_to_add_fields "Add Different Price Point", f, :price_points %>

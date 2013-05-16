@@ -1,7 +1,7 @@
 class ReservationSet < ActiveRecord::Base
   
   attr_accessible :fecha_id, :revenue_percentage, :revenue_total, :sold_reservations, 
-  :total_released_reservations, :unsold_reservations, :fecha_attributes, :price_point_attributes
+  :total_released_reservations, :unsold_reservations, :fecha_attributes, :price_points_attributes
   
   validates :fecha, :total_released_reservations, :presence => true
   validates :unsold_reservations, :numericality => { :greater_than_or_equal_to => 0 }
@@ -13,9 +13,9 @@ class ReservationSet < ActiveRecord::Base
   belongs_to :event
   
   has_one :fecha, :dependent => :destroy
-  has_one :price_point, :dependent => :destroy
+  has_many :price_points, :dependent => :destroy
   
   accepts_nested_attributes_for :fecha
-  accepts_nested_attributes_for :price_point
+  accepts_nested_attributes_for :price_points, :reject_if => lambda { |a| a[:price].blank? }, :allow_destroy => true
 
 end

@@ -1,3 +1,13 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+		function add_fields(link, association, content) {  
+		    var new_id = new Date().getTime();  
+		    var regexp = new RegExp("new_" + association, "g");  
+		    $(link).before(content.replace(regexp, new_id));  
+		};
+	</script>
+<% end %>
+
 <% if params[:location_id] != nil %>
 	<%= form_for([@location.user,@location,@deal_set]) do |f| %>
    
@@ -24,12 +34,12 @@
     			<%= f.number_field :total_released_deals %>
   			</div>
 
-			<%= f.fields_for :price_point do |builder| %>
+			<%= f.fields_for :price_points do |builder| %>
 				<div class="field">
-					<%= builder.label :price %><br />
-	    			<%= builder.text_field :price %>
+					<%= render 'price_point_fields', :f => builder %>
 				</div>
 			<% end %>
+			<%= link_to_add_fields "Add Different Price Point", f, :price_points %>
 
   			<div class="actions">
     			<%= f.submit %>
@@ -61,12 +71,12 @@
     			<%= f.number_field :total_released_deals %>
   			</div>
 
-			<%= f.fields_for :price_point do |builder| %>
+			<%= f.fields_for :price_points do |builder| %>
 				<div class="field">
-					<%= builder.label :price %><br />
-	    			<%= builder.text_field :price %>
+					<%= render 'price_point_fields', :f => builder %>
 				</div>
 			<% end %>
+			<%= link_to_add_fields "Add Different Price Point", f, :price_points %>
 
   			<div class="actions">
     			<%= f.submit %>

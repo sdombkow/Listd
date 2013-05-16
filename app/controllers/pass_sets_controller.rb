@@ -156,6 +156,27 @@ class PassSetsController < ApplicationController
       	      @pass_set.revenue_total = 0
       	      @pass_set.location = @location
       	      @pass_set.fecha = @fecha
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      check_active = true
+      	      @pass_set.price_points.each_with_index.map {|price, index| 
+      	        price.num_sold = 0
+      	        if @pass_set.price_points[index+1] != nil
+      	            price.num_released = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	            price.num_unsold = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	        else
+      	            price.num_released = price.active_less_than
+      	            price.num_unsold = price.active_less_than
+      	        end
+      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	            price.active_check = true
+      	            @pass_set.price = price.price
+      	        else
+      	            price.active_check = false
+      	        end
+      	      }
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
       	      @price_point.num_released = @pass_set.total_released_passes
       	      @price_point.num_sold = 0
       	      @price_point.num_unsold = 0
@@ -201,6 +222,27 @@ class PassSetsController < ApplicationController
     	        @pass_set.revenue_total = 0
     	        @pass_set.event = @event
     	        @pass_set.fecha = @fecha
+    	        logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      check_active = true
+      	      @pass_set.price_points.each_with_index.map {|price, index| 
+      	        price.num_sold = 0
+      	        if @pass_set.price_points[index+1] != nil
+      	            price.num_released = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	            price.num_unsold = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	        else
+      	            price.num_released = price.active_less_than
+      	            price.num_unsold = price.active_less_than
+      	        end
+      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	            price.active_check = true
+      	            @pass_set.price = price.price
+      	        else
+      	            price.active_check = false
+      	        end
+      	      }
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
     	        @price_point.num_released = @pass_set.total_released_passes
     	        @price_point.num_sold = 0
     	        @price_point.num_unsold = 0
@@ -215,6 +257,27 @@ class PassSetsController < ApplicationController
     	        @pass_set.revenue_total = 0
     	        @pass_set.event = @event
     	        @pass_set.fecha = @fecha
+    	        logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+      	      check_active = true
+      	      @pass_set.price_points.each_with_index.map {|price, index| 
+      	        price.num_sold = 0
+      	        if @pass_set.price_points[index+1] != nil
+      	            price.num_released = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	            price.num_unsold = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+      	        else
+      	            price.num_released = price.active_less_than
+      	            price.num_unsold = price.active_less_than
+      	        end
+      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	            price.active_check = true
+      	            @pass_set.price = price.price
+      	        else
+      	            price.active_check = false
+      	        end
+      	      }
+      	      logger.error "Price Points #{@pass_set.price_points.inspect}"
     	        @price_point.num_released = @pass_set.total_released_passes
     	        @price_point.num_sold = 0
     	        @price_point.num_unsold = 0
@@ -236,9 +299,6 @@ class PassSetsController < ApplicationController
                   @fecha.pass_set = @pass_set
                   @fecha.save!
                   logger.error "Fecha Values: #{@fecha.inspect}"
-                  @price_point.pass_set_id = @pass_set.id
-                  @price_point.save!
-                  logger.error "Ticket Set Associated with Price Point #{@price_point.pass_set.inspect}"
                   format.html { redirect_to [@event.user, @event], notice: 'Pass set was successfully created.' }
                   format.json { render json: @pass_set, status: :created, location: @pass_set }
               else
@@ -266,9 +326,6 @@ class PassSetsController < ApplicationController
           end
           @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
           @existing_sets = @location.fechas.where("date = ? and selling_passes = ?", @date, true).length
-          logger.error "Price: #{params[:pass_set][:price_point_attributes]}"
-          @pass_set.price_point.price = params[:pass_set][:price_point_attributes]["price"]
-          logger.error "Pass Set Price: #{@pass_set.price_point.price}"
           logger.error "Pass Set: #{@pass_set.inspect}"
           
           respond_to do |format|
@@ -282,6 +339,28 @@ class PassSetsController < ApplicationController
                   format.html { render action: "edit" }
                   format.json { render json: @pass_set.errors, status: :unprocessable_entity }
               elsif @pass_set.update_attributes(params[:pass_set])
+                  logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      check_active = true
+          	      @pass_set.price_points.each_with_index.map {|price, index| 
+          	        price.num_sold = 0
+          	        if @pass_set.price_points[index+1] != nil
+          	            price.num_released = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+          	            price.num_unsold = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+          	        else
+          	            price.num_released = price.active_less_than
+          	            price.num_unsold = price.active_less_than
+          	        end
+          	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+          	            price.active_check = true
+          	            @pass_set.price = price.price
+          	        else
+          	            price.active_check = false
+          	        end
+          	      }
+          	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      @pass_set.update_attributes(params[:pass_set])
                   format.html { redirect_to [@location.user, @location], notice: 'Pass set was successfully updated.' }
                   format.json { head :no_content }
               else
@@ -301,9 +380,6 @@ class PassSetsController < ApplicationController
           end
           @pass_set.unsold_passes = Integer(params[:pass_set]["total_released_passes"]) - @pass_set.sold_passes
           @existing_sets = @event.fechas.where("date = ? and selling_passes = ?", @date, true).length
-          logger.error "Price: #{params[:pass_set][:price_point_attributes]}"
-          @pass_set.price_point.price = params[:pass_set][:price_point_attributes]["price"]
-          logger.error "Pass Set Price: #{@pass_set.price_point.price}"
           logger.error "Pass Set: #{@pass_set.inspect}"
           
           respond_to do |format|
@@ -317,6 +393,28 @@ class PassSetsController < ApplicationController
                   format.html { render action: "edit" }
                   format.json { render json: @pass_set.errors, status: :unprocessable_entity }
               elsif @pass_set.update_attributes(params[:pass_set])
+                  logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      @pass_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+          	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      check_active = true
+          	      @pass_set.price_points.each_with_index.map {|price, index| 
+          	        price.num_sold = 0
+          	        if @pass_set.price_points[index+1] != nil
+          	            price.num_released = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+          	            price.num_unsold = price.active_less_than - @pass_set.price_points[index+1].active_less_than
+          	        else
+          	            price.num_released = price.active_less_than
+          	            price.num_unsold = price.active_less_than
+          	        end
+          	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+          	            price.active_check = true
+          	            @pass_set.price = price.price
+          	        else
+          	            price.active_check = false
+          	        end
+          	      }
+          	      logger.error "Price Points #{@pass_set.price_points.inspect}"
+          	      @pass_set.update_attributes(params[:pass_set])
                   format.html { redirect_to [@event.user, @event], notice: 'Pass set was successfully updated.' }
                   format.json { head :no_content }
               else
