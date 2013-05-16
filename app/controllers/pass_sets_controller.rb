@@ -43,6 +43,24 @@ class PassSetsController < ApplicationController
 	      end
 	  end
     @purchase = Purchase.new
+    logger.error "#{@pass_set.inspect}"
+    if @pass_set.single_price_level ==  true
+      @price = @pass_set.price
+    elsif @pass_set.double_price_level == true
+      if @pass_set.double_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.price
+      else
+        @price = @pass_set.double_price_value
+      end
+    elsif @pass_set.triple_price_level == true
+      if @pass_set.double_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.price
+      elsif @pass_set.triple_price_less_than <= @pass_set.unsold_passes
+        @price = @pass_set.double_price_value
+      else
+        @price = @pass_set.triple_price_value
+      end
+    end
     if current_user.stripe_customer_token != nil
       @customer_card = Stripe::Customer.retrieve(current_user.stripe_customer_token)
       if @customer_card.active_card != nil
@@ -89,6 +107,8 @@ class PassSetsController < ApplicationController
   def create
     @pass_set = PassSet.new(params[:pass_set])
     @time_period = TimePeriod.new(params[:time_period])
+    @pass_set.reservation_time_periods = false
+    @pass_set.selling_passes = true
     if @pass_set.reservation_time_periods == true && @pass_set.selling_passes == false
         @pass_set.total_released_passes = 0
         @available_times = @pass_set.time_periods.first

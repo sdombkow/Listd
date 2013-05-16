@@ -183,7 +183,7 @@
 				<dt>Unsold Passes</dt>
 				<dd id = "unsold"><%= @pass_set.unsold_passes %></dd>
 				<dt>Pass Price</dt>
-				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
+				<dd id = "ticketPrice"><%= number_to_currency(@price) %></dd>
 				<dt>Description</dt>
 				<dd><%= @pass_set.description %></dd>
   			</dl>
@@ -201,7 +201,7 @@
 					<dd id = "sold_num">No</dd>
 				<% end %>
 				<dt>Price Per Person</dt>
-				<dd id = "ticketPrice"><%= number_to_currency(@pass_set.price) %></dd>
+				<dd id = "ticketPrice"><%= number_to_currency(@price) %></dd>
 				<dt>Description</dt>
 				<dd><%= @pass_set.description %></dd>
   			</dl>

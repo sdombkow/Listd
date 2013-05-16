@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130406221222) do
+ActiveRecord::Schema.define(:version => 20130504212929) do
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -79,6 +79,13 @@ ActiveRecord::Schema.define(:version => 20130406221222) do
     t.text     "description"
     t.boolean  "reservation_time_periods"
     t.boolean  "friend_check"
+    t.boolean  "single_price_level"
+    t.boolean  "double_price_level"
+    t.boolean  "triple_price_level"
+    t.integer  "double_price_less_than"
+    t.integer  "triple_price_less_than"
+    t.decimal  "double_price_value",       :precision => 10, :scale => 2, :default => 0.0
+    t.decimal  "triple_price_value",       :precision => 10, :scale => 2, :default => 0.0
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -91,9 +98,9 @@ ActiveRecord::Schema.define(:version => 20130406221222) do
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
     t.integer  "entries",          :default => 0
-    t.integer  "price"
     t.string   "confirmation"
     t.string   "reservation_time"
+    t.decimal  "price"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"
