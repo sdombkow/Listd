@@ -35,12 +35,12 @@
     			<%= f.number_field :total_released_deals %>
   			</div>
 
-			<%= f.fields_for :price_point do |builder| %>
+			<%= f.fields_for :price_points do |builder| %>
 				<div class="field">
-					<%= builder.label :price %><br />
-	    			<%= builder.text_field :price %>
+					<%= render 'price_point_fields', :f => builder %>
 				</div>
 			<% end %>
+			<%= link_to_add_fields "Add Different Price Point", f, :price_points %>
 
   			<div class="actions">
     			<%= f.submit %>
@@ -73,12 +73,12 @@
     			<%= f.number_field :total_released_deals %>
   			</div>
 
-			<%= f.fields_for :price_point do |builder| %>
+			<%= f.fields_for :price_points do |builder| %>
 				<div class="field">
-					<%= builder.label :price %><br />
-	    			<%= builder.text_field :price %>
+					<%= render 'price_point_fields', :f => builder %>
 				</div>
 			<% end %>
+			<%= link_to_add_fields "Add Different Price Point", f, :price_points %>
 
   			<div class="actions">
     			<%= f.submit %>

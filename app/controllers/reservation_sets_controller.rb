@@ -132,7 +132,7 @@ class ReservationSetsController < ApplicationController
     	            price.num_released = price.active_less_than
     	            price.num_unsold = price.active_less_than
     	        end
-    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @reservation_set.price = price.price
     	        else
@@ -167,7 +167,7 @@ class ReservationSetsController < ApplicationController
     	            price.num_released = price.active_less_than
     	            price.num_unsold = price.active_less_than
     	        end
-    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @reservation_set.price = price.price
     	        else
@@ -231,7 +231,7 @@ class ReservationSetsController < ApplicationController
     	            price.num_released = price.active_less_than
     	            price.num_unsold = price.active_less_than
     	        end
-    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @reservation_set.price = price.price
     	        else
@@ -266,7 +266,7 @@ class ReservationSetsController < ApplicationController
     	            price.num_released = price.active_less_than
     	            price.num_unsold = price.active_less_than
     	        end
-    	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+    	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @reservation_set.price = price.price
     	        else
@@ -352,7 +352,7 @@ class ReservationSetsController < ApplicationController
         	            price.num_released = price.active_less_than
         	            price.num_unsold = price.active_less_than
         	        end
-        	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+        	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @reservation_set.price = price.price
         	        else
@@ -409,7 +409,7 @@ class ReservationSetsController < ApplicationController
         	            price.num_released = price.active_less_than
         	            price.num_unsold = price.active_less_than
         	        end
-        	        if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than && check_active == true
+        	        if @reservation_set.price_points[index+1] != nil && @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @reservation_set.price = price.price
         	        else

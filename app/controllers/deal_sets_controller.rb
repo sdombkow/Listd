@@ -136,7 +136,7 @@ class DealSetsController < ApplicationController
 	            price.num_released = price.active_less_than
 	            price.num_unsold = price.active_less_than
 	        end
-	        if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than && check_active == true
+	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
 	            price.active_check = true
 	            @deal_set.price = price.price
 	        else
@@ -171,7 +171,7 @@ class DealSetsController < ApplicationController
 	            price.num_released = price.active_less_than
 	            price.num_unsold = price.active_less_than
 	        end
-	        if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than && check_active == true
+	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
 	            price.active_check = true
 	            @deal_set.price = price.price
 	        else
@@ -237,7 +237,7 @@ class DealSetsController < ApplicationController
      	            price.num_released = price.active_less_than
      	            price.num_unsold = price.active_less_than
      	        end
-     	        if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than && check_active == true
+     	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
      	            price.active_check = true
      	            @deal_set.price = price.price
      	        else
@@ -272,7 +272,7 @@ class DealSetsController < ApplicationController
      	            price.num_released = price.active_less_than
      	            price.num_unsold = price.active_less_than
      	        end
-     	        if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than && check_active == true
+     	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
      	            price.active_check = true
      	            @deal_set.price = price.price
      	        else
@@ -344,28 +344,28 @@ class DealSetsController < ApplicationController
                 format.html { render action: "edit" }
                 format.json { render json: @deal_set.errors, status: :unprocessable_entity }
             elsif @deal_set.update_attributes(params[:deal_set])
-                logger.error "Price Points #{@ticket_set.price_points.inspect}"
-        	      @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
+                logger.error "Price Points #{@deal_set.price_points.inspect}"
+        	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
         	      check_active = true
-        	      @ticket_set.price_points.each_with_index.map {|price, index| 
+        	      @deal_set.price_points.each_with_index.map {|price, index| 
         	        price.num_sold = 0
-        	        if @ticket_set.price_points[index+1] != nil
-        	            price.num_released = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
-        	            price.num_unsold = price.active_less_than - @ticket_set.price_points[index+1].active_less_than
+        	        if @deal_set.price_points[index+1] != nil
+        	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
+        	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
         	        else
         	            price.num_released = price.active_less_than
         	            price.num_unsold = price.active_less_than
         	        end
-        	        if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than && check_active == true
+        	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @ticket_set.unsold_deals > @ticket_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
-        	            @ticket_set.price = price.price
+        	            @deal_set.price = price.price
         	        else
         	            price.active_check = false
         	        end
         	      }
-        	      logger.error "Price Points #{@ticket_set.price_points.inspect}"
-        	      @ticket_set.update_attributes(params[:ticket_set])
+        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
+        	      @deal_set.update_attributes(params[:deal_set])
                 format.html { redirect_to [@location.user, @location], notice: 'Deal set was successfully updated.' }
                 format.json { head :no_content }
             else
@@ -414,7 +414,7 @@ class DealSetsController < ApplicationController
         	            price.num_released = price.active_less_than
         	            price.num_unsold = price.active_less_than
         	        end
-        	        if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than && check_active == true
+        	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @deal_set.price = price.price
         	        else

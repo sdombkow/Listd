@@ -134,7 +134,7 @@ class PassSetsController < ApplicationController
       	            price.num_released = price.active_less_than
       	            price.num_unsold = price.active_less_than
       	        end
-      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
       	            price.active_check = true
       	            @pass_set.price = price.price
       	        else
@@ -169,7 +169,7 @@ class PassSetsController < ApplicationController
       	            price.num_released = price.active_less_than
       	            price.num_unsold = price.active_less_than
       	        end
-      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
       	            price.active_check = true
       	            @pass_set.price = price.price
       	        else
@@ -235,7 +235,7 @@ class PassSetsController < ApplicationController
       	            price.num_released = price.active_less_than
       	            price.num_unsold = price.active_less_than
       	        end
-      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
       	            price.active_check = true
       	            @pass_set.price = price.price
       	        else
@@ -270,7 +270,7 @@ class PassSetsController < ApplicationController
       	            price.num_released = price.active_less_than
       	            price.num_unsold = price.active_less_than
       	        end
-      	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+      	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
       	            price.active_check = true
       	            @pass_set.price = price.price
       	        else
@@ -352,7 +352,7 @@ class PassSetsController < ApplicationController
           	            price.num_released = price.active_less_than
           	            price.num_unsold = price.active_less_than
           	        end
-          	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+          	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
           	            price.active_check = true
           	            @pass_set.price = price.price
           	        else
@@ -406,7 +406,7 @@ class PassSetsController < ApplicationController
           	            price.num_released = price.active_less_than
           	            price.num_unsold = price.active_less_than
           	        end
-          	        if @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
+          	        if @pass_set.price_points[index+1] != nil && @pass_set.unsold_passes <= price.active_less_than && @pass_set.unsold_passes > @pass_set.price_points[index+1].active_less_than && check_active == true
           	            price.active_check = true
           	            @pass_set.price = price.price
           	        else
