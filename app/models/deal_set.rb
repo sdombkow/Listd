@@ -12,7 +12,7 @@ class DealSet < ActiveRecord::Base
   belongs_to :location
   belongs_to :event
   
-  has_one :fecha, :dependent => :destroy
+  has_one :fecha
   has_many :price_points, :dependent => :destroy
   
   accepts_nested_attributes_for :fecha

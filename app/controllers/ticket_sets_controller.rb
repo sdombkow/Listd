@@ -134,6 +134,9 @@ class TicketSetsController < ApplicationController
     	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @ticket_set.price = price.price
+    	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+        	        price.active_check = true
+        	        @ticket_set.price = price.price
     	        else
     	            price.active_check = false
     	        end
@@ -170,6 +173,9 @@ class TicketSetsController < ApplicationController
     	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @ticket_set.price = price.price
+    	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+          	      price.active_check = true
+          	      @ticket_set.price = price.price
     	        else
     	            price.active_check = false
     	        end
@@ -234,6 +240,9 @@ class TicketSetsController < ApplicationController
     	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @ticket_set.price = price.price
+    	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+          	      price.active_check = true
+                  @ticket_set.price = price.price
     	        else
     	            price.active_check = false
     	        end
@@ -270,6 +279,9 @@ class TicketSetsController < ApplicationController
     	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
     	            price.active_check = true
     	            @ticket_set.price = price.price
+    	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+          	      price.active_check = true
+                  @ticket_set.price = price.price
     	        else
     	            price.active_check = false
     	        end
@@ -355,6 +367,9 @@ class TicketSetsController < ApplicationController
         	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @ticket_set.price = price.price
+        	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+              	      price.active_check = true
+                      @ticket_set.price = price.price
         	        else
         	            price.active_check = false
         	        end
@@ -411,6 +426,9 @@ class TicketSetsController < ApplicationController
         	        if @ticket_set.price_points[index+1] != nil && @ticket_set.unsold_tickets<= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @ticket_set.price = price.price
+        	        elsif @ticket_set.price_points[index+1] == nil && @ticket_set.unsold_tickets <= price.active_less_than && check_active == true
+              	      price.active_check = true
+                      @ticket_set.price = price.price
         	        else
         	            price.active_check = false
         	        end

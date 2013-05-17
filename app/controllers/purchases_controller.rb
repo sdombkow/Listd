@@ -350,7 +350,7 @@ class PurchasesController < ApplicationController
         @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
         @ticket_set.price_points.each_with_index.map {|price, index| 
 	          if check_active == true
-	              if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than
+	              if @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than
     	              if price.active_check != true
     	                  price.active_check = true
     	                  @ticket_set.price = price.price
@@ -611,7 +611,7 @@ class PurchasesController < ApplicationController
         @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
         @deal_set.price_points.each_with_index.map {|price, index| 
 	          if check_active == true
-	              if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than
+	              if @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than
     	              if price.active_check != true
     	                  price.active_check = true
     	                  @deal_set.price = price.price
@@ -742,7 +742,7 @@ class PurchasesController < ApplicationController
         @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
         @reservation_set.price_points.each_with_index.map {|price, index| 
 	          if check_active == true
-	              if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than
+	              if @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than
     	              if price.active_check != true
     	                  price.active_check = true
     	                  @reservation_set.price = price.price
@@ -876,7 +876,7 @@ class PurchasesController < ApplicationController
           @ticket_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
           @ticket_set.price_points.each_with_index.map {|price, index| 
   	          if check_active == true
-  	              if @ticket_set.unsold_passes <= price.active_less_than && @ticket_set.unsold_passes > @ticket_set.price_points[index+1].active_less_than
+  	              if @ticket_set.unsold_tickets <= price.active_less_than && @ticket_set.unsold_tickets > @ticket_set.price_points[index+1].active_less_than
       	              if price.active_check != true
       	                  price.active_check = true
       	                  @ticket_set.price = price.price
@@ -1138,7 +1138,7 @@ class PurchasesController < ApplicationController
           @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
           @deal_set.price_points.each_with_index.map {|price, index| 
   	          if check_active == true
-  	              if @deal_set.unsold_passes <= price.active_less_than && @deal_set.unsold_passes > @deal_set.price_points[index+1].active_less_than
+  	              if @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than
       	              if price.active_check != true
       	                  price.active_check = true
       	                  @deal_set.price = price.price
@@ -1269,7 +1269,7 @@ class PurchasesController < ApplicationController
           @reservation_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
           @reservation_set.price_points.each_with_index.map {|price, index| 
   	          if check_active == true
-  	              if @reservation_set.unsold_passes <= price.active_less_than && @reservation_set.unsold_passes > @reservation_set.price_points[index+1].active_less_than
+  	              if @reservation_set.unsold_reservations <= price.active_less_than && @reservation_set.unsold_reservations > @reservation_set.price_points[index+1].active_less_than
       	              if price.active_check != true
       	                  price.active_check = true
       	                  @reservation_set.price = price.price

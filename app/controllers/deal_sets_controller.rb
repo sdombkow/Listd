@@ -139,6 +139,9 @@ class DealSetsController < ApplicationController
 	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
 	            price.active_check = true
 	            @deal_set.price = price.price
+	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+	            price.active_check = true
+              @deal_set.price = price.price
 	        else
 	            price.active_check = false
 	        end
@@ -174,6 +177,9 @@ class DealSetsController < ApplicationController
 	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
 	            price.active_check = true
 	            @deal_set.price = price.price
+	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+  	          price.active_check = true
+              @deal_set.price = price.price
 	        else
 	            price.active_check = false
 	        end
@@ -240,7 +246,10 @@ class DealSetsController < ApplicationController
      	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
      	            price.active_check = true
      	            @deal_set.price = price.price
-     	        else
+     	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+    	            price.active_check = true
+                  @deal_set.price = price.price
+              else
      	            price.active_check = false
      	        end
      	      }
@@ -275,6 +284,9 @@ class DealSetsController < ApplicationController
      	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
      	            price.active_check = true
      	            @deal_set.price = price.price
+     	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+      	          price.active_check = true
+                  @deal_set.price = price.price
      	        else
      	            price.active_check = false
      	        end
@@ -360,6 +372,9 @@ class DealSetsController < ApplicationController
         	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @ticket_set.unsold_deals > @ticket_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @deal_set.price = price.price
+        	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+          	          price.active_check = true
+                      @deal_set.price = price.price
         	        else
         	            price.active_check = false
         	        end
@@ -417,6 +432,9 @@ class DealSetsController < ApplicationController
         	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
         	            price.active_check = true
         	            @deal_set.price = price.price
+        	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+          	          price.active_check = true
+                      @deal_set.price = price.price  
         	        else
         	            price.active_check = false
         	        end
