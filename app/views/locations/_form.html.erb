@@ -66,7 +66,8 @@
     	<%= f.label :twitter_url %><br />
     	<%= f.text_field :twitter_url %>
   	</div>
-  	<%= f.fields_for :location_hours do |builder| %>
+  	
+	<%= f.fields_for :location_hours do |builder| %>
 		<!--<%= render 'location_hour_fields', :f => builder %>-->
 		<div>
     		<%= builder.label :day_of_week_open %><br />
@@ -85,8 +86,17 @@
     		<%= builder.time_select :closing_time %>
   		</div>
 	<% end %>
-  	
 	<%= link_to_add_fields "Add New Hours", f, :location_hours %>
+	
+	<%= f.fields_for :menu_items do |builder| %>
+		<%= render 'menu_item_fields', :f => builder %>
+	<% end %>
+	<%= link_to_add_fields "Add New Menu Items", f, :menu_items %>
+	
+	<%= f.fields_for :specials do |builder| %>
+		<%= render 'special_fields', :f => builder %>
+	<% end %>
+	<%= link_to_add_fields "Add New Specials", f, :specials %>
 	</br>
 	</br>
 

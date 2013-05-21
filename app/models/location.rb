@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
   
   attr_accessible :city, :facebook_url, :full_address, :intro_paragraph, :latitude, :logo, :longtitude, 
   :name, :phone_number, :slug, :state, :street_address, :twitter_url, :user_id, :website_url, :zip_code, 
-  :location_hours_attributes
+  :location_hours_attributes, :menu_items_attributes, :specials_attributes
   
   validates_uniqueness_of :name, :scope => :city
   validates :phone_number,  :uniqueness => true, :presence => true
@@ -21,9 +21,14 @@ class Location < ActiveRecord::Base
 	has_many :reservation_sets, :dependent => :destroy
 	
 	has_many :location_hours, :dependent => :destroy
+	has_many :menu_items, :dependent => :destroy
+	has_many :specials, :dependent => :destroy
 	belongs_to :user
 	
 	accepts_nested_attributes_for :location_hours, :reject_if => lambda { |a| a[:day_of_week_open].blank? }, :allow_destroy => true
+	accepts_nested_attributes_for :menu_items, :reject_if => lambda { |a| a[:name].blank? }, :allow_destroy => true
+	accepts_nested_attributes_for :specials, :reject_if => lambda { |a| a[:name].blank? }, :allow_destroy => true
+	
 	
 	geocoded_by :full_address
 	after_validation :geocode, :if => :full_address_changed?

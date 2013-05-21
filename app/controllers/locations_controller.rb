@@ -53,6 +53,8 @@ class LocationsController < ApplicationController
     @location.user_id= @user.id
     
     1.times { @location.location_hours.build }
+    1.times { @location.menu_items.build }
+    1.times { @location.specials.build }
 
     respond_to do |format|
       format.html # new.html.erb
