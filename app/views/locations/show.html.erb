@@ -470,6 +470,7 @@
 <%= link_to 'Edit Bar Information', edit_user_location_path(@user,@location) %> |
 <%= link_to 'Delete Bar Location', [@user,@location], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>
+<!--<%= image_tag @location.photo.url %>-->
 
 <% elsif(user_signed_in? && current_user.partner?) %>
 	<% if current_user.admin? %>

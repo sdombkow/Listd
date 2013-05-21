@@ -97,6 +97,10 @@
 		<%= render 'special_fields', :f => builder %>
 	<% end %>
 	<%= link_to_add_fields "Add New Specials", f, :specials %>
+	<div class="field">
+		<%= f.label :photo, "Photo" %>
+  		<%= f.file_field :photo %>
+	</div>
 	</br>
 	</br>
 
