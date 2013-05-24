@@ -1,16 +1,16 @@
-<div>
+<div class="field">
 	<%= f.label :day_of_week_open %><br />
 	<%= f.select :day_of_week_open, Date::DAYNAMES %>
 </div>
-<div>
+<div class="field">
 	<%= f.label :opening_time %><br />
 	<%= f.time_select :opening_time %>
 </div>
-<div>
+<div class="field">
 	<%= f.label :day_of_week_close %><br />
 	<%= f.select :day_of_week_close, Date::DAYNAMES %>
 </div>
-<div>
+<div class="field">
 	<%= f.label :closing_time %><br />
 	<%= f.time_select :closing_time %>
 </div>
