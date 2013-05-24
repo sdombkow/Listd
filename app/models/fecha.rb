@@ -6,7 +6,6 @@ class Fecha < ActiveRecord::Base
   
   belongs_to :location
   belongs_to :event
-  
   belongs_to :ticket_set
   belongs_to :pass_set
   belongs_to :deal_set

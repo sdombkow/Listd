@@ -5,17 +5,14 @@ class PassSet < ActiveRecord::Base
   validates :total_released_passes, :presence => true
   validates :unsold_passes, :numericality => { :greater_than_or_equal_to => 0 }
   
-  belongs_to :bar
   has_many :passes , :dependent => :delete_all
   has_many :users, :through => :passes
   has_many :time_periods, :dependent => :destroy
-  
+  has_many :price_points, :dependent => :destroy
+  belongs_to :bar
   belongs_to :location
   belongs_to :event
-  
   has_one :fecha
-  
-  has_many :price_points, :dependent => :destroy
   
   accepts_nested_attributes_for :time_periods
   accepts_nested_attributes_for :fecha

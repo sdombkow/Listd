@@ -38,13 +38,12 @@ class DealSetsController < ApplicationController
   # GET /deal_sets/1
   # GET /deal_sets/1.json
   def show
+    @deal_set = DealSet.find(params[:id])
     if params[:location_id] != nil
         @location = Location.find(params[:location_id])
-        @deal_set = DealSet.find(params[:id])
         @full_bar_path = "http://#{request.host}" + (location_path @deal_set.location).to_s
     elsif params[:event_id] != nil
         @event = Event.find(params[:event_id])
-        @deal_set = DealSet.find(params[:id])
         @full_bar_path = "http://#{request.host}" + (event_path @deal_set.event).to_s
     end
     @used_deals = @deal_set.deals.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:used_deals_page], :per_page => 5)
@@ -97,231 +96,103 @@ class DealSetsController < ApplicationController
         @event = Event.find(params[:event_id])
     end
     @deal_set = DealSet.find(params[:id])
-    logger.error "Deal Set Price: #{@deal_set.price_point.price}"
   end
 
   # POST /deal_sets
   # POST /deal_sets.json
   def create
-    @deal_set = DealSet.new(params[:deal_set])
-    @fecha = Fecha.new(params[:deal_set][:fecha_attributes])
-    @price_point = PricePoint.new(params[:deal_set][:price_point_attributes])
-    logger.error "Ticket Set Values: #{@deal_set.inspect}"
-    logger.error "Fecha Values: #{@fecha.inspect}"
-    logger.error "Price Point Values: #{@price_point.inspect}"
-    no_change = false
-    if params[:location_id] != nil
-      @location_fechas = @location.fechas.where("date = ?", @fecha.date)
-      @existing_set = @location_fechas.first
-      if @location_fechas.empty?
-        @fecha.location = @location
-        @fecha.deal_set = @deal_set
-        @fecha.selling_deals = true
-        @deal_set.sold_deals = 0
-    	  @deal_set.unsold_deals = @deal_set.total_released_deals
-    	  @deal_set.revenue_percentage = 0.7
-    	  @deal_set.revenue_total = 0
-    	  @deal_set.location = @location
-    	  @deal_set.fecha = @fecha
-    	  logger.error "Price Points #{@deal_set.price_points.inspect}"
-	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-	      check_active = true
-	      @deal_set.price_points.each_with_index.map {|price, index| 
-	        price.num_sold = 0
-	        if @deal_set.price_points[index+1] != nil
-	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-	        else
-	            price.num_released = price.active_less_than
-	            price.num_unsold = price.active_less_than
-	        end
-	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
-	            price.active_check = true
-	            @deal_set.price = price.price
-	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
-	            price.active_check = true
+      @deal_set = DealSet.new(params[:deal_set])
+      @fecha = Fecha.new(params[:deal_set][:fecha_attributes])
+      logger.error "Ticket Set Values: #{@deal_set.inspect}"
+      logger.error "Fecha Values: #{@fecha.inspect}"
+      logger.error "Price Point Values: #{@price_point.inspect}"
+      no_change = false
+      if params[:location_id] != nil
+          location_not_event = true
+      else
+          location_not_event = false
+      end
+      @deal_set.sold_deals = 0
+      @deal_set.unsold_deals = @deal_set.total_released_deals
+      @deal_set.revenue_percentage = 0.7
+      @deal_set.revenue_total = 0
+      @deal_set.location = @location
+      @deal_set.fecha = @fecha
+      logger.error "Price Points #{@deal_set.price_points.inspect}"
+      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+      logger.error "Price Points #{@deal_set.price_points.inspect}"
+      check_active = true
+      @deal_set.price_points.each_with_index.map {|price, index| 
+          price.num_sold = 0
+          if @deal_set.price_points[index+1] != nil
+              price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
+              price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
+          else
+              price.num_released = price.active_less_than
+              price.num_unsold = price.active_less_than
+          end
+          if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
+              price.active_check = true
               @deal_set.price = price.price
-	        else
-	            price.active_check = false
-	        end
-	      }
-	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-    	  @price_point.num_released = @deal_set.total_released_deals
-    	  @price_point.num_sold = 0
-    	  @price_point.num_unsold = @deal_set.total_released_deals
+          elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
+              price.active_check = true
+              @deal_set.price = price.price
+          else
+              price.active_check = false
+          end
+      }
+      logger.error "Price Points #{@deal_set.price_points.inspect}" 
+      if location_not_event == true
+          @establishment_fechas = @location.fechas.where("date = ?", @fecha.date)
+      else
+          @establishment_fechas = @event.fechas.where("date = ?", @fecha.date)
+      end
+      @existing_set = @establishment_fechas.first
+      if @establishment_fechas.empty?
+          if location_not_event == true
+              @fecha.location = @location
+          elsif location_not_event == false     
+              @fecha.event = @event
+          end 
+          @fecha.deal_set = @deal_set
+          @fecha.selling_deals = true
       elsif @existing_set.selling_deals == false
-        logger.error "In Existing Set"
-        @fecha = @existing_set
-        @fecha.deal_set = @deal_set
-        @fecha.selling_deals = true
-        @deal_set.sold_deals = 0
-    	  @deal_set.unsold_deals = @deal_set.total_released_deals
-        @deal_set.revenue_percentage = 0.7
-      	@deal_set.revenue_total = 0
-        @deal_set.location = @location
-      	@deal_set.fecha = @fecha
-      	logger.error "Price Points #{@deal_set.price_points.inspect}"
-	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-	      check_active = true
-	      @deal_set.price_points.each_with_index.map {|price, index| 
-	        price.num_sold = 0
-	        if @deal_set.price_points[index+1] != nil
-	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-	        else
-	            price.num_released = price.active_less_than
-	            price.num_unsold = price.active_less_than
-	        end
-	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
-	            price.active_check = true
-	            @deal_set.price = price.price
-	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
-  	          price.active_check = true
-              @deal_set.price = price.price
-	        else
-	            price.active_check = false
-	        end
-	      }
-	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-    	  @price_point.num_released = @deal_set.total_released_deals
-        @price_point.num_sold = 0
-      	@price_point.num_unsold = 0
+          logger.error "In Existing Set"
+          @fecha = @existing_set
+          @fecha.deal_set = @deal_set
+          @fecha.selling_deals = true
       else       
-        no_change = true
-      end
-      logger.error "Deal Set: #{@existing_set.inspect}"
-    
+          no_change = true
+      end    
+      logger.error "Deal Set: #{@existing_set.inspect}" 
       respond_to do |format|
-        if @fecha.date < Date.today
-	          flash[:notice] = 'Error: You are trying to create a deal set for a date that has already passed!'
-            format.html { render action: "new"  }
-            format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-        elsif no_change == true
-            logger.error "Here"
-				    flash[:notice] = 'Error: Please use edit to change existing deals'
-				    format.html { redirect_to edit_user_location_deal_set_path(@location.user, @location, @existing_set.deal_set) }
-				    format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-        elsif @deal_set.save
-            @fecha.deal_set = @deal_set
-            @fecha.save!
-            logger.error "Deal Set Associated with Price Point #{@price_point.deal_set.inspect}"
-            format.html { redirect_to [@location.user, @location], notice: 'Deal set was successfully created.' }
-            format.json { render json: @deal_set, status: :created, location: @deal_set }
-        else
-            format.html { render action: "new" }
-            format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-        end
-      end
-    elsif params[:event_id] != nil
-        @event_fechas = @event.fechas.where("date = ?", @fecha.date)
-        @existing_set = @event_fechas.first
-        logger.error "No Change: #{no_change}"
-        logger.error "Fechas: #{@event_fechas.empty?}"
-        logger.error "Fechas: #{@existing_set.inspect}"
-        if @event_fechas.empty?
-             @fecha.event = @event
-             @fecha.deal_set = @deal_set
-             @fecha.selling_deals = true
-             @deal_set.sold_deals = 0
-          	 @deal_set.unsold_deals = @deal_set.total_released_deals
-          	 @deal_set.revenue_percentage = 0.7
-          	 @deal_set.revenue_total = 0
-          	 @deal_set.event = @event
-          	 @deal_set.fecha = @fecha
-          	 logger.error "Price Points #{@deal_set.price_points.inspect}"
-     	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-     	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-     	      check_active = true
-     	      @deal_set.price_points.each_with_index.map {|price, index| 
-     	        price.num_sold = 0
-     	        if @deal_set.price_points[index+1] != nil
-     	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-     	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-     	        else
-     	            price.num_released = price.active_less_than
-     	            price.num_unsold = price.active_less_than
-     	        end
-     	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
-     	            price.active_check = true
-     	            @deal_set.price = price.price
-     	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
-    	            price.active_check = true
-                  @deal_set.price = price.price
+          if @fecha.date < Date.today
+              flash[:notice] = 'Error: You are trying to create a deal set for a date that has already passed!'
+              format.html { render action: "new"  }
+              format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+          elsif no_change == true
+              logger.error "Here"
+  	          flash[:notice] = 'Error: Please use edit to change existing deals'
+  	          if location_not_event == true
+  	              format.html { redirect_to edit_user_location_deal_set_path(@location.user, @location, @existing_set.deal_set) }
+  	          else
+  	              format.html { redirect_to edit_user_event_deal_set_path(@event.user, @event, @existing_set.deal_set) }
+  	          end
+  	          format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+          elsif @deal_set.save
+              @fecha.deal_set = @deal_set
+              @fecha.save!
+              if location_not_event == true
+                  format.html { redirect_to [@location.user, @location], notice: 'Deal set was successfully created.' }
               else
-     	            price.active_check = false
-     	        end
-     	      }
-     	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-          	 @price_point.num_released = @deal_set.total_released_deals
-          	 @price_point.num_sold = 0
-          	 @price_point.num_unsold = @deal_set.total_released_deals
-        elsif @existing_set.selling_deals == false
-             logger.error "In Existing Set"
-             @fecha = @existing_set
-             @fecha.deal_set = @deal_set
-             @fecha.selling_deals = true
-             @deal_set.sold_deals = 0
-             @deal_set.unsold_deals = @deal_set.total_released_deals
-             @deal_set.revenue_percentage = 0.7
-          	 @deal_set.revenue_total = 0
-             @deal_set.event = @event
-          	 @deal_set.fecha = @fecha
-          	 logger.error "Price Points #{@deal_set.price_points.inspect}"
-     	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-     	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-     	      check_active = true
-     	      @deal_set.price_points.each_with_index.map {|price, index| 
-     	        price.num_sold = 0
-     	        if @deal_set.price_points[index+1] != nil
-     	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-     	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-     	        else
-     	            price.num_released = price.active_less_than
-     	            price.num_unsold = price.active_less_than
-     	        end
-     	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
-     	            price.active_check = true
-     	            @deal_set.price = price.price
-     	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
-      	          price.active_check = true
-                  @deal_set.price = price.price
-     	        else
-     	            price.active_check = false
-     	        end
-     	      }
-     	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-          	 @price_point.num_released = @deal_set.total_released_deals
-             @price_point.num_sold = 0
-          	 @price_point.num_unsold = 0
-        else       
-            no_change = true
-        end
-        logger.error "Deal Set: #{@existing_set.inspect}"
-
-        respond_to do |format|
-            if @fecha.date < Date.today
-      	        flash[:notice] = 'Error: You are trying to create a deal set for a date that has already passed!'
-                format.html { render action: "new"  }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            elsif no_change == true
-                logger.error "Here"
-      				  flash[:notice] = 'Error: Please use edit to change existing deals'
-      				  format.html { redirect_to edit_user_event_deal_set_path(@event.user, @event, @existing_set.deal_set) }
-      				  format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            elsif @deal_set.save
-                @fecha.deal_set = @deal_set
-                @fecha.save!
-                logger.error "Deal Set Associated with Price Point #{@price_point.deal_set.inspect}"
-                format.html { redirect_to [@event.user, @event], notice: 'Deal set was successfully created.' }
-                format.json { render json: @deal_set, status: :created, location: @deal_set }
-            else
-                format.html { render action: "new" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            end
-        end     
-    end
+                  format.html { redirect_to [@event.user, @event], notice: 'Deal set was successfully created.' }
+              end
+              format.json { render json: @deal_set, status: :created, location: @deal_set }
+          else
+              format.html { render action: "new" }
+              format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+          end
+      end
   end
 
   # PUT /deal_sets/1

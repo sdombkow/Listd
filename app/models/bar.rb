@@ -35,4 +35,5 @@ class Bar < ActiveRecord::Base
 	def name_city
       "#{name} #{city}"
   end	
+  
 end

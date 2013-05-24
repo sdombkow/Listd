@@ -8,12 +8,10 @@ class TicketSet < ActiveRecord::Base
   
   has_many :tickets , :dependent => :delete_all
   has_many :users, :through => :tickets
-  
+  has_many :price_points, :dependent => :destroy
   belongs_to :location
   belongs_to :event
-  
   has_one :fecha
-  has_many :price_points, :dependent => :destroy
   
   accepts_nested_attributes_for :fecha
   accepts_nested_attributes_for :price_points, :reject_if => lambda { |a| a[:price].blank? }, :allow_destroy => true

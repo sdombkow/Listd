@@ -19,7 +19,6 @@ class Event < ActiveRecord::Base
   has_many :pass_sets, :dependent => :destroy
   has_many :deal_sets, :dependent => :destroy
   has_many :reservation_sets, :dependent => :destroy
-
   has_many :location_hours, :dependent => :destroy
   belongs_to :user
 	

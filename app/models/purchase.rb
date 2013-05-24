@@ -7,11 +7,11 @@ class Purchase < ActiveRecord::Base
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   validates :num_passes, :numericality => { :greater_than => 0 }
   
-  belongs_to :user
   has_many :passes
   has_many :tickets
   has_many :deals
   has_many :reservations
+  belongs_to :user
   
   def payment(user)
       if valid?
