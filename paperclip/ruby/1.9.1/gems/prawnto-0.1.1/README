@@ -1,0 +1,15 @@
+Prawnto
+=======
+
+a rails plugin providing templating abilities
+for generating pdf files leveraging the new kick-ass prawn library
+
+full documentation/demos at: http://cracklabs.com/prawnto
+
+CHANGE LOG
+==========
+
+0.1.1 Get rid of warning when PDF mime type is already registered (alfonsojimenez)
+
+
+Copyright (c) 2008 cracklabs.com, released under the MIT license

@@ -424,7 +424,11 @@ class PassSetsController < ApplicationController
       @pass_set.save
     
       respond_to do |format|
-          format.html { redirect_to [@bar], notice: 'Pass set was successfully closed.' }
+          if current_user.partner != true
+              format.html { redirect_to [@bar], notice: 'Pass set was successfully closed.' }
+          else
+              format.html { redirect_to [@bar, @pass_set], notice: 'Pass set was successfully closed.' }
+          end
           format.json { head :no_content }
       end
   end

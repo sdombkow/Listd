@@ -1,3 +1,30 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+    	$(document).ready(function(){
+			function passSetMinimize(){
+				$('#expandInfo').hide();
+				$('#passSetShort').hide();
+				$("#expandInfo").click(function(){
+					$("#passSetShort").fadeOut(500,function(){
+                    	$('#expandInfo').hide();
+						$("#passSetInfo").fadeIn();
+						$('#shrinkInfo').show();
+                	});
+				});
+				$("#shrinkInfo").click(function(){
+					$("#passSetInfo").fadeOut(500,function(){
+                    	$('#shrinkInfo').hide();
+						$("#passSetShort").fadeIn();
+						$('#expandInfo').show();
+                	});
+				});
+			}
+			passSetMinimize();
+		});
+	</script>
+<% end %>
+
+
 <h1>Partner Dashboard</h1>
 <h2><%=current_user.name %></h2>
 
@@ -19,82 +46,93 @@
 		</p>
 	
 	
-	
+	<div id = "passSetShort">
+		Pass Sets Available
+	</div>
+	<div id = "passSetInfo">
 	<% if bar.pass_sets.where('selling_passes = ?', true).empty? %>
 		<h5>No Pass Sets Available</h5>
 	<% else %>
 		<h5>Pass Sets</h5>
         <div class = "passSetTable">
-		<table cellpadding="10">
-  			<thead>
-            <tr>
-    			<th>Date</th>
-    			<th>Released Passes</th>
-    			<th>Sold</th>
-    			<th>Unsold</th>
-    			<th>Price</th>
-				<th>Revenue</th>
-    			<th></th>
-				<th></th>
-				<th></th>
-            </tr>
-  			</thead>
-            <tbody>
-			<% bar.pass_sets.where('selling_passes = ?', true).order(:date).each do |pass_set| %>
-  				<tr>
-    				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
-    				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
-    				<td data-title="Sold"><%= pass_set.sold_passes %></td>
-    				<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
-    				<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
-					<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
-					<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
-					<td><%= link_to 'Edit', edit_user_bar_pass_set_path(bar.user, bar, pass_set) %></td>
-					<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(bar.user, bar, pass_set), :confirm => 'Are you sure?' %></td>
-  				</tr>
-			<% end %>
-            </tbody>
-		</table>
+			<table cellpadding="10">
+ 				<thead>
+           			<tr>
+   						<th>Date</th>
+    					<th>Released Passes</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
+    					<th>Price</th>
+						<th>Revenue</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+           			</tr>
+  				</thead>
+            	<tbody>
+					<% bar.pass_sets.where('selling_passes = ?', true).order(:date).each do |pass_set| %>
+  						<tr>
+   							<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    						<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    						<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    						<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
+							<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
+							<td><%= link_to 'Show Purchased Passes', [bar, pass_set] %></td>
+							<td><%= link_to 'Edit', edit_user_bar_pass_set_path(bar.user, bar, pass_set) %></td>
+							<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(bar.user, bar, pass_set), :confirm => 'Are you sure?' %></td>
+  						</tr>
+					<% end %>
+            	</tbody>
+			</table>
         </div>
 	<% end %>
+	</div>
 	</br>
-	<% if bar.pass_sets.where('selling_passes = ?', false).empty? %>
-		<h5>No Reservation Sets Available</h5>
-	<% else %>
-		<h5>Reservation Sets</h5>
-        <div class = "passSetTable">
-		<table cellpadding="10">
-        <thead>
-  			<tr>
-    			<th>Date</th>
-    			<th>Released Reservation</th>
-    			<th>Sold</th>
-    			<th>Unsold</th>
-    			<th>Price Per Person</th>
-				<th>Revenue</th>
-    			<th></th>
-    			<th></th>
-    			<th></th>
-  			</tr>
-         </thead>
-         <tbody>
-			<% bar.pass_sets.where('selling_passes = ?', false).order(:date).each do |pass_set| %>
-  				<tr>
-    				<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
-    				<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
-    				<td data-title="Sold"><%= pass_set.sold_passes %></td>
-    				<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
-    				<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
-					<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
-					<td><%= link_to 'Show Purchased Reservations', [bar, pass_set] %></td>
-  				</tr>
-			<% end %>
-          </tbody>
-		</table>
-    </div>
-	<% end %>
-	<%= link_to 'New Pass Set', new_user_bar_pass_set_path(current_user,bar) %>	
+	<div id = "expansionFunctionality">
+		<input type = "button" id = "expandInfo" value = "Expand <%= bar.name %> Pass Sets" class = "btn btn-inverse"/>
+		<input type = "button" id = "shrinkInfo" value = "Minimize <%= bar.name %> Pass Sets" class = "btn btn-inverse"/>
+	</div>
+	</br>
+	<%= link_to "New #{bar.name} Pass Set", new_user_bar_pass_set_path(current_user,bar), :class => "btn btn-primary" %>	
 	
+	<!--
+		<% if bar.pass_sets.where('selling_passes = ?', false).empty? %>
+			<h5>No Reservation Sets Available</h5>
+		<% else %>
+			<h5>Reservation Sets</h5>
+        	<div class = "passSetTable">
+				<table cellpadding="10">
+        			<thead>
+  						<tr>
+    						<th>Date</th>
+    						<th>Released Reservation</th>
+    						<th>Sold</th>
+    						<th>Unsold</th>
+    						<th>Price Per Person</th>
+							<th>Revenue</th>
+    						<th></th>
+    						<th></th>
+    						<th></th>
+  						</tr>
+         			</thead>
+         			<tbody>
+						<% bar.pass_sets.where('selling_passes = ?', false).order(:date).each do |pass_set| %>
+  							<tr>
+    							<td data-title="Date"><%= pass_set.date.strftime("%m/%d/%Y") %></td>
+    							<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
+    							<td data-title="Sold"><%= pass_set.sold_passes %></td>
+    							<td data-title="Unsold"><%= pass_set.unsold_passes %></td>
+    							<td data-title="Price"><%= number_to_currency(pass_set.price) %></td>
+								<td data-title="Revenue"><%= number_to_currency(pass_set.revenue_total) %></td>
+								<td><%= link_to 'Show Purchased Reservations', [bar, pass_set] %></td>
+  							</tr>
+						<% end %>
+          			</tbody>
+				</table>
+    		</div>
+		<% end %>
+	-->
 <% end %>
 </ul>
 
