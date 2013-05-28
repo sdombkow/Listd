@@ -33,9 +33,10 @@ class BarsController < ApplicationController
     @bar = Bar.find(params[:id])
 	  @user = @bar.user
     @full_path = "http://#{request.host+request.fullpath}"
-    @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date).limit(10)
+    @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
+    @pass_sets_paginated = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date).paginate(:page => params[:valid_pass_sets_page], :per_page => 5)
     @reservation_sets = @bar.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
-	  @expired_sets= @bar.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date)
+	  @expired_sets= @bar.pass_sets.where("selling_passes = ?", false).where("date< ?", Date.today).order(:date).paginate(:page => params[:expired_pass_sets_page], :per_page => 5)
 	  @expired_reservation_sets= @bar.pass_sets.where("selling_passes = ?", true).where("date< ?", Date.today).order(:date)
     respond_to do |format|
       format.html # show.html.erb

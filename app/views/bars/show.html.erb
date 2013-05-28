@@ -132,10 +132,10 @@
 	</div>
 </div>
 
-<%if(user_signed_in? && current_user.admin?) %>
+<%if(user_signed_in? && current_user.admin? || current_user.partner?) %>
 	<div>
 		
-		<%if @pass_sets.empty? %>
+		<%if @pass_sets_paginated.empty? %>
 			<h5>No Active Pass Sets</h5>
 		<% else %>
 			<h5>Active Pass Sets</h5>
@@ -156,7 +156,7 @@
   					</tr>
                 </thead>
                 <tbody>
-					<% @pass_sets.each do |pass_set| %>
+					<% @pass_sets_paginated.each do |pass_set| %>
   						<tr>
     						<td data-title="Date"><%= pass_set.date %></td>
     						<td data-title="Released Passes"><%= pass_set.total_released_passes %></td>
@@ -172,6 +172,8 @@
 								<td><%= link_to 'Delete', [@bar.user, @bar, pass_set], :confirm => 'Are you sure?', :method => :delete %> </td>
 			   				<%elsif (current_user.partner?)%>
 			      				<td><%= link_to 'Show Purchased Passes', [@bar, pass_set] %></td>
+								<td><%= link_to 'Edit', edit_user_bar_pass_set_path(@bar.user, @bar, pass_set) %></td>
+								<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
 				   			<%else %>
 			    				<td><%= link_to 'Purchase a Pass', [@bar,pass_set] %></td>   
 			   				<%end%>
@@ -179,8 +181,10 @@
 					<% end %>
                 </tbody>
 				</table>
+				<%= will_paginate @pass_sets_paginated, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_pass_sets_page' %>
         </div>
 		<% end %>
+		<!--
 		</br>
 		<%if @reservation_sets.empty? %>
 			<h5>No Active Reservation Sets</h5>
@@ -228,6 +232,7 @@
 				</table>
         </div>
 		<% end %>
+		-->
 		</br>
 		<% if @expired_sets.empty? %>
 			<h5> No Expired Pass Sets </h5>
@@ -265,15 +270,18 @@
 							<td><%= link_to 'Delete', [@bar.user, @bar, pass_set],:confirm => 'Are you sure?',:method => :delete %> </td>
 			   			<%elsif (current_user.partner?)%>
 			       			<td><%= link_to 'Show Purchased Tickets', [@bar, pass_set] %></td>
+							<td><%= link_to 'Close Out', user_bar_pass_set_close_set_path(@bar.user, @bar, pass_set), :confirm => 'Are you sure?' %></td>
 				   		<%else %>
 			    			<td><%= link_to 'Purchase a Ticket', [@bar,pass_set] %></td>   
 			   			<%end%>
   					</tr>
 				<% end %>
                 </tbody>
+				</div>
 			</table>
-            </div>
+			<%= will_paginate @expired_sets, :previous_label => "Previous", :next_label => "Next", :param_name => 'expired_pass_sets_page' %>
 		<% end %>
+		<!--
 		</br>
 		<% if @expired_reservation_sets.empty? %>
 			<h5>No Expired Reservation Sets</h5>
@@ -320,6 +328,7 @@
 			</table>
             </div>
 		<% end %>
+		-->
 </div>
 </br>
 <%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |
