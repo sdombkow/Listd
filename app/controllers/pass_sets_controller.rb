@@ -100,6 +100,7 @@ class PassSetsController < ApplicationController
   def edit
     @bar = Bar.find(params[:bar_id])
     @pass_set = PassSet.find(params[:id])
+    logger.error "#{@pass_set.single_price_level}"
   end
 
   # POST /pass_sets

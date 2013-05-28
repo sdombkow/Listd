@@ -1,9 +1,30 @@
 <% content_for :head do %>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('#single_price').hide();
-			$('#double_price').hide();
-			$('#triple_price').hide();
+			
+			if (<%= @pass_set.single_price_level %> == true) {
+				$('#single_price').show();
+				$("#checkbox1").prop("checked", true)
+				$('#double_price').hide();
+				$('#triple_price').hide();
+			}
+			else if (<%= @pass_set.double_price_level %> == true) {
+				$('#double_price').show();
+				$("#checkbox2").prop("checked", true)
+				$('#single_price').hide();
+				$('#triple_price').hide();
+			}
+			else if (<%= @pass_set.triple_price_level %> == true) {
+				$('#triple_price').show();
+				$("#checkbox3").prop("checked", true)
+				$('#single_price').hide();
+				$('#double_price').hide();
+			}
+			else {
+				$('#single_price').hide();
+				$('#double_price').hide();
+				$('#triple_price').hide();
+			}
 			
 			function singlePriceCheck(){
 	            $('#checkbox1').click(function() {

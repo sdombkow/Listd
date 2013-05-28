@@ -18,6 +18,8 @@ class BarsController < ApplicationController
   def index
     @user=current_user
 	  @bars = @user.bars
+	  bar_num = @user.bars.count
+	  logger.error "Bar Num: #{bar_num}"
 	
     respond_to do |format|
       format.html # index.html.erb
