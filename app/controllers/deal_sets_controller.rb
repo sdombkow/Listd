@@ -198,40 +198,53 @@ class DealSetsController < ApplicationController
   # PUT /deal_sets/1
   # PUT /deal_sets/1.json
   def update
-    @deal_set = DealSet.find(params[:id])
-    @date = Date.new(params[:deal_set][:fecha_attributes]["date(1i)"].to_i,params[:deal_set][:fecha_attributes]["date(2i)"].to_i,params[:deal_set][:fecha_attributes]["date(3i)"].to_i)
-    if params[:location_id] != nil
-        @location = Location.find(params[:location_id])
-        @existing_set = @location.fechas.where("date = ?", @date).first.deal_set
-        logger.error "Reservation Set: #{@existing_set.inspect}"
-        if @existing_set.nil?
-            logger.error "Nil Existing Set"
-            flash[:notice] = "Error: You cannot change the date of this deal set. Please create a new one"
-            redirect_to :action => "index", :controller => "locations"
-            return
-        end
-        @deal_set.unsold_deals = Integer(params[:deal_set]["total_released_deals"]) - @deal_set.sold_deals
-        @existing_sets = @location.fechas.where("date = ? and selling_deals = ?", @date, true).length
-        logger.error "Price: #{params[:deal_set][:price_point_attributes]}"
-        @deal_set.price_point.price = params[:deal_set][:price_point_attributes]["price"]
-        logger.error "Deal Set Price: #{@deal_set.price_point.price}"
-      
-        respond_to do |format|
-            if @date < Date.today
-	              flash[:notice] = 'Error: You are trying to edit a deal to a date that has already passed!'
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-                # Next if statements prevents any editing to this pass set
-            elsif @existing_sets == 1 and @existing_set.id != @deal_set.id
-  	            flash[:notice] = 'Error: There is already a deal set with this date!'
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            elsif @deal_set.update_attributes(params[:deal_set])
-                logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      check_active = true
-        	      @deal_set.price_points.each_with_index.map {|price, index| 
+      @deal_set = DealSet.find(params[:id])
+      @date = Date.new(params[:deal_set][:fecha_attributes]["date(1i)"].to_i,params[:deal_set][:fecha_attributes]["date(2i)"].to_i,params[:deal_set][:fecha_attributes]["date(3i)"].to_i)
+      if params[:location_id] != nil
+          location_not_event = true
+      else
+          location_not_event = false
+      end
+      if location_not_event == true
+          @location = Location.find(params[:location_id])
+          @existing_set = @location.fechas.where("date = ?", @date).first.deal_set
+          @existing_sets = @location.fechas.where("date = ? and selling_deals = ?", @date, true).length
+      else
+          @event = Event.find(params[:event_id])
+          @existing_set = @event.fechas.where("date = ?", @date).first.deal_set
+          @existing_sets = @event.fechas.where("date = ? and selling_deals = ?", @date, true).length
+      end
+      if @existing_set.nil?
+          logger.error "Nil Existing Set"
+          flash[:notice] = "Error: You cannot change the date of this deal set. Please create a new one"
+          if location_not_event == true
+              redirect_to :action => "index", :controller => "locations"
+          else
+              redirect_to :action => "index", :controller => "events"
+          end
+          return
+      end
+      @deal_set.unsold_deals = Integer(params[:deal_set]["total_released_deals"]) - @deal_set.sold_deals
+      logger.error "Price: #{params[:deal_set][:price_point_attributes]}"
+      @deal_set.price_point.price = params[:deal_set][:price_point_attributes]["price"]
+      logger.error "Deal Set Price: #{@deal_set.price_point.price}"
+
+      respond_to do |format|
+          if @date < Date.today
+              flash[:notice] = 'Error: You are trying to edit a deal to a date that has already passed!'
+              format.html { render action: "edit" }
+              format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+              # Next if statements prevents any editing to this pass set
+          elsif @existing_sets == 1 and @existing_set.id != @deal_set.id
+  	          flash[:notice] = 'Error: There is already a deal set with this date!'
+              format.html { render action: "edit" }
+              format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+          elsif @deal_set.update_attributes(params[:deal_set])
+              logger.error "Price Points #{@deal_set.price_points.inspect}"
+        	    @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
+        	    logger.error "Price Points #{@deal_set.price_points.inspect}"
+        	    check_active = true
+        	    @deal_set.price_points.each_with_index.map {|price, index| 
         	        price.num_sold = 0
         	        if @deal_set.price_points[index+1] != nil
         	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
@@ -249,77 +262,20 @@ class DealSetsController < ApplicationController
         	        else
         	            price.active_check = false
         	        end
-        	      }
-        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      @deal_set.update_attributes(params[:deal_set])
-                format.html { redirect_to [@location.user, @location], notice: 'Deal set was successfully updated.' }
-                format.json { head :no_content }
-            else
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            end
-        end 
-    elsif params[:event_id] != nil
-        @event = Event.find(params[:event_id])
-        @existing_set = @event.fechas.where("date = ?", @date).first.deal_set
-        logger.error "Reservation Set: #{@existing_set.inspect}"
-        logger.error "Fecha Values: #{@event.fechas.where("date = ?", @date).first.inspect}"
-        if @existing_set.nil?
-            logger.error "Nil Existing Set"
-            flash[:notice] = "Error: You cannot change the date of this deal set. Please create a new one"
-            redirect_to :action => "index", :controller => "events"
-            return
-        end
-        @deal_set.unsold_deals = Integer(params[:deal_set]["total_released_deals"]) - @deal_set.sold_deals
-        @existing_sets = @event.fechas.where("date = ? and selling_deals = ?", @date, true).length
-        logger.error "Price: #{params[:deal_set][:price_point_attributes]}"
-        @deal_set.price_point.price = params[:deal_set][:price_point_attributes]["price"]
-        logger.error "Deal Set Price: #{@deal_set.price_point.price}"
-      
-        respond_to do |format|
-            if @date < Date.today
-	              flash[:notice] = 'Error: You are trying to edit a deal to a date that has already passed!'
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-                # Next if statements prevents any editing to this pass set
-            elsif @existing_sets == 1 and @existing_set.id != @deal_set.id
-  	            flash[:notice] = 'Error: There is already a deal set with this date!'
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            elsif @deal_set.update_attributes(params[:deal_set])
-                logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      @deal_set.price_points.sort{|p1,p2| p1.active_less_than <=> p2.active_less_than}
-        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      check_active = true
-        	      @deal_set.price_points.each_with_index.map {|price, index| 
-        	        price.num_sold = 0
-        	        if @deal_set.price_points[index+1] != nil
-        	            price.num_released = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-        	            price.num_unsold = price.active_less_than - @deal_set.price_points[index+1].active_less_than
-        	        else
-        	            price.num_released = price.active_less_than
-        	            price.num_unsold = price.active_less_than
-        	        end
-        	        if @deal_set.price_points[index+1] != nil && @deal_set.unsold_deals <= price.active_less_than && @deal_set.unsold_deals > @deal_set.price_points[index+1].active_less_than && check_active == true
-        	            price.active_check = true
-        	            @deal_set.price = price.price
-        	        elsif @deal_set.price_points[index+1] == nil && @deal_set.unsold_deals <= price.active_less_than && check_active == true
-          	          price.active_check = true
-                      @deal_set.price = price.price  
-        	        else
-        	            price.active_check = false
-        	        end
-        	      }
-        	      logger.error "Price Points #{@deal_set.price_points.inspect}"
-        	      @deal_set.update_attributes(params[:deal_set])
-                format.html { redirect_to [@event.user, @event], notice: 'Deal set was successfully updated.' }
-                format.json { head :no_content }
-            else
-                format.html { render action: "edit" }
-                format.json { render json: @deal_set.errors, status: :unprocessable_entity }
-            end
-        end
-    end
+        	    }
+        	    logger.error "Price Points #{@deal_set.price_points.inspect}"
+        	    @deal_set.update_attributes(params[:deal_set])
+        	    if location_not_event == true
+                  format.html { redirect_to [@location.user, @location], notice: 'Deal set was successfully updated.' }
+              else
+                  format.html { redirect_to [@event.user, @event], notice: 'Deal set was successfully updated.' }
+              end
+              format.json { head :no_content }
+          else
+              format.html { render action: "edit" }
+              format.json { render json: @deal_set.errors, status: :unprocessable_entity }
+          end
+      end 
   end
 
   # DELETE /deal_sets/1

@@ -34,10 +34,10 @@ class HomeController < ApplicationController
       #  @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(5)
       #end
 
-      @venues = Bar.all
+      @venues = Location.all
       @localvenues = Location.all.take(3)
       
-      @events = Bar.all
+      @events = Event.all
       @localevents = Event.all.take(3)
     
       #if someone has searched for venues and there are locatons within 20 miles of that
