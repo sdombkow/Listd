@@ -1,0 +1,2 @@
+module WeeklyPassesHelper
+end

@@ -22,6 +22,7 @@ class Bar < ActiveRecord::Base
   :hourclose_sunday,:open_friday,:hourclose_monday,:houropen_sunday, :street_address, :city, :state, :zip_code
 
 	has_many :pass_sets, :dependent => :destroy
+	has_many :week_passes, :dependent => :destroy
 	belongs_to :user
 	
 	accepts_nested_attributes_for :pass_sets, :allow_destroy => true

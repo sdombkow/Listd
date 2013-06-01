@@ -1,4 +1,10 @@
 ListdApp::Application.routes.draw do
+  resources :weekly_passes
+
+
+  resources :week_passes
+
+
   get "current_user/update"
   match "current_user/delete_stripe_token" => 'current_user#delete_stripe_token'
   match '/activity_feed' => 'pages#facebook_activity'
@@ -25,8 +31,9 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   	resources :pass_sets
     collection do
       post 'search'
-			end
 		end
+		resources :week_passes
+	end
   resources :admin
   resources :passes
   match '/mypasses' => 'passes#index'
@@ -43,12 +50,14 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   end
   root :to => "home#index"
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  
   resources :users do
 	  resources :bars do
   	  resources :pass_sets
-        collection do
+      collection do
         post 'search'
 			end
+			resources :week_passes
 		end
 	end
 	
@@ -57,6 +66,7 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   	  resources :pass_sets do
           get 'close_set'
       end
+      resources :week_passes
 		end
 	end
 	

@@ -129,6 +129,12 @@
 			</div>
 		<% end %>
 		
+		<% if @week_set != nil %>
+			<div class="shadow span11 center-text" id="passes-none">
+				<%= link_to "Click here to purchase a week pass.", [@bar, @week_set] %>
+			</div>
+		<% end %>
+		
 	</div>
 </div>
 
@@ -331,7 +337,8 @@
 		-->
 </div>
 </br>
-<%= link_to 'New Pass set', new_user_bar_pass_set_path(@user,@bar) %> |
+<%= link_to 'New Individual Pass Set', new_user_bar_pass_set_path(@user,@bar) %> |
+<%= link_to 'New Week Passes', new_user_bar_week_pass_path(@user,@bar) %> |
 <%= link_to 'Edit Bar Information', edit_user_bar_path(@user,@bar) %> |
 <%= link_to 'Delete Bar Location', [@user,@bar], :confirm => 'Are you sure?', :method => :delete %> |
 <%= link_to 'Back', @user %>

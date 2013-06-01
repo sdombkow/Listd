@@ -1,0 +1,27 @@
+<%= form_for([@bar.user,@bar,@week_pass]) do |f| %>
+  <% if @week_pass.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@week_pass.errors.count, "error") %> prohibited this bar from being saved:</h2>
+
+      <ul>
+      <% @week_pass.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+	<div class="field">
+  		<%= f.label :week_total_released %><br />
+  		<%= f.number_field :week_total_released %>
+	</div>
+	<div class="field">
+    	<%= f.label :week_cost %><br />
+    	<%= f.text_field :week_cost %>
+  	</div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+

@@ -1,0 +1,18 @@
+<%= simple_form_for(@weekly_pass) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :week_pass_id %>
+    <%= f.input :purchase_id %>
+    <%= f.input :name %>
+    <%= f.input :redeemed %>
+    <%= f.input :entries %>
+    <%= f.input :confirmation %>
+    <%= f.input :price %>
+    <%= f.input :total_price %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

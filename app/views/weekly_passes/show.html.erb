@@ -1,0 +1,45 @@
+<% content_for :title, "Listd - Purchase Confirmation" %>
+
+	<h3>Thank you for making a purchase</h3>
+	<p>You will receive a confirmation email with a copy of your pass and instruction on how to use it.</p>
+	<div class="pass-preview">
+		<small>
+  			<h5 class="title title-confirmation">Purchase Summary on <%= @pass.created_at.strftime("%m/%d/%Y") %></h5>
+			<div class="pull-left dt">
+	  			Bar Name: <br>
+	  			Name on Purchase: <br>
+	  			Confirmation Number: <br>
+	  			<hr class="ns-rule">
+	  			Total Passes: <br>
+	  			Subtotal: <br>
+	  			<% if @pass.purchase.stripe_charge_token != nil %>
+					<%= @card_type %> Card (Last 4):
+	  			<% end %>
+			</div>
+			<div class="pull-left dd">
+	  			<%= @pass.week_pass.bar.name %> <br>
+	  			<%= @pass.name %> <br>
+	  			<%= @pass.confirmation %> <br>
+	  			<hr class="ns-rule">
+	  			<%= @pass.entries%> <br>
+	  			<%= number_to_currency(@pass.price * @pass.entries) %> <br>
+	  			<% if @pass.purchase.stripe_charge_token != nil %>
+					<%= @card_four %>
+	  			<% end %>
+			</div>
+			<br>
+			<div class="pull-right dd">
+	  			<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), pass_path(@pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => @pass.id), :class => "btn title links-confirmation" %> <br>
+				<% if current_user.partner != true %>
+                	<%= link_to raw("Get Code <i class=\"icon-qrcode\"></i>"), qrcode_path(:id => @pass.confirmation), :class => "btn title links-confirmation" %><br />
+	  				<%= link_to raw("All Passes <i class=\"icon-circle-arrow-right\"></i>"), '/mypasses', :class => "btn title links-confirmation" %>
+				<% end %>
+			</div>
+		</small>
+	</div> <!-- end of .pass-preview -->
+	
+	<hr>
+	<div class="help-confirmation">
+	  <p><small>If you experience any trouble viewing the pass or do not receive a confirmation email, please contact us at <%= mail_to("contactus@listdnow.com")%>.</small></p>
+	</div> <!-- end of .help-confirmation -->

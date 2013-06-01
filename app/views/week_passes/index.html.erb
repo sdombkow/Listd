@@ -1,0 +1,31 @@
+<h1>Listing week_passes</h1>
+
+<table>
+  <tr>
+    <th>Bar</th>
+    <th>Week total released</th>
+    <th>Week total sold</th>
+    <th>Week total unsold</th>
+    <th>Week cost</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @week_passes.each do |week_pass| %>
+  <tr>
+    <td><%= week_pass.bar_id %></td>
+    <td><%= week_pass.week_total_released %></td>
+    <td><%= week_pass.week_total_sold %></td>
+    <td><%= week_pass.week_total_unsold %></td>
+    <td><%= week_pass.week_cost %></td>
+    <td><%= link_to 'Show', week_pass %></td>
+    <td><%= link_to 'Edit', edit_week_pass_path(week_pass) %></td>
+    <td><%= link_to 'Destroy', week_pass, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Week pass', new_week_pass_path %>

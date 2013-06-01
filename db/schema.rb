@@ -11,7 +11,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130504212929) do
+ActiveRecord::Schema.define(:version => 20130601030837) do
+
+  create_table "available_times", :force => true do |t|
+    t.integer  "reservation_set_id"
+    t.time     "reservation_time"
+    t.integer  "tables_available"
+    t.integer  "tables_sold"
+    t.integer  "tables_unsold"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
 
   create_table "bars", :force => true do |t|
     t.string   "name"
@@ -57,6 +67,139 @@ ActiveRecord::Schema.define(:version => 20130504212929) do
 
   add_index "bars", ["user_id"], :name => "index_bars_on_user_id"
 
+  create_table "deal_sets", :force => true do |t|
+    t.integer  "fecha_id"
+    t.integer  "total_released_deals"
+    t.integer  "sold_deals"
+    t.integer  "unsold_deals"
+    t.decimal  "revenue_total"
+    t.decimal  "revenue_percentage"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.integer  "location_id"
+    t.integer  "event_id"
+    t.decimal  "price"
+    t.text     "description"
+  end
+
+  create_table "deals", :force => true do |t|
+    t.integer  "deal_set_id"
+    t.integer  "purchase_id"
+    t.string   "name"
+    t.boolean  "redeemed"
+    t.integer  "entries"
+    t.decimal  "price"
+    t.string   "confirmation"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.decimal  "total_price"
+  end
+
+  create_table "dia", :force => true do |t|
+    t.integer  "location_id"
+    t.boolean  "selling_passes"
+    t.boolean  "selling_reservations"
+    t.boolean  "selling_tickets"
+    t.boolean  "selling_deals"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  create_table "events", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "phone_number"
+    t.string   "address"
+    t.text     "intro_paragraph"
+    t.date     "date_of_event"
+    t.time     "time_of_event"
+    t.float    "latitude"
+    t.string   "logo"
+    t.string   "website_url"
+    t.string   "facebook_url"
+    t.string   "twitter_url"
+    t.string   "street_address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "slug"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.float    "longitude"
+    t.string   "zip_code"
+  end
+
+  create_table "fechas", :force => true do |t|
+    t.integer  "location_id"
+    t.boolean  "selling_passes",       :default => false
+    t.boolean  "selling_reservations", :default => false
+    t.boolean  "selling_tickets",      :default => false
+    t.boolean  "selling_deals",        :default => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
+    t.integer  "ticket_set_id"
+    t.date     "date"
+    t.integer  "pass_set_id"
+    t.integer  "deal_set_id"
+    t.integer  "reservation_set_id"
+    t.integer  "event_id"
+  end
+
+  create_table "friend_purchases", :force => true do |t|
+    t.integer  "pass_id"
+    t.integer  "deal_id"
+    t.integer  "ticket_id"
+    t.integer  "reservation_id"
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
+
+  create_table "location_hours", :force => true do |t|
+    t.integer  "location_id"
+    t.string   "day_of_week_open"
+    t.text     "day_of_week_close"
+    t.time     "opening_time"
+    t.time     "closing_time"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.integer  "event_id"
+  end
+
+  create_table "locations", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.integer  "phone_number"
+    t.string   "street_address"
+    t.text     "intro_paragraph"
+    t.float    "latitude"
+    t.string   "logo"
+    t.string   "website_url"
+    t.string   "facebook_url"
+    t.string   "twitter_url"
+    t.string   "full_address"
+    t.string   "city"
+    t.string   "zip_code"
+    t.string   "state"
+    t.string   "slug"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.float    "longitude"
+    t.string   "photo_file_name"
+    t.string   "photo_content_type"
+    t.integer  "photo_file_size"
+    t.datetime "photo_updated_at"
+  end
+
+  create_table "menu_items", :force => true do |t|
+    t.integer  "location_id"
+    t.string   "name"
+    t.decimal  "price"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "pass_friends", :force => true do |t|
     t.integer  "pass_id"
     t.string   "name"
@@ -86,6 +229,10 @@ ActiveRecord::Schema.define(:version => 20130504212929) do
     t.integer  "triple_price_less_than"
     t.decimal  "double_price_value",       :precision => 10, :scale => 2, :default => 0.0
     t.decimal  "triple_price_value",       :precision => 10, :scale => 2, :default => 0.0
+    t.integer  "location_id"
+    t.integer  "fecha_id"
+    t.decimal  "revenue_percentage"
+    t.integer  "event_id"
   end
 
   add_index "pass_sets", ["bar_id"], :name => "index_pass_sets_on_bar_id"
@@ -101,11 +248,36 @@ ActiveRecord::Schema.define(:version => 20130504212929) do
     t.string   "confirmation"
     t.string   "reservation_time"
     t.decimal  "price"
+    t.decimal  "total_price"
   end
 
   add_index "passes", ["confirmation"], :name => "index_passes_on_confirmation"
   add_index "passes", ["pass_set_id"], :name => "index_passes_on_Pass_Set_id"
   add_index "passes", ["purchase_id"], :name => "index_passes_on_Purchase_id"
+
+  create_table "photos", :force => true do |t|
+    t.integer  "location_id"
+    t.string   "file_name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "price_points", :force => true do |t|
+    t.integer  "pass_set_id"
+    t.integer  "reservation_set_id"
+    t.integer  "ticket_set_id"
+    t.decimal  "price"
+    t.integer  "num_released"
+    t.integer  "num_sold"
+    t.integer  "num_unsold"
+    t.text     "description"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.integer  "deal_set_id"
+    t.integer  "active_less_than"
+    t.boolean  "active_check"
+  end
 
   create_table "purchases", :force => true do |t|
     t.date     "date"
@@ -117,6 +289,75 @@ ActiveRecord::Schema.define(:version => 20130504212929) do
   end
 
   add_index "purchases", ["user_id"], :name => "index_purchases_on_user_id"
+
+  create_table "reservation_sets", :force => true do |t|
+    t.integer  "fecha_id"
+    t.integer  "total_released_reservations"
+    t.integer  "sold_reservations"
+    t.integer  "unsold_reservations"
+    t.decimal  "revenue_total"
+    t.decimal  "revenue_percentage"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+    t.boolean  "reservation_time_periods"
+    t.integer  "location_id"
+    t.integer  "event_id"
+    t.decimal  "price"
+    t.text     "description"
+  end
+
+  create_table "reservations", :force => true do |t|
+    t.integer  "reservation_set_id"
+    t.integer  "purchase_id"
+    t.string   "name"
+    t.boolean  "redeemed"
+    t.integer  "entries"
+    t.decimal  "price"
+    t.string   "confirmation"
+    t.string   "reservation_time"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.decimal  "total_price"
+  end
+
+  create_table "specials", :force => true do |t|
+    t.integer  "location_id"
+    t.string   "name"
+    t.decimal  "price"
+    t.date     "available_start"
+    t.date     "available_end"
+    t.text     "description"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  create_table "ticket_sets", :force => true do |t|
+    t.integer  "fecha_id"
+    t.integer  "total_released_tickets"
+    t.integer  "sold_tickets"
+    t.integer  "unsold_tickets"
+    t.decimal  "revenue_total"
+    t.decimal  "revenue_percentage"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.integer  "location_id"
+    t.integer  "event_id"
+    t.decimal  "price"
+    t.text     "description"
+  end
+
+  create_table "tickets", :force => true do |t|
+    t.integer  "ticket_set_id"
+    t.integer  "purchase_id"
+    t.string   "name"
+    t.boolean  "redeemed"
+    t.integer  "entries"
+    t.decimal  "price"
+    t.string   "confirmation"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.decimal  "total_price"
+  end
 
   create_table "time_periods", :force => true do |t|
     t.boolean  "ten_am_available"
@@ -200,5 +441,29 @@ ActiveRecord::Schema.define(:version => 20130504212929) do
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
+
+  create_table "week_passes", :force => true do |t|
+    t.integer  "bar_id"
+    t.integer  "week_total_released"
+    t.integer  "week_total_sold"
+    t.integer  "week_total_unsold"
+    t.decimal  "week_cost"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.decimal  "revenue_total"
+  end
+
+  create_table "weekly_passes", :force => true do |t|
+    t.integer  "week_pass_id"
+    t.integer  "purchase_id"
+    t.string   "name"
+    t.boolean  "redeemed"
+    t.integer  "entries"
+    t.string   "confirmation"
+    t.decimal  "price"
+    t.decimal  "total_price"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
 
 end

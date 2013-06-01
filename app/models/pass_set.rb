@@ -1,6 +1,7 @@
 class PassSet < ActiveRecord::Base
   validates_presence_of :date, :total_released_passes, :price
   belongs_to :bar
+  
   has_many :passes , :dependent => :delete_all
   has_many :users, :through => :passes
   has_many :time_periods, :dependent => :destroy

@@ -2,10 +2,11 @@ class Purchase < ActiveRecord::Base
   
   belongs_to :user
   has_many :passes
-  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time
-  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time
+  has_many :weekly_passes
+  attr_accessor :num_passes,:name, :stripe_card_token, :bar, :pass_set, :price, :reservation_time, :week_pass
+  attr_accessible :stripe_card_token, :name, :date, :num_passes, :pass_set, :bar, :price, :reservation_time, :week_pass
   
-  validates :name, :bar, :pass_set, :price, :num_passes, :date, :presence => true
+  validates :name, :bar, :price, :num_passes, :presence => true
   validates :name, :format => {:with => /(\w+\s)(\w+-?.?\w?\s?)+/, :message => "Name is not valid"}
   
   
@@ -43,6 +44,7 @@ class Purchase < ActiveRecord::Base
   end
     
     def payment_return_customer(user)
+      logger.error "#{valid?}"
       if valid?
         logger.error "Stripe Card Token: #{name} and #{stripe_card_token}"
         charge = Stripe::Charge.create(

@@ -33,6 +33,8 @@ class BarsController < ApplicationController
     @bar = Bar.find(params[:id])
 	  @user = @bar.user
     @full_path = "http://#{request.host+request.fullpath}"
+    @week_set = @bar.week_passes.first
+    logger.error "#{@week_set.inspect}"
     @pass_sets = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date)
     @pass_sets_paginated = @bar.pass_sets.where("selling_passes = ?", true).where("date >= ?", Date.today).order(:date).paginate(:page => params[:valid_pass_sets_page], :per_page => 5)
     @reservation_sets = @bar.pass_sets.where("selling_passes = ?", false).where("date >= ?", Date.today).order(:date)
