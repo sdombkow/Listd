@@ -1,3 +1,75 @@
-// Place all the styles related to the Week_Passes controller here.
+// Place all the styles related to the Pass_Sets controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* purchase page */
+
+#purchase-descr {
+  border: 1px solid #000;
+  padding: 1% 2% 2% 2%;
+  margin-bottom: 2%;
+  line-height: 24px;
+}
+
+guarantee {
+  font-size: 1.3em;
+  letter-spacing: -1px;
+  margin-bottom: 30px;
+  font-weight: normal;
+  color: #999;
+}
+
+.footer-cushion {
+  margin-bottom: 20px;
+}
+
+.index-type {
+  margin-left: 1%;
+}
+
+.pass-preview {
+  padding: 3% 4%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.pass-history-preview {
+  padding: 5% 6%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.dt {
+  color: #888;
+}
+
+.dd {
+  margin-left: 20px;
+}
+
+.vertical-rule {
+  border-left: 1px solid #d7d7d7;
+  margin-left: 5%;
+  padding-left: 5%;
+}
+
+/* Landscape phones and down */
+@media (max-width: 767px) {
+  body.pass_sets.show .vertical-rule {
+	border-left: none;
+	margin-left: 0%;
+	padding-left: 0%;
+  }
+}

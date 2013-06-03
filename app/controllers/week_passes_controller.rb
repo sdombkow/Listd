@@ -96,10 +96,11 @@ class WeekPassesController < ApplicationController
   # DELETE /week_passes/1.json
   def destroy
     @week_pass = WeekPass.find(params[:id])
+    @bar = @week_pass.bar
     @week_pass.destroy
 
     respond_to do |format|
-      format.html { redirect_to week_passes_url }
+      format.html { redirect_to [@bar], notice: 'Week set was successfully deleted.' }
       format.json { head :no_content }
     end
   end

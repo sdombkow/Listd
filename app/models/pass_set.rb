@@ -6,6 +6,8 @@ class PassSet < ActiveRecord::Base
   has_many :users, :through => :passes
   has_many :time_periods, :dependent => :destroy
   validates_numericality_of :price, :greater_than_or_equal_to =>0, :message => " Invalid Price"
+  validates_numericality_of :total_released_passes, :greater_than_or_equal_to => :sold_passes, 
+  :message => "Released Passes Must Be Greater Than Number of Already Sold Passes"
   validates :bar, :presence => true
   accepts_nested_attributes_for :time_periods
   

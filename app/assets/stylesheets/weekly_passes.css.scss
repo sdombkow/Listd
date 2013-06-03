@@ -1,3 +1,125 @@
-// Place all the styles related to the Weekly_Passes controller here.
+// Place all the styles related to the Passes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* my passes page */
+
+body.passes.index {
+  background: #e7e7e7;
+}
+
+body.passes.reservation_archive {
+  background: #e7e7e7;
+}
+
+.footer-cushion {
+  margin-bottom: 20px;
+}
+
+.index-type {
+  margin-left: 1%;
+}
+
+.pass-preview {
+  padding: 3% 4%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.pass-history-preview {
+  padding: 5% 6%;
+  border: 1px solid #d0d0d0;
+  background-color: #fff;
+  margin-bottom: 1%;
+  line-spacing: 14px;
+  overflow: auto;
+}
+
+.title {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.dt {
+  color: #888;
+}
+
+.dd {
+  margin-left: 20px;
+}
+
+.vertical-rule {
+  border-left: 1px solid #d7d7d7;
+  margin-left: 5%;
+  padding-left: 5%;
+}
+
+/* pass show */
+
+#purchased-pass {
+  background: url('pass_watermark_bg.png') no-repeat;
+  width: 290px;
+  height: 450px;
+  border: 1px solid #000;
+  margin-bottom: 2%;
+  line-height: 24px;
+  color: #ccc;
+}
+
+#purchased-pass p {
+  font-family: "Courier New", Courier, monospace;
+  color: #fff;
+}
+
+#pass-info {
+  height: 230px;
+  margin: 130px 25px 10px 28px;
+}
+
+#pass-info p {
+  color: #ccc;
+  font-size: 24px;
+  line-height: 60px;
+}
+
+#pass-name {
+  height: 65px;
+  margin: 0 10px;
+}
+
+#pass-name p {
+  color: #888;
+  font-size: 28px;
+  line-height: 2;
+  text-transform: uppercase;
+}
+
+/* confirmation page */
+.title-confirmation {
+  margin-bottom: 10px;
+}
+
+hr.ns-rule {
+  margin: 10px 0px 7px;
+}
+
+.links-confirmation {
+  margin-bottom: 10px;
+}
+
+.help-confirmation {
+  color: #aaa;
+}
+
+/* Landscape phones and down */
+@media (max-width: 767px) {
+  body.passes .vertical-rule {
+	border-left: none;
+	margin-left: 0%;
+	padding-left: 0%;
+  }
+}

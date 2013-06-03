@@ -1056,6 +1056,8 @@ class PurchasesController < ApplicationController
 			              pass.price = @price
 				            pass.entries=num_passes
 				            pass.confirmation=SecureRandom.hex(4)
+				            pass.valid_from = Time.now
+  				          pass.valid_to = Time.now + 7.days
 			              pass.save
 			              UserMailer.purchase_confirmation(@user,pass).deliver
                     counter = 0
@@ -1090,6 +1092,8 @@ class PurchasesController < ApplicationController
   			            pass.price = @price
   				          pass.entries=num_passes
   				          pass.confirmation=SecureRandom.hex(4)
+  				          pass.valid_from = Time.now
+  				          pass.valid_to = Time.now + 7.days
   			            pass.save
   			            UserMailer.purchase_confirmation_week(@user,pass).deliver
                     counter = 0
@@ -1125,6 +1129,8 @@ class PurchasesController < ApplicationController
 	              pass.price = @price
 		            pass.entries=num_passes
 		            pass.confirmation=SecureRandom.hex(4)
+		            pass.valid_from = Time.now
+			          pass.valid_to = Time.now + 7.days
 	              pass.save
 	              UserMailer.purchase_confirmation_week(@user,pass).deliver
                 counter = 0
@@ -1160,6 +1166,8 @@ class PurchasesController < ApplicationController
 	              pass.price = @price
 		            pass.entries=num_passes
 		            pass.confirmation=SecureRandom.hex(4)
+		            pass.valid_from = Time.now
+			          pass.valid_to = Time.now + 7.days
 	              pass.save
 	              UserMailer.purchase_confirmation_week(@user,pass).deliver
                 counter = 0
