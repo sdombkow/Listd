@@ -75,7 +75,7 @@
   		<%= render "/passes/pass_widget"%>
 	</div> <!-- end of .section-container -->
 	
-	<% if @weekly_passes.empty? %>
+	<% if @weekly_passes.any? %>
 		<div class="section-container">
   			<%= render "/weekly_passes/weekly_pass_widget"%>
 		</div>
