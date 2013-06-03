@@ -1,22 +1,13 @@
 class WeekPassesController < ApplicationController
-  # GET /week_passes
-  # GET /week_passes.json
-  def index
-    @week_passes = WeekPass.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @week_passes }
-    end
-  end
-
   # GET /week_passes/1
   # GET /week_passes/1.json
   def show
     @week_pass = WeekPass.find(params[:id])
     @bar = Bar.find(params[:bar_id])
-	  @valid_passes = @week_pass.weekly_passes.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:used_passes_page], :per_page => 5)
-	  @invalid_passes = @week_pass.weekly_passes.order("name DESC").where('redeemed = ?', false).paginate(:page => params[:unused_passes_page], :per_page => 5)
+	  @valid_passes = @week_pass.weekly_passes.order("name DESC").where('redeemed = ?', false).paginate(:page => params[:used_passes_page], :per_page => 5)
+	  @invalid_passes = @week_pass.weekly_passes.order("name DESC").where('redeemed = ?', true).paginate(:page => params[:unused_passes_page], :per_page => 5)
+	  logger.error "Valid: #{@valid_passes.inspect}"
+	  logger.error "InValid: #{@invalid_passes.inspect}"
     @purchase = Purchase.new
     logger.error "#{@pass_set.inspect}"
     logger.error "#{current_user.inspect}"
@@ -111,5 +102,22 @@ class WeekPassesController < ApplicationController
       format.html { redirect_to week_passes_url }
       format.json { head :no_content }
     end
+  end
+  
+  def close_set
+      @week_pass = WeekPass.find(params[:week_pass_id])
+      @bar = @week_pass.bar
+      @week_pass.week_total_released = @week_pass.week_total_sold
+      @week_pass.week_total_unsold = 0
+      @week_pass.save
+    
+      respond_to do |format|
+          if current_user.partner != true
+              format.html { redirect_to [@bar], notice: 'Week set was successfully closed.' }
+          else
+              format.html { redirect_to [@bar, @week_pass], notice: 'Week set was successfully closed.' }
+          end
+          format.json { head :no_content }
+      end
   end
 end

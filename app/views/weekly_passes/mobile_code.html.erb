@@ -1,0 +1,54 @@
+<!-- Rails Renders in HEAD -->
+<style type="text/css">
+@media (orientation: portrait) {
+  table{
+    width: 100%;
+    height: 75%;
+  }
+}
+@media (orientation: landscape){
+  table{
+    width: 300px;
+    height: 300px;
+  }
+}
+body{
+  margin: 0;
+  text-align: center;
+}
+ table {
+  margin-top: 10;
+  margin-left: auto;
+  margin-right: auto;
+  border-width: 0;
+  border-style: none;
+  border-color: #0000ff;
+  border-collapse: collapse;
+ }
+ td {
+   border-width: 0;
+   border-style: none;
+   border-color: #0000ff;
+   border-collapse: collapse;
+   padding: 0;
+   margin: 0;
+   width: 5px;
+   height: 5px;
+ }
+ td.black { background-color: #000; }
+ td.white { background-color: #fff; }
+</style>
+<!-- End head -->
+<table>
+ <% @qr.modules.each_index do |x| -%>
+   <tr>
+   <% @qr.modules.each_index do |y| -%>
+    <% if @qr.dark?(x,y) -%>
+    <td class="black"/>
+    <% else -%>
+    <td class="white"/>
+    <% end -%>
+   <% end -%>
+   </tr>
+ <% end -%>
+</table>

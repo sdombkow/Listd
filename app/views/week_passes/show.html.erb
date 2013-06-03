@@ -182,7 +182,7 @@
 				<dt>Pass Price</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@week_pass.week_cost) %></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %>.</dd>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a week, from time of purchase.</dd>
   			</dl>
 	</div>
 
@@ -196,7 +196,7 @@
 				<dt>Total Amount</dt>
 				<dd id = "totalAmount"></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %>.</dd>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a week, from time of purchase.</dd>
   			</dl>
 	</div>
 
@@ -213,7 +213,7 @@
 							</p>
 							<small>
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
+									<%= link_to 'Toggle Redeem', weeklypasstoggleredeem_path(pass,:id => pass.confirmation) %> </br>
 									# of Passes:</br>
 		        					Purchased on:</br>
 									Passes Redeemed?:</br>
@@ -240,7 +240,7 @@
 							</p>
 							<small>	
 								<div class="pull-left dt">
-									<%= link_to 'Toggle Redeem', passes_toggleRedeem_path(pass,:id => pass.confirmation) %> </br>
+									<%= link_to 'Toggle Redeem', weeklypasstoggleredeem_path(pass,:id => pass.confirmation) %> </br>
 				  					# of Passes:</br>
 		        					Purchased on:</br>
 									Passes Redeemed?:</br>

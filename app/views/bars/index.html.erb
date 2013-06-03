@@ -59,7 +59,43 @@
 		</div>
 		</br>
 		<%= link_to "New #{bar.name} Pass Set", new_user_bar_pass_set_path(current_user,bar), :class => "btn btn-primary" %>
-		</br>	
+		</br>
+		
+		<% if bar.week_passes.empty? %>
+			<h5>No Active Week Pass Set</h5>
+		<% else %>
+			<h5>Active Week Pass Set</h5>
+            <div class = "passSetTable">
+				<table cellpadding="10">
+                <thead>
+  					<tr>
+    					<th>Released Passes</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
+    					<th>Price</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
+                </thead>
+                <tbody>
+					<% bar.week_passes.each do |week_set| %>
+    						<td data-title="Released Passes"><%= week_set.week_total_released %></td>
+    						<td data-title="Sold"><%= week_set.week_total_sold %></td>
+    						<td data-title="Unsold"><%= week_set.week_total_unsold %></td>
+    						<td data-title="Revenue"><%= number_to_currency(week_set.week_cost) %></td>
+							<td data-title="Revenue"><%= number_to_currency(week_set.revenue_total) %></td>
+							<td><%= link_to 'Show Purchased Passes', [bar, week_set] %></td>
+							<td><%= link_to 'Edit', edit_user_bar_week_pass_path(bar.user, bar, week_set) %></td>
+							<td><%= link_to 'Close Out', user_bar_week_pass_close_set_path(bar.user, bar, week_set), :confirm => 'Are you sure?' %></td>
+  						</tr>
+					<% end %>
+                </tbody>
+				</table>
+        </div>
+		<% end %>
 	
 	<!--
 		<% if bar.pass_sets.where('selling_passes = ?', false).empty? %>

@@ -1,37 +1,64 @@
-<h1>Listing weekly_passes</h1>
+<% content_for :title, "Listd - My Passes" %>
+	<h2>My Weekly Passes</h2>
 
-<table>
-  <tr>
-    <th>Week pass</th>
-    <th>Purchase</th>
-    <th>Name</th>
-    <th>Redeemed</th>
-    <th>Entries</th>
-    <th>Confirmation</th>
-    <th>Price</th>
-    <th>Total price</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+	<div class="row footer-cushion">
+  		<div class="span7">
+			<h4 class="index-type">Current</h4>
+			<% for pass in @valid_passes %>
+				<div class="pass-preview">
+					<small>
+      					<p class="title"><%= pass.week_pass.bar.name %></p>
+						<div class="pull-left dt">
+		  						# of Passes: <br>
+		  						Name on Purchase: <br> 
+								Valid From: <br>
+								Valid To: <br>
+		  						Confirmation Number:
+						</div>
+						<div class="pull-left dd">
+		  					<%= pass.entries%> <br>
+		  					<%= pass.name %> <br>
+							<%= pass.valid_from.strftime("%A %B %e, %Y") %> <br>
+							<%= pass.valid_to.strftime("%A %B %e, %Y") %> <br>
+		  					<%= pass.confirmation %>
+						</div>
+						<div class="pull-right dd">
+		  					<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), weekly_pass_path(pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+				  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversionweekly_path(:id => pass.id), :class => "btn title links-confirmation" %><br />
+                            <%= link_to raw("Get Code <i class=\"icon-qrcode\"></i>"), qrcodeweekly_path(:id => pass.confirmation), :class => "btn title links-confirmation" %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'valid_passes_page' %>
+  		</div>
 
-<% @weekly_passes.each do |weekly_pass| %>
-  <tr>
-    <td><%= weekly_pass.week_pass_id %></td>
-    <td><%= weekly_pass.purchase_id %></td>
-    <td><%= weekly_pass.name %></td>
-    <td><%= weekly_pass.redeemed %></td>
-    <td><%= weekly_pass.entries %></td>
-    <td><%= weekly_pass.confirmation %></td>
-    <td><%= weekly_pass.price %></td>
-    <td><%= weekly_pass.total_price %></td>
-    <td><%= link_to 'Show', weekly_pass %></td>
-    <td><%= link_to 'Edit', edit_weekly_pass_path(weekly_pass) %></td>
-    <td><%= link_to 'Destroy', weekly_pass, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-  </tr>
-<% end %>
-</table>
+  		<div class="span4 vertical-rule">
+			<h4 class="index-type">Past</h4>
+			<% for pass in @past_passes %>
+				<div class="pass-history-preview">
+    				<small>
+	      				<p class="title"><%= pass.week_pass.bar.name %></p>
+						<div class="pull-left dt">
+			  				# of Passes: <br>
+			  				Name on Purchase: <br>
+							Valid From: <br>
+							Valid To: <br>
+			  				Confirmation Number: <br>
+			  				Redeemed:
+						</div>
+						<div class="pull-left dd">
+			  				<%= pass.entries%> <br>
+			  				<%= pass.name %> <br>
+							<%= pass.valid_from.strftime("%A %B %e, %Y") %> <br>
+							<%= pass.valid_to.strftime("%A %B %e, %Y") %> <br>
+			  				<%= pass.confirmation %> <br>
+			  				<%= pass.redeemed %>
+						</div>
+					</small>
+				</div> <!-- end of .pass-preview -->
+			<% end %>
+			<%= will_paginate @past_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'past_passes_page' %>
+  		</div>
+	</div>
 
-<br />
-
-<%= link_to 'New Weekly pass', new_weekly_pass_path %>

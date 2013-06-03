@@ -24,9 +24,12 @@ ListdApp::Application.routes.draw do
   match "purchases/purchase_history" => 'purchases#purchase_history'
   match '/businesspdf' => 'pages#download'
   match '/pdfversion' => 'passes#pdfversion'
+  match '/pdfversionweekly' => 'weekly_passes#pdfversion'
+  match '/weeklypasstoggleredeem' => 'weekly_passes#toggleRedeem'
   match '/qrcode' => 'passes#mobile_code'
+  match '/qrcodeweekly' => 'weekly_passes#mobile_code'
   match 'contact' => 'contact#new', :as => 'contact', :via => :get
-match 'contact' => 'contact#create', :as => 'contact', :via => :post
+  match 'contact' => 'contact#create', :as => 'contact', :via => :post
 	resources :bars do
   	resources :pass_sets
     collection do
@@ -38,6 +41,7 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   resources :passes
   match '/mypasses' => 'passes#index'
   match '/myreservations' => 'passes#reservation_archive'
+  match '/myweeklypasses' => 'weekly_passes#index'
   
   resources :purchases do
   	collection do
@@ -66,7 +70,9 @@ match 'contact' => 'contact#create', :as => 'contact', :via => :post
   	  resources :pass_sets do
           get 'close_set'
       end
-      resources :week_passes
+      resources :week_passes do
+          get 'close_set'
+      end
 		end
 	end
 	

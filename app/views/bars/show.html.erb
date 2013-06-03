@@ -335,6 +335,50 @@
             </div>
 		<% end %>
 		-->
+		</br>
+		<%if @week_set == nil %>
+			<h5>No Active Week Pass Set</h5>
+		<% else %>
+			<h5>Active Week Pass Set</h5>
+            <div class = "passSetTable">
+				<table cellpadding="10">
+                <thead>
+  					<tr>
+    					<th>Released Passes</th>
+    					<th>Sold</th>
+    					<th>Unsold</th>
+    					<th>Price</th>
+						<th>Earnings</th>
+    					<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+  					</tr>
+                </thead>
+                <tbody>
+    						<td data-title="Released Passes"><%= @week_set.week_total_released %></td>
+    						<td data-title="Sold"><%= @week_set.week_total_sold %></td>
+    						<td data-title="Unsold"><%= @week_set.week_total_unsold %></td>
+    						<td data-title="Revenue"><%= number_to_currency(@week_set.week_cost) %></td>
+							<td data-title="Revenue"><%= number_to_currency(@week_set.revenue_total) %></td>
+
+							<%if(user_signed_in? && current_user.admin?) %>
+    							<td><%= link_to 'Show Purchased Passes', [@bar.user, @bar, @week_set] %></td>
+								<td><%= link_to 'Edit', edit_user_bar_week_pass_path(@bar.user, @bar, @week_set) %></td>
+								<td><%= link_to 'Close Out', user_bar_week_pass_close_set_path(@bar.user, @bar, @week_set), :confirm => 'Are you sure?' %></td>
+								<td><%= link_to 'Delete', [@bar.user, @bar, @week_set], :confirm => 'Are you sure?', :method => :delete %> </td>
+			   				<%elsif (current_user.partner?)%>
+			      				<td><%= link_to 'Show Purchased Passes', [@bar, @week_set] %></td>
+								<td><%= link_to 'Edit', edit_user_bar_week_pass_path(@bar.user, @bar, @week_set) %></td>
+								<td><%= link_to 'Close Out', user_bar_week_pass_close_set_path(@bar.user, @bar, @week_set), :confirm => 'Are you sure?' %></td>
+				   			<%else %>
+			    				<td><%= link_to 'Purchase a Pass', [@bar,@week_set] %></td>   
+			   				<%end%>
+  						</tr>
+                </tbody>
+				</table>
+        </div>
+		<% end %>
 </div>
 </br>
 <%= link_to 'New Individual Pass Set', new_user_bar_pass_set_path(@user,@bar) %> |

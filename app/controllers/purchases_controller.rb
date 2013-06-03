@@ -1019,6 +1019,8 @@ class PurchasesController < ApplicationController
   			            pass.price = @price
   				          pass.entries=num_passes
   				          pass.confirmation=SecureRandom.hex(4)
+  				          pass.valid_from = Time.now
+  				          pass.valid_to = Time.now + 7.days
   			            pass.save
   			            UserMailer.purchase_confirmation_week(@user,pass).deliver
                     counter = 0
@@ -1046,7 +1048,7 @@ class PurchasesController < ApplicationController
 		                @week_pass.revenue_total = @price*num_passes + @week_pass.revenue_total
 		                @week_pass.save
 		                # for i in 0..num_passes-1
-			              pass = Pass.new
+			              pass = WeeklyPass.new
 			              pass.name = params[:purchase][:name]
 			              pass.purchase_id = @purchase.id
 			              pass.week_pass_id = @week_pass.id
@@ -1080,7 +1082,7 @@ class PurchasesController < ApplicationController
   		              @week_pass.revenue_total = @price*num_passes + @week_pass.revenue_total
   		              @week_pass.save
   		              # for i in 0..num_passes-1
-  			            pass = Pass.new
+  			            pass = WeeklyPass.new
   			            pass.name = params[:purchase][:name]
   			            pass.purchase_id = @purchase.id
   			            pass.week_pass_id = @week_pass.id
@@ -1115,7 +1117,7 @@ class PurchasesController < ApplicationController
                 @week_pass.revenue_total = @price*num_passes + @week_pass.revenue_total
                 @week_pass.save
                 # for i in 0..num_passes-1
-	              pass = Pass.new
+	              pass = WeeklyPass.new
 	              pass.name = params[:purchase][:name]
 	              pass.purchase_id = @purchase.id
 	              pass.week_pass_id = @week_pass.id
@@ -1150,7 +1152,7 @@ class PurchasesController < ApplicationController
                 @week_pass.revenue_total = @price*num_passes + @week_pass.revenue_total
                 @week_pass.save
                 # for i in 0..num_passes-1
-	              pass = Pass.new
+	              pass = WeeklyPass.new
 	              pass.name = params[:purchase][:name]
 	              pass.purchase_id = @purchase.id
 	              pass.week_pass_id = @week_pass.id

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601030837) do
+ActiveRecord::Schema.define(:version => 20130602231741) do
 
   create_table "available_times", :force => true do |t|
     t.integer  "reservation_set_id"
@@ -464,6 +464,8 @@ ActiveRecord::Schema.define(:version => 20130601030837) do
     t.decimal  "total_price"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.datetime "valid_from"
+    t.datetime "valid_to"
   end
 
 end

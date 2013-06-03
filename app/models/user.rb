@@ -12,6 +12,7 @@ before_save :ensure_authentication_token
   has_many :bars, :dependent => :destroy
   has_many :purchases
   has_many :passes, :through => :purchases
+  has_many :weekly_passes, :through => :purchases
 
   validates_presence_of :name, :email
 

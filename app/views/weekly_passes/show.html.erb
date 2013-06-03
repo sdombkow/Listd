@@ -9,6 +9,8 @@
 	  			Bar Name: <br>
 	  			Name on Purchase: <br>
 	  			Confirmation Number: <br>
+				Valid From: <br>
+				Valid To: <br>
 	  			<hr class="ns-rule">
 	  			Total Passes: <br>
 	  			Subtotal: <br>
@@ -20,6 +22,8 @@
 	  			<%= @pass.week_pass.bar.name %> <br>
 	  			<%= @pass.name %> <br>
 	  			<%= @pass.confirmation %> <br>
+				<%= @pass.valid_from.strftime("%A %B %e, %Y") %> <br>
+				<%= @pass.valid_to.strftime("%A %B %e, %Y") %> <br>
 	  			<hr class="ns-rule">
 	  			<%= @pass.entries%> <br>
 	  			<%= number_to_currency(@pass.price * @pass.entries) %> <br>
@@ -29,11 +33,11 @@
 			</div>
 			<br>
 			<div class="pull-right dd">
-	  			<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), pass_path(@pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
-	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversion_path(:id => @pass.id), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("View Pass &nbsp&nbsp<i class=\"icon-circle-arrow-right\"></i>"), weekly_pass_path(@pass, :format => "pdf"), :class => "btn title links-confirmation" %> <br>
+	  			<%= link_to raw("Download <i class=\"icon-download\"></i>"), pdfversionweekly_path(:id => @pass.id), :class => "btn title links-confirmation" %> <br>
 				<% if current_user.partner != true %>
-                	<%= link_to raw("Get Code <i class=\"icon-qrcode\"></i>"), qrcode_path(:id => @pass.confirmation), :class => "btn title links-confirmation" %><br />
-	  				<%= link_to raw("All Passes <i class=\"icon-circle-arrow-right\"></i>"), '/mypasses', :class => "btn title links-confirmation" %>
+                	<%= link_to raw("Get Code <i class=\"icon-qrcode\"></i>"), qrcodeweekly_path(:id => @pass.confirmation), :class => "btn title links-confirmation" %><br />
+	  				<%= link_to raw("All Passes <i class=\"icon-circle-arrow-right\"></i>"), '/myweeklypasses', :class => "btn title links-confirmation" %>
 				<% end %>
 			</div>
 		</small>

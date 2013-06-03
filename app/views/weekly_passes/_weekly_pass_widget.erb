@@ -1,0 +1,18 @@
+<% if current_user != nil %>
+	<div class="title-bar">
+  		<h5>Upcoming Weekly Passes</h5>
+	</div>
+
+	<div class="content-box">
+  		<% @weekly_passes.each do |pass| %>
+			<% if (!pass.redeemed) %>
+				<div class = "row-fluid">
+      				<div class="pass-item">
+						<span><%= link_to pass.week_pass.bar.name, pass %></span>
+						<span class="offset2"><%= pass.valid_from.strftime("%m/%d/%Y") %> - <%= pass.valid_to.strftime("%m/%d/%Y") %></span>
+  	  				</div> <!-- end of .pass-item -->
+				</div>
+			<% end %>
+  		<% end %>
+	</div>
+<% end %>
