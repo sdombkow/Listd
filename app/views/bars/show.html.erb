@@ -132,7 +132,7 @@
 		<% if @week_set != nil %>
 			<div class="shadow span11 center-text" id="passes-none">
 				<h4>
-					<%= link_to "Click Here to Purchase A Week Pass", [@bar, @week_set]%>
+					<%= link_to "Click Here to Purchase A Month Pass", [@bar, @week_set]%>
 				</h4>
 			</div>
 		<% end %>
@@ -339,9 +339,9 @@
 		-->
 		</br>
 		<%if @week_set == nil %>
-			<h5>No Active Week Pass Set</h5>
+			<h5>No Active Month Pass Sets</h5>
 		<% else %>
-			<h5>Active Week Pass Set</h5>
+			<h5>Active Month Pass Set</h5>
             <div class = "passSetTable">
 				<table cellpadding="10">
                 <thead>

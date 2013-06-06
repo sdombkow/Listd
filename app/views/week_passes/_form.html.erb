@@ -1,7 +1,7 @@
 <%= form_for([@bar.user,@bar,@week_pass]) do |f| %>
   <% if @week_pass.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@week_pass.errors.count, "error") %> prohibited this bar from being saved:</h2>
+      <h2><%= pluralize(@week_pass.errors.count, "error") %> prohibited this week_pass from being saved:</h2>
 
       <ul>
       <% @week_pass.errors.full_messages.each do |msg| %>

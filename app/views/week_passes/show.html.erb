@@ -173,7 +173,7 @@
 	</div>
 
 	<div id = "availableSummary">
-  			<legend><%= @week_pass.bar.name %> Weekly Passes </legend>
+  			<legend><%= @week_pass.bar.name %> Month Passes </legend>
   			<dl class="dl-horizontal">
     			<dt>Bar</dt>
     			<dd><%= @week_pass.bar.name %></dd>
@@ -182,7 +182,7 @@
 				<dt>Pass Price</dt>
 				<dd id = "ticketPrice"><%= number_to_currency(@week_pass.week_cost) %></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a week, from time of purchase.</dd>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a month, from time of purchase.</dd>
   			</dl>
 	</div>
 
@@ -196,7 +196,7 @@
 				<dt>Total Amount</dt>
 				<dd id = "totalAmount"></dd>
 				<dt>Description</dt>
-				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a week, from time of purchase.</dd>
+				<dd>The purchase of this LISTD pass provides immediate entry to <%= @week_pass.bar.name %> for a month, from time of purchase.</dd>
   			</dl>
 	</div>
 
@@ -205,7 +205,7 @@
 	<% if current_user.partner? || current_user.admin? %>
 		<div class="row footer-cushion">
 			<div class="span7">
-					<h4 class="index-type">Valid Week Passes</h4>
+					<h4 class="index-type">Valid Month Passes</h4>
 					<% for pass in @valid_passes %>
 						<div class="pass-preview">
 							<p class="title">
@@ -232,7 +232,7 @@
 				<%= will_paginate @valid_passes, :previous_label => "Previous", :next_label => "Next", :param_name => 'unused_passes_page' %>
 			</div>
 			<div class="span4 vertical-rule">
-					<h4 class="index-type">Invalid Week Passes</h4>
+					<h4 class="index-type">Invalid Month Passes</h4>
 					<% for pass in @invalid_passes %>
 						<div class="pass-history-preview">
 	      					<p class="title">
@@ -263,7 +263,7 @@
 		<div id="sold_out">
 			</br>
 			<% if  @week_pass.week_total_unsold == 0 %>
-				<h1>Sorry, there are no available passes for a week.</h1>
+				<h1>Sorry, there are no available passes for a month.</h1>
 			<% end %>
 		</div>
 	
