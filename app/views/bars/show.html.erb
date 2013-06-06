@@ -140,7 +140,7 @@
 	</div>
 </div>
 
-<%if(user_signed_in? && current_user.admin? || current_user.partner?) %>
+<%if(user_signed_in? && current_user.admin? || user_signed_in? && current_user.partner?) %>
 	<div>
 		
 		<%if @pass_sets_paginated.empty? %>

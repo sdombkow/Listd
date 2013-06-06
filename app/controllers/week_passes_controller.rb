@@ -1,4 +1,19 @@
 class WeekPassesController < ApplicationController
+  before_filter :authenticate_user!
+  before_filter :elevated_privilege_P? , :except => [:show]
+  before_filter :ownsWeekPasses, :only => [:edit,:update,:new,:delete,:create]
+  
+  # Ensure that the user owns the bar for this pass set
+  def ownsWeekPasses
+    @bar = Bar.find(params[:bar_id])
+    if current_user.partner? == false and current_user.admin? == false
+        redirect_to @bar
+    elsif current_user.partner? == true and @bar.user_id != current_user.id
+        redirect_to @bar
+    end
+    return
+  end
+  
   # GET /week_passes/1
   # GET /week_passes/1.json
   def show
