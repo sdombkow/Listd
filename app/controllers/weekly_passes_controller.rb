@@ -7,8 +7,8 @@ class WeeklyPassesController < ApplicationController
     end
   	@user = current_user
     # Eager loading pass sets on the user's passes
-  	@valid_passes = @user.weekly_passes.where('weekly_passes.valid_from >= ?', Time.now.to_date).order('weekly_passes.valid_from ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
-  	@past_passes = @user.weekly_passes.where('weekly_passes.valid_from < ?', Time.now.to_date).order('weekly_passes.valid_from ASC').paginate(:page => params[:past_passes_page], :per_page => 5)
+  	@valid_passes = @user.weekly_passes.where('weekly_passes.valid_to >= ?', Time.now.to_date).order('weekly_passes.valid_from ASC').paginate(:page => params[:valid_passes_page], :per_page => 5)
+  	@past_passes = @user.weekly_passes.where('weekly_passes.valid_to < ?', Time.now.to_date).order('weekly_passes.valid_from ASC').paginate(:page => params[:past_passes_page], :per_page => 5)
   end
 
   # GET /weekly_passes/1
