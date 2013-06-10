@@ -21,6 +21,7 @@ ListdApp::Application.routes.draw do
   get "pages/privacy_policy"
   get "pages/about_us"
   get "pages/download"
+  get "pages/dashboard_temp"
   match "purchases/purchase_history" => 'purchases#purchase_history'
   match '/businesspdf' => 'pages#download'
   match '/pdfversion' => 'passes#pdfversion'
