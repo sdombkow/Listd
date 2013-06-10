@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= modals
 //= require bootstrap
 //= require_tree .
 $(document).ready(function() {

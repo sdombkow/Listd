@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   
+  layout Proc.new { |controller| controller.request.xhr? ? nil : 'application' }
 
 def elevated_privilege_P?
 	if current_user.admin?
