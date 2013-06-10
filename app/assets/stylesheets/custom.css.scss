@@ -178,8 +178,14 @@ footer ul li {
 }
 
 #temp {
-  background:url('partner_dashboard.jpg');
+  background:url('partner_dashboard.jpg') no-repeat;
   height: 1000px;
+}
+
+#temp img {
+  position: absolute;
+  top: 415px;
+  left: 152px;
 }
 
 #modal-container {
@@ -195,10 +201,8 @@ background: rgba(0,0,0,0.4);
 #modal {
 display: none;
 position: absolute;
-width: 600px;
 left: 50%;
-margin-left: (-600px - 40px) / 2;
-padding: 20px;
+margin-left: (-400px) / 2;
 background: #fff;
 border: 5px solid #eee;
  
