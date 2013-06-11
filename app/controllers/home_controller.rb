@@ -7,7 +7,7 @@ class HomeController < ApplicationController
       if current_user.admin?
         redirect_to :controller=>'admin'
       elsif current_user.partner?
-        redirect_to :controller=>'bars'
+        render 'pages/dashboard_temp'
       end
     end
     

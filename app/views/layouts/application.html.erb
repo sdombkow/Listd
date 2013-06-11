@@ -1,68 +1,67 @@
 <!DOCTYPE html>
 <html class="<%= controller_name %> <%= action_name %>" xmlns:fb="https://www.facebook.com/2008/fbml">
-  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# listdnow: http://ogp.me/ns/fb/listdnow#">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : "Listd" %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Listd" %>">
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "https://js.stripe.com/v1/", "application" %>
-    <%= csrf_meta_tags %>
-	<%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
-    <%= yield :head  %>
-	<!--[if lt IE 9]>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-  </head>
-  <body class="<%= controller_name %> <%= action_name %>">
-  <div id="fb-root"></div>
-  <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '567808586566843', // App ID
-        status     : true, // check login status
-        cookie     : true, // enable cookies to allow the server to access the session
-        xfbml      : true  // parse XFBML
-      });
-    };
-
-    // Load the SDK Asynchronously
-    (function(d){
-      var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
-      js = d.createElement('script'); js.id = id; js.async = true;
-      js.src = "//connect.facebook.net/en_US/all.js";
-      d.getElementsByTagName('head')[0].appendChild(js);
-    }(document));
-  </script>
-	<div id="container">
-      <header class="navbar navbar-fixed-top navbar-inverse">
-        <nav class="navbar-inner">
-          <div class="container">
-	  	    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse.collapse">
-		      <span class="icon-bar"></span>
-			  <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </a>
-		    <%= link_to image_tag("logo.png", alt: "logo"), root_path, id: "logo" %>
-	        <div class="nav-collapse collapse">
-              <%= render 'layouts/navigation' %>
-            </div>
-          </div>
-        </nav>
-      </header>
-      <div id="main" role="main">
-        <div class="container">
-          <div class="content">
-             <div class="row">
-              <div class="span12">
-                <%= render 'layouts/messages' %>
-                <%= yield %>
-              </div>
-            </div>
-          </div>
-        </div> <!-- end of .container -->  
-      </div> <!-- end of #main -->
-	  <div class="clearfooter"></div>
-	</div>
-	<%= render 'layouts/footer' %>
-  </body>
+ 	<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# listdnow: http://ogp.me/ns/fb/listdnow#">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title><%= content_for?(:title) ? yield(:title) : "Listd" %></title>
+    	<meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Listd" %>">
+    	<%= stylesheet_link_tag "application", media: "all" %>
+    	<%= javascript_include_tag "https://js.stripe.com/v1/", "application" %>
+    	<%= csrf_meta_tags %>
+		<%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
+    	<%= yield :head  %>
+		<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+  	</head>
+  	<body class="<%= controller_name %> <%= action_name %>">
+  		<div id="fb-root"></div>
+  		<script>
+    		window.fbAsyncInit = function() {
+     			FB.init({
+       				appId      : '567808586566843', // App ID
+       				status     : true, // check login status
+       				cookie     : true, // enable cookies to allow the server to access the session
+       				xfbml      : true  // parse XFBML
+      			});
+    		};
+    		// Load the SDK Asynchronously
+    		(function(d){
+      			var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+      			js = d.createElement('script'); js.id = id; js.async = true;
+      			js.src = "//connect.facebook.net/en_US/all.js";
+      			d.getElementsByTagName('head')[0].appendChild(js);
+   			}(document));
+  		</script>
+		<div id="container">
+     		<header class="navbar navbar-fixed-top navbar-inverse">
+        		<nav class="navbar-inner">
+       				<div class="container">
+	  	    			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse.collapse">
+		      				<span class="icon-bar"></span>
+			  				<span class="icon-bar"></span>
+              				<span class="icon-bar"></span>
+           				</a>
+		   				<%= link_to image_tag("logo.png", alt: "logo"), root_path, id: "logo" %>
+	        			<div class="nav-collapse collapse">
+              				<%= render 'layouts/navigation' %>
+            			</div>
+          			</div>
+        		</nav>
+      		</header>
+      		<div id="main" role="main">
+        		<div class="container">
+         			<div class="content">
+             			<div class="row">
+              				<div class="span12">
+               					<%= render 'layouts/messages' %>
+               					<%= yield %>
+              				</div>
+            			</div>
+          			</div>
+        		</div> <!-- end of .container -->  
+      		</div> <!-- end of #main -->
+	  		<div class="clearfooter"></div>
+		</div>
+		<%= render 'layouts/footer' %>
+  	</body>
 </html>

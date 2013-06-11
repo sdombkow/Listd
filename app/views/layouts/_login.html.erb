@@ -1,36 +1,36 @@
 <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-   Sign In
-   <b class="caret"></b>
+	Sign In
+   	<b class="caret"></b>
 </a>
 <ul class="dropdown-menu dropdown-open" style="padding: 20px 20px 0px 20px;">
-  <%= form_for("user", :url => user_session_path) do |f| %>
-  <li>
-    <div class="control-group">
-       <div class="controls">
-          <%= f.text_field :email, :placeholder => "Email" %>
-       </div>
-     </div>
-  </li>
-  <li>
-    <div class="control-group">
-       <div class="controls">
-          <%= f.password_field :password, :placeholder => "Password" %>
-       </div>
-    </div>
-  </li>
-  <li>
-    <div class="control-group">
-       <div class="controls">
-          <%= f.check_box :remember_me %> <small>Remember me</small>
-       </div>
-    </div>
-  </li>
-  <li> <%= f.submit "Sign in", :class => "btn btn-block btn-primary" %> </li>
-  <li class="divider"></li>
-  <li>
-   	<a class="blueButton" href="<%=user_omniauth_authorize_path(:facebook)%>">
-		<span class="blueButtonText">Sign in with Facebook</span>
-	</a> 
-  </li>
-  <% end %>
+  	<%= form_for("user", :url => user_session_path) do |f| %>
+  		<li>
+    		<div class="control-group">
+       			<div class="controls">
+          			<%= f.text_field :email, :placeholder => "Email" %>
+       			</div>
+     		</div>
+  		</li>
+  		<li>
+    		<div class="control-group">
+       			<div class="controls">
+          			<%= f.password_field :password, :placeholder => "Password" %>
+       			</div>
+    		</div>
+  		</li>
+  		<li>
+    		<div class="control-group">
+       			<div class="controls">
+          			<%= f.check_box :remember_me %> <small>Remember me</small>
+       			</div>
+    		</div>
+  		</li>
+  		<li> <%= f.submit "Sign in", :class => "btn btn-block btn-primary" %> </li>
+  		<li class="divider"></li>
+  		<li>
+   			<a class="blueButton" href="<%=user_omniauth_authorize_path(:facebook)%>">
+				<span class="blueButtonText">Sign in with Facebook</span>
+			</a> 
+  		</li>
+  	<% end %>
 </ul>
