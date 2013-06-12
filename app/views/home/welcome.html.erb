@@ -40,10 +40,6 @@
 		  <h6><%= link_to location.name, location %></h6>
 		  <address>
 		  	<small> 
-			    <%= location.address %>
-				<br>
-		        <abbr title="Phone">P: </abbr><%= number_to_phone(location.phone_number, :area_code => true) %>
-				</br>
 				<% if location.website_url != ""%>
 			 	  <%= link_to location.website_url, "http://#{location.website_url}", :target => "_blank"%></br>
 				<% end %>
