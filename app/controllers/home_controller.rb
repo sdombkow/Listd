@@ -23,9 +23,10 @@ class HomeController < ApplicationController
     #finds all local venues within 10 miles of that users location, orders them based
     #on distance from the user
     
-    @venues = Bar.near(@user_information[0].coordinates, 30, :order => :distance).take(1)
+    #@venues = Bar.near(@user_information[0].coordinates, 30, :order => :distance).take(1)
+    @venues = Bar.all.take(1)
     if @venues.size < 3
-      @venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(1)
+      #@venues = Bar.near(@user_information[0].coordinates,3200, :order => :distance).take(1)
     end
     
     #@venues = Bar.all.take(3)
